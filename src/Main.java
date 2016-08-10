@@ -1,3 +1,8 @@
+import java.io.IOException;
+import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -38,6 +43,9 @@ public class Main {
 			}
 		}
 		
+		List<String> sb = new LinkedList<>();
+		sb.add(String.valueOf(PARTICLE_COUNT));
+		sb.add("This is a comment");
 		
 		for (int i = 0; i < cellCount; i++) {
 			for (int j = 0; j < cellCount; j++) {
@@ -45,13 +53,22 @@ public class Main {
 				//System.out.println("New position: " + i + ", " + j);
 				for (Particle particle: board[i][j].particles) {
 					//System.out.println("Particle " + particle.index + ": " + particle.x + ", " + particle.y);
-					System.out.print(particle.index);
+					//System.out.print(particle.index);
+					sb.add(particle.index + "\t" + particle.x + "\t" + particle.y);
 					for (Particle neighbourParticle: particle.neighbours) {
-						System.out.print(" " + neighbourParticle.index);
+						//System.out.print(" " + neighbourParticle.index);
 					}
-					System.out.println();
+					//System.out.println();
 				}
 			}
+		}
+		
+		
+		Path file = Paths.get("output.xyz");
+		try {
+			Files.write(file, sb, Charset.forName("UTF-8"));
+		} catch (IOException ioException) {
+			ioException.printStackTrace();
 		}
 	}
 	
