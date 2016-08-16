@@ -1,7 +1,6 @@
 # Created by https://www.gitignore.io/api/eclipse,intellij,macos,osx,windows,linux,java,git,maven
 
 .idea/**/*
-*.xyz
 
 ### Eclipse ###
 
@@ -108,7 +107,7 @@ fabric.properties
 
 # *.iml
 # modules.xml
-# .idea/misc.xml 
+# .idea/misc.xml
 # *.ipr
 
 
