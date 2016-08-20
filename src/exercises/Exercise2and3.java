@@ -23,28 +23,19 @@ public class Exercise2and3 extends Exercise {
     for (int i = 0; i < runs; i++) {
       int currentBoardM = boardM + boardMDelta * i;
       int currentParticleCount = particleCount;
-      particleList = getParticlesFromNewRandomInput(RANDOM_INPUT_PATH, currentParticleCount, currentBoardM);
-      for (Particle particle: particleList) {
-        particle.setRadius(radius);
-      }
+      particleList = getParticlesFromNewRandomInput(RANDOM_INPUT_PATH, currentParticleCount, currentBoardM, radius);
       exercise2Run(particleList, currentParticleCount, currentBoardM, cellSize, convergenceRadius);
     }
     for (int i = 0; i < runs; i++) {
       int currentBoardM = boardM;
       int currentParticleCount = particleCount + particleCountDelta * i;
-      particleList = getParticlesFromNewRandomInput(RANDOM_INPUT_PATH, currentParticleCount, currentBoardM);
-      for (Particle particle: particleList) {
-        particle.setRadius(radius);
-      }
+      particleList = getParticlesFromNewRandomInput(RANDOM_INPUT_PATH, currentParticleCount, currentBoardM, radius);
       exercise2Run(particleList, currentParticleCount, currentBoardM, cellSize, convergenceRadius);
     }
     for (int i = 0; i < runs; i++) {
       int currentBoardM = boardM + boardMDelta * i;
       int currentParticleCount = particleCount + particleCountDelta * i;
-      particleList = getParticlesFromNewRandomInput(RANDOM_INPUT_PATH, currentParticleCount, currentBoardM);
-      for (Particle particle: particleList) {
-        particle.setRadius(radius);
-      }
+      particleList = getParticlesFromNewRandomInput(RANDOM_INPUT_PATH, currentParticleCount, currentBoardM, radius);
       exercise2Run(particleList, currentParticleCount, currentBoardM, cellSize, convergenceRadius);
     }
   }

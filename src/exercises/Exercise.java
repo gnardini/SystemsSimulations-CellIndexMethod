@@ -6,7 +6,7 @@ import input.RandomInputGenerator;
 import models.Board;
 import models.Particle;
 
-import java.io.IOException;
+import java.io.*;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -49,17 +49,41 @@ public class Exercise {
     }
   }
 
-  protected static List<Particle> getParticlesFromRandomInput() {
-    // TODO: LOAD PARTICLES FROM FILE
-    return new LinkedList<>();
+  protected static List<Particle> getParticlesFromRandomInput(String path, double radius) {
+    List<Particle> list = new LinkedList<>();
+
+    try {
+
+      File file = new File(path);
+      FileReader reader = new FileReader(file);
+      BufferedReader buffer = new BufferedReader(reader);
+
+      String line = buffer.readLine();
+
+      while (line != null) {
+        String[] properties = line.trim().split("\t");
+        list.add(new Particle(Integer.valueOf(properties[0]), Double.valueOf(properties[1]), Double.valueOf(properties[2]), radius));
+
+        line = buffer.readLine();
+      }
+
+    } catch (FileNotFoundException e) {
+      e.printStackTrace();
+    } catch (IOException e) {
+      e.printStackTrace();
+    } catch (NumberFormatException e) {
+      e.printStackTrace();
+    }
+
+    return list;
   }
 
   protected static void generateRandomInput(String path, int particleCount, int boardM) {
     RandomInputGenerator.generateInput(path, particleCount, boardM);
   }
 
-  protected static List<Particle> getParticlesFromNewRandomInput(String path, int particleCount, int boardM) {
+  protected static List<Particle> getParticlesFromNewRandomInput(String path, int particleCount, int boardM, double radius) {
     generateRandomInput(path, particleCount, boardM);
-    return getParticlesFromRandomInput();
+    return getParticlesFromRandomInput(path, radius);
   }
 }
