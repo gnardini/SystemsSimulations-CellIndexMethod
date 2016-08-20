@@ -28,14 +28,14 @@ public class Exercise {
   protected static final String CELL_INDEX_METHOD_XYZ_OUTPUT = "files/cimOutput.xyz";
   protected static final String BRUTE_FORCE_XYZ_OUTPUT = "files/bfOutput.xyz";
 
-  protected static Board cellIndexMethodWithEdge(List<Particle> list, int boardSize, int cellSize, int convergenceRadius) {
-    CellIndexMethod cellIndexMethod = new CellIndexMethod(list, boardSize, cellSize, convergenceRadius);
+  protected static Board cellIndexMethodWithEdge(List<Particle> list, int M, int L, int convergenceRadius) {
+    CellIndexMethod cellIndexMethod = new CellIndexMethod(list, M, L, convergenceRadius);
     cellIndexMethod.calculateDistanceWithEdge();
     return cellIndexMethod.getBoard();
   }
 
-  protected static Board bruteForceMethodWithEdge(List<Particle> list, int boardSize, int cellSize, int convergenceRadius) {
-    BruteForce bruteForce = new BruteForce(list, boardSize, cellSize, convergenceRadius);
+  protected static Board bruteForceMethodWithEdge(List<Particle> list, int M, int L, int convergenceRadius) {
+    BruteForce bruteForce = new BruteForce(list, M, L, convergenceRadius);
     bruteForce.calculateDistanceWithEdge();
     return bruteForce.getBoard();
   }
@@ -78,12 +78,12 @@ public class Exercise {
     return list;
   }
 
-  protected static void generateRandomInput(String path, int particleCount, int boardM) {
-    RandomInputGenerator.generateInput(path, particleCount, boardM);
+  protected static void generateRandomInput(String path, int particleCount, int M) {
+    RandomInputGenerator.generateInput(path, particleCount, M);
   }
 
-  protected static List<Particle> getParticlesFromNewRandomInput(String path, int particleCount, int boardM, double radius) {
-    generateRandomInput(path, particleCount, boardM);
+  protected static List<Particle> getParticlesFromNewRandomInput(String path, int particleCount, int M, double radius) {
+    generateRandomInput(path, particleCount, M);
     return getParticlesFromRandomInput(path, radius);
   }
 }

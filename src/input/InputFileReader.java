@@ -8,7 +8,7 @@ import java.util.List;
 
 public class InputFileReader {
   private int particleCount;
-  private int cellSize;
+  private int L;
   private List<Particle> particles;
 
   public InputFileReader(String staticInputPath, String dynamicInputPath) {
@@ -29,7 +29,7 @@ public class InputFileReader {
 
       if (staticBuffer.ready() && dynamicBuffer.ready()) {
         this.particleCount = Integer.parseInt(staticBuffer.readLine().trim());
-        this.cellSize = Integer.parseInt(staticBuffer.readLine().trim());
+        this.L = Integer.parseInt(staticBuffer.readLine().trim());
 
         // The first line indicates time
         dynamicBuffer.readLine();
@@ -60,8 +60,8 @@ public class InputFileReader {
     return particleCount;
   }
 
-  public int getCellSize() {
-    return cellSize;
+  public int getL() {
+    return L;
   }
 
   public List<Particle> getParticles() {

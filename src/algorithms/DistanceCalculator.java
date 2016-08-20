@@ -8,21 +8,21 @@ import java.util.List;
 public abstract class DistanceCalculator {
 
   protected List<Particle> particles;
-  protected int boardM;
-  protected int cellSize;
+  protected int M;
+  protected int L;
   protected int convergenceRadius;
   protected Board board;
 
-  public DistanceCalculator(List<Particle> particles, int boardM, int cellSize, int convergenceRadius) {
+  public DistanceCalculator(List<Particle> particles, int M, int L, int convergenceRadius) {
     this.particles = particles;
-    this.boardM = boardM;
-    this.cellSize = cellSize;
+    this.M = M;
+    this.L = L;
     this.convergenceRadius = convergenceRadius;
     initializeBoard();
   }
 
   private void initializeBoard() {
-    this.board = new Board(boardM, cellSize, convergenceRadius);
+    this.board = new Board(M, L, convergenceRadius);
     // Add particles
     double maxRadius = 0;
     for (Particle particle: particles) {
@@ -31,7 +31,7 @@ public abstract class DistanceCalculator {
         maxRadius = particle.getRadius();
       }
     }
-    if (cellSize / boardM <= convergenceRadius + 2 * maxRadius) {
+    if (L / M <= convergenceRadius + 2 * maxRadius) {
       throw new IllegalArgumentException("Invalid board size");
     }
   }

@@ -23,8 +23,8 @@ public class XYZFormatter implements Formatter {
 		
 		Particle chosenParticle = null;
 		
-		for (int i = 0; i < board.getBoardM(); i++) {
-			for (int j = 0; j < board.getBoardM(); j++) {
+		for (int i = 0; i < board.getM(); i++) {
+			for (int j = 0; j < board.getM(); j++) {
 				for (Particle particle: board.particlesAt(i, j)) {
 					boolean isParticle = particle.getId() == chosenParticleId;
 					if (isParticle) {

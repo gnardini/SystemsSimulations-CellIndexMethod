@@ -1,6 +1,5 @@
 import exercises.Exercise;
 import input.InputFileReader;
-import input.RandomInputGenerator;
 import models.Board;
 import models.Particle;
 import output.XYZFormatter;
@@ -8,12 +7,7 @@ import output.XYZFormatter;
 import java.util.List;
 
 public class Main extends Exercise {
-
-
   public static void main(String[] args) {
-    int particleCount = 1000;
-    RandomInputGenerator.generateInput(RANDOM_INPUT_PATH, particleCount, BOARD_M);
-
     XYZFormatter formatter = new XYZFormatter();
 
     InputFileReader fileReader = new InputFileReader(STATIC_PATH, DYNAMIC_PATH);
@@ -22,13 +16,14 @@ public class Main extends Exercise {
     // Start calculating times
     Board result;
     long start = System.currentTimeMillis();
-    result = cellIndexMethodWithEdge(list, BOARD_M, fileReader.getCellSize(), CONVERGENCE_RADIUS);
+    result = cellIndexMethodWithEdge(list, BOARD_M, fileReader.getL(), CONVERGENCE_RADIUS);
     long end = System.currentTimeMillis();
     long cellIndexMethodDuration = end - start;
     System.out.println("Cell index method with edges duration: " + cellIndexMethodDuration + " milliseconds");
 
+    Board result2;
     start = System.currentTimeMillis();
-    result = bruteForceMethodWithEdge(list, BOARD_M, fileReader.getCellSize(), CONVERGENCE_RADIUS);
+    result2 = bruteForceMethodWithEdge(list, BOARD_M, fileReader.getL(), CONVERGENCE_RADIUS);
     end = System.currentTimeMillis();
     long bruteForceMethodDuration = end - start;
     System.out.println("Brute force method with edges duration: " + bruteForceMethodDuration + " milliseconds");

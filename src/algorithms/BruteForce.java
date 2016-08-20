@@ -6,8 +6,8 @@ import java.util.List;
 
 public class BruteForce extends DistanceCalculator{
 
-  public BruteForce(List<Particle> particles, int boardSize, int cellSize, int convergenceRadius) {
-    super(particles, boardSize, cellSize, convergenceRadius);
+  public BruteForce(List<Particle> particles, int M, int L, int convergenceRadius) {
+    super(particles, M, L, convergenceRadius);
   }
 
   @Override

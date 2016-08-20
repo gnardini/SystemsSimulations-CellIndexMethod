@@ -8,14 +8,14 @@ import java.util.List;
 
 public class CellIndexMethod extends DistanceCalculator {
 
-  public CellIndexMethod(List<Particle> particles, int boardM, int cellSize, int convergenceRadius) {
-    super(particles, boardM, cellSize, convergenceRadius);
+  public CellIndexMethod(List<Particle> particles, int M, int L, int convergenceRadius) {
+    super(particles, M, L, convergenceRadius);
   }
 
   @Override
   public void calculateDistanceWithEdge() {
-    for (int i = 0; i < board.getBoardM(); i++) {
-      for (int j = 0; j < board.getBoardM(); j++) {
+    for (int i = 0; i < board.getM(); i++) {
+      for (int j = 0; j < board.getM(); j++) {
         updateCellNeighbours(board.getCell(i, j), convergenceRadius);
 
         maybeAddCellToListWithEdge(i, j, new Point(1, 0));
@@ -29,8 +29,8 @@ public class CellIndexMethod extends DistanceCalculator {
 
   @Override
   public void calculateDistanceWithoutEdge() {
-    for (int i = 0; i < board.getBoardM(); i++) {
-      for (int j = 0; j < board.getBoardM(); j++) {
+    for (int i = 0; i < board.getM(); i++) {
+      for (int j = 0; j < board.getM(); j++) {
         updateCellNeighbours(board.getCell(i, j), convergenceRadius);
 
         maybeAddCellToListWithoutEdge(i, j, new Point(1, 0));
@@ -58,22 +58,22 @@ public class CellIndexMethod extends DistanceCalculator {
     boolean xModified = false;
     boolean yModified = false;
 
-    if (newX > board.getBoardM() - 1) {
+    if (newX > board.getM() - 1) {
         xModified = true;
         newX = 0;
       } else if (newX < 0) {
         xModified = true;
-        newX = board.getBoardM() - 1;
+        newX = board.getM() - 1;
       }
-      if (newY > board.getBoardM() - 1) {
+      if (newY > board.getM() - 1) {
         yModified = true;
         newY = 0;
       } else if (newY < 0) {
         yModified = true;
-        newY = board.getBoardM() - 1;
+        newY = board.getM() - 1;
       }
 
-      if (newX >= 0 && newX < board.getBoardM() && newY >= 0 && newY < board.getBoardM()) {
+      if (newX >= 0 && newX < board.getM() && newY >= 0 && newY < board.getM()) {
       doUpdate(board.getCell(x, y), board.getCell(newX, newY), xModified, yModified);
     }
   }
@@ -84,7 +84,7 @@ public class CellIndexMethod extends DistanceCalculator {
     boolean xModified = false;
     boolean yModified = false;
 
-    if (newX >= 0 && newX < board.getBoardM() && newY >= 0 && newY < board.getBoardM()) {
+    if (newX >= 0 && newX < board.getM() && newY >= 0 && newY < board.getM()) {
       doUpdate(board.getCell(x, y), board.getCell(newX, newY), xModified, yModified);
     }
   }
@@ -98,13 +98,13 @@ public class CellIndexMethod extends DistanceCalculator {
         if (xModified && particle1.getX() > particle2ToCompare.getY()) {
           particle2ToCompare = new Particle(
                   particle2.getId(),
-                  particle2.getX() + boardM,
+                  particle2.getX() + M,
                   particle2.getY(),
                   particle2.getRadius());
         } else if (xModified && particle1.getX() < particle2ToCompare.getX()) {
           particle1ToCompare = new Particle(
                   particle1.getId(),
-                  particle1.getX() + boardM,
+                  particle1.getX() + M,
                   particle1.getY(),
                   particle1.getRadius());
         }
@@ -112,7 +112,7 @@ public class CellIndexMethod extends DistanceCalculator {
           particle2ToCompare = new Particle(
                   particle2.getId(),
                   particle2ToCompare.getX(),
-                  particle2ToCompare.getY() + boardM,
+                  particle2ToCompare.getY() + M,
                   particle2.getRadius());
         }
 
