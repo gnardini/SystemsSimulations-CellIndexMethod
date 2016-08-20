@@ -12,7 +12,18 @@ public class BruteForce extends DistanceCalculator{
 
   @Override
   public void calculateDistanceWithEdge() {
-    // TODO: WRITE METHOD
+    for (int i = 0; i < particles.size(); i++) {
+      for (int j = i; j < particles.size(); j++) {
+        Particle particle1 = particles.get(i);
+        Particle particle2 = particles.get(j);
+        if(particle1.getId() != particle2.getId()) {
+          if(particle1.isInRadius(particle2, convergenceRadius)) {
+            particle1.addNeighbour(particle2);
+            particle2.addNeighbour(particle1);
+          }
+        }
+      }
+    }
   }
 
   @Override

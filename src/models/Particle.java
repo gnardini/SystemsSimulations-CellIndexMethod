@@ -74,11 +74,7 @@ public class Particle {
 		double totalDiff = Math.sqrt(xDiff * xDiff + yDiff * yDiff);
 		totalDiff -= radius;
 		totalDiff -= otherParticle.radius;
-		boolean isInRadius = totalDiff <= convergenceRadius;
-//		if (id == 1 || otherParticle.id == 1) {
-//			System.out.println(isInRadius + " " + totalDiff + " " + toString() + " " + otherParticle.toString());
-//		}
-		return isInRadius;
+		return totalDiff <= convergenceRadius;
 	}
 
 	public boolean isNeighbourOf(int particleId) {
@@ -89,6 +85,11 @@ public class Particle {
 		}
 		return false;
 	}
+
+	public void addNeighbour(Particle particle) {
+	  neighbours.add(particle);
+    return;
+  }
 
 	public String getTwoDecimalRadius() {
 		return String.format("%.02f", radius);

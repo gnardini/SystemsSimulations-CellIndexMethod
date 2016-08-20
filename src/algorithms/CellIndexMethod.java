@@ -18,10 +18,10 @@ public class CellIndexMethod extends DistanceCalculator {
       for (int j = 0; j < board.getBoardM(); j++) {
         updateCellNeighbours(board.getCell(i, j), convergenceRadius);
 
-        maybeAddCellToList(i, j, new Point(1, 0));
-        maybeAddCellToList(i, j, new Point(1, 1));
-        maybeAddCellToList(i, j, new Point(0, 1));
-        maybeAddCellToList(i, j, new Point(-1, 1));
+        maybeAddCellToListWithEdge(i, j, new Point(1, 0));
+        maybeAddCellToListWithEdge(i, j, new Point(1, 1));
+        maybeAddCellToListWithEdge(i, j, new Point(0, 1));
+        maybeAddCellToListWithEdge(i, j, new Point(-1, 1));
 
       }
     }
@@ -29,7 +29,17 @@ public class CellIndexMethod extends DistanceCalculator {
 
   @Override
   public void calculateDistanceWithoutEdge() {
-    // TODO: WRITE METHOD
+    for (int i = 0; i < board.getBoardM(); i++) {
+      for (int j = 0; j < board.getBoardM(); j++) {
+        updateCellNeighbours(board.getCell(i, j), convergenceRadius);
+
+        maybeAddCellToListWithoutEdge(i, j, new Point(1, 0));
+        maybeAddCellToListWithoutEdge(i, j, new Point(1, 1));
+        maybeAddCellToListWithoutEdge(i, j, new Point(0, 1));
+        maybeAddCellToListWithoutEdge(i, j, new Point(-1, 1));
+
+      }
+    }
   }
 
   private void updateCellNeighbours(Cell cell, int convergenceRadius) {
@@ -42,7 +52,7 @@ public class CellIndexMethod extends DistanceCalculator {
     }
   }
 
-  private void maybeAddCellToList(int x, int y, Point movement) {
+  private void maybeAddCellToListWithEdge(int x, int y, Point movement) {
     int newX = x + movement.x;
     int newY = y + movement.y;
     boolean xModified = false;
@@ -64,6 +74,17 @@ public class CellIndexMethod extends DistanceCalculator {
       }
 
       if (newX >= 0 && newX < board.getBoardM() && newY >= 0 && newY < board.getBoardM()) {
+      doUpdate(board.getCell(x, y), board.getCell(newX, newY), xModified, yModified);
+    }
+  }
+
+  private void maybeAddCellToListWithoutEdge(int x, int y, Point movement) {
+    int newX = x + movement.x;
+    int newY = y + movement.y;
+    boolean xModified = false;
+    boolean yModified = false;
+
+    if (newX >= 0 && newX < board.getBoardM() && newY >= 0 && newY < board.getBoardM()) {
       doUpdate(board.getCell(x, y), board.getCell(newX, newY), xModified, yModified);
     }
   }
