@@ -19,8 +19,8 @@ public class Exercise {
   protected static final int CONVERGENCE_RADIUS = 6;
 
   protected static final String RANDOM_INPUT_PATH = "files/randomInput.txt";
-  protected static final String STATIC_PATH = "files/static100.txt";
-  protected static final String DYNAMIC_PATH = "files/dynamic100.txt";
+  protected static final String STATIC_PATH = "files/Static100.txt";
+  protected static final String DYNAMIC_PATH = "files/Dynamic100.txt";
 
   protected static final String CELL_INDEX_METHOD_OUTPUT = "files/cimOutput.txt";
   protected static final String BRUTE_FORCE_OUTPUT = "files/bfOutput.txt";
