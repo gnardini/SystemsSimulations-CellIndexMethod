@@ -31,7 +31,7 @@ public abstract class DistanceCalculator {
         maxRadius = particle.getRadius();
       }
     }
-    if (L / M <= convergenceRadius + 2 * maxRadius) {
+    if (Double.valueOf(L) / M <= convergenceRadius + 2 * maxRadius) {
       throw new IllegalArgumentException("Invalid board size");
     }
   }

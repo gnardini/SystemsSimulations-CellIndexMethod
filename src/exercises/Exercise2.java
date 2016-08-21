@@ -4,14 +4,19 @@ import models.Particle;
 
 import java.util.List;
 
-public class Exercise2and3 extends Exercise {
+public class Exercise2 extends Exercise {
+  private static final int L = 20;
+  private static final int convergenceRadius = 1;
+  private static final double radius = 0.25;
+
   public static void main(String[] args) {
-    int L = 20;
-    int convergenceRadius = 1;
-    double radius = 0.25;
+    exercise2();
+  }
+
+  private static void exercise2() {
     System.out.println("L: " + L + " rc: " + convergenceRadius + " r: " + radius);
 
-    int runs = 10;
+    int runs = 13;
 
     int particleCount = 100;
     int particleCountDelta = 100;
@@ -27,16 +32,12 @@ public class Exercise2and3 extends Exercise {
       exercise2Run(particleList, currentParticleCount, currentM, L, convergenceRadius);
     }
     for (int i = 0; i < runs; i++) {
-      int currentM = M;
-      int currentParticleCount = particleCount + particleCountDelta * i;
-      particleList = getParticlesFromNewRandomInput(RANDOM_INPUT_PATH, currentParticleCount, currentM, radius);
-      exercise2Run(particleList, currentParticleCount, currentM, L, convergenceRadius);
-    }
-    for (int i = 0; i < runs; i++) {
-      int currentM = M + MDelta * i;
-      int currentParticleCount = particleCount + particleCountDelta * i;
-      particleList = getParticlesFromNewRandomInput(RANDOM_INPUT_PATH, currentParticleCount, currentM, radius);
-      exercise2Run(particleList, currentParticleCount, currentM, L, convergenceRadius);
+      for (int j = 0; j < runs; j++) {
+        int currentM = M + MDelta * i;
+        int currentParticleCount = particleCount + particleCountDelta * j;
+        particleList = getParticlesFromNewRandomInput(RANDOM_INPUT_PATH, currentParticleCount, currentM, radius);
+        exercise2Run(particleList, currentParticleCount, currentM, L, convergenceRadius);
+      }
     }
   }
 
@@ -52,7 +53,8 @@ public class Exercise2and3 extends Exercise {
     bruteForceMethodWithEdge(particleList, M, L, convergenceRadius);
     end = System.currentTimeMillis();
     long bruteForceMethodDuration = end - start;
-
-    System.out.println("M: " + M + " | Particles: " + particleCount + " | N/L^2: " + (particleCount / Math.pow(L, 2)) + "   ->   Cell index: " + cellIndexMethodDuration + " | Brute force: " + bruteForceMethodDuration);
+    if(particleCount == 1300)
+      System.out.println("M: " + M + " | Particles: " + particleCount + " | N/L^2: " + (particleCount / Math.pow(L, 2)) + "   ->   Cell index: " + cellIndexMethodDuration + " | Brute force: " + bruteForceMethodDuration);
   }
+
 }

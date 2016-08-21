@@ -86,4 +86,17 @@ public class Exercise {
     generateRandomInput(path, particleCount, M);
     return getParticlesFromRandomInput(path, radius);
   }
+
+  protected static List<String> generateOutput(Board board) {
+    List<String> answer = new LinkedList<>();
+    for (int i = 0; i < board.getM(); i++) {
+      for (int j = 0; j < board.getM(); j++) {
+        List<Particle> particles = board.getCell(i, j).getParticles();
+        for (Particle particle: particles) {
+          answer.add(particle.toStringWithNeighbours());
+        }
+      }
+    }
+    return answer;
+  }
 }

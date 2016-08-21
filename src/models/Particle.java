@@ -107,11 +107,12 @@ public class Particle {
 
   public String toStringWithNeighbours() {
     StringBuilder ans = new StringBuilder();
-    ans.append(id);
+    ans.append("[ " + id);
     ans.append(": ");
     for (Particle particle: neighbours) {
-      ans.append(particle.getId());
+      ans.append(particle.getId() + " ");
     }
+    ans.append("]");
     return ans.toString();
   }
 
