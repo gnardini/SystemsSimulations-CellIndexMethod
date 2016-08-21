@@ -31,9 +31,9 @@ public class XYZFormatter implements Formatter {
 						chosenParticle = particle;
 					}
 					boolean isNieghbourOfParticle = particle.isNeighbourOf(chosenParticleId);
-					int R = isNieghbourOfParticle ? 255 : 0;
-					int G = isParticle ? 255 : 0;
-					int B = isNieghbourOfParticle || isParticle ? 0 : 255;
+					int R = getRed(isParticle, isNieghbourOfParticle);
+					int G = getGreen(isParticle, isNieghbourOfParticle);
+					int B = getBlue(isParticle, isNieghbourOfParticle);
 					lines.add(particle.getId()
 							+ "\t" + particle.getX()
 							+ "\t" + particle.getY()
@@ -48,12 +48,36 @@ public class XYZFormatter implements Formatter {
 		lines.add(-1
 				+ "\t" + chosenParticle.getX()
 				+ "\t" + chosenParticle.getY()
-				+ "\t" + String.format("%.02f", chosenParticle.getRadius() + convergenceRadius)
-				+ "\t" + 0
-				+ "\t" + 255
-				+ "\t" + 0
-				+ "\t" + .8);
+				+ "\t" + chosenParticle.getTwoDecimalRadius()
+				+ "\t" + getRed(true, false)
+				+ "\t" + getGreen(true, false)
+				+ "\t" + getBlue(true, false)
+				+ "\t" + 0);
 		
 		return lines;
+	}
+
+	private static int getRed(boolean isParticle, boolean isNeighbour) {
+		if(isParticle) {
+			return 255;
+		} else {
+			return 0;
+		}
+	}
+
+	private static int getGreen(boolean isParticle, boolean isNeighbour) {
+		if(isNeighbour) {
+			return 255;
+		} else {
+			return 0;
+		}
+	}
+
+	private static int getBlue(boolean isParticle, boolean isNeighbour) {
+		if(isParticle || isNeighbour) {
+			return 0;
+		} else {
+			return 255;
+		}
 	}
 }

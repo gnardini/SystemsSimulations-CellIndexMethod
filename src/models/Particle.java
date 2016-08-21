@@ -102,7 +102,7 @@ public class Particle {
 
   @Override
   public String toString() {
-    return "id: " + id + "x: " + x + ", y: " + y + ", radius: " + radius;
+    return "id: " + id + ", x: " + x + ", y: " + y + ", radius: " + radius;
   }
 
   public String toStringWithNeighbours() {
