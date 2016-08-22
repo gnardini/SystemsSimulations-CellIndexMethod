@@ -8,15 +8,15 @@ import java.util.List;
 import java.util.Map;
 
 public class Exercise3 extends Exercise {
-  private static final int L = 20;
-  private static final int convergenceRadius = 1;
-  private static final double radius = 0.25;
+	private static final int L = 20;
+	private static final int convergenceRadius = 1;
+	private static final double radius = 0.25;
 
-  public static void main(String[] args) {
-    exercise3();
-  }
+	public static void main(String[] args) {
+		exercise3();
+	}
 
-  private static void exercise3() {
+	private static void exercise3() {
     Map<Integer, List<Long>> results = new HashMap<>();
     Integer runs = 13;
 
@@ -44,15 +44,27 @@ public class Exercise3 extends Exercise {
     }
     System.out.println("Particles: " + particleCount);
     for (Integer i = 1; i <= runs; i++) {
-      System.out.println("M: " + i + "Average: " + average(results.get(i)));
+    	System.out.println(String.format("%.02f", mean(results.get(i), average(results.get(i)))));
+//      System.out.println("M: " + i 
+//    		  + " Primedio: " + average(results.get(i)) 
+//    		  + " Varianza: " + mean(results.get(i), average(results.get(i))));
     }
   }
 
-  private static double average(List<Long> list) {
-    long sum = 0;
-    for (Long l: list) {
-      sum += l;
-    }
-    return Double.valueOf(sum) / list.size();
-  }
+	private static double average(List<Long> list) {
+		long sum = 0;
+		for (Long l : list) {
+			sum += l;
+		}
+		return Double.valueOf(sum) / list.size();
+	}
+
+	private static double mean(List<Long> list, double average) {
+		double sum = 0;
+		for (Long l : list) {
+			sum += Math.pow(average - l, 2);
+		}
+		return Math.sqrt(Double.valueOf(sum) / list.size());
+	}
+
 }

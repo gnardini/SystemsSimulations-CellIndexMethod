@@ -9,7 +9,7 @@ import java.util.List;
 public class Main extends Exercise {
   public static void main(String[] args) {
     XYZFormatter formatter = new XYZFormatter();
-    int interestingParticleId = 61;
+    int interestingParticleId = 1;
 
     InputFileReader fileReader = new InputFileReader(STATIC_PATH, DYNAMIC_PATH);
     List<Particle> list = fileReader.getParticles();

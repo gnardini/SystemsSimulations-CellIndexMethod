@@ -15,8 +15,8 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class Exercise {
-  protected static final int BOARD_M = 10; // The amount of cells in the board is M * M
-  protected static final int CONVERGENCE_RADIUS = 6;
+  protected static final int BOARD_M = 2; // The amount of cells in the board is M * M
+  protected static final int CONVERGENCE_RADIUS = 30;
 
   protected static final String RANDOM_INPUT_PATH = "files/randomInput.txt";
   protected static final String STATIC_PATH = "files/Static100.txt";
