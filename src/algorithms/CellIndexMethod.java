@@ -72,7 +72,7 @@ public class CellIndexMethod extends DistanceCalculator {
         yModified = true;
         newY = board.getM() - 1;
       }
-
+      
       if (newX >= 0 && newX < board.getM() && newY >= 0 && newY < board.getM()) {
       doUpdate(board.getCell(x, y), board.getCell(newX, newY), xModified, yModified);
     }
@@ -95,16 +95,16 @@ public class CellIndexMethod extends DistanceCalculator {
 
         Particle particle1ToCompare = particle1;
         Particle particle2ToCompare = particle2;
-        if (xModified && particle1.getX() > particle2ToCompare.getY()) {
+        if (xModified && particle1.getX() > particle2ToCompare.getX()) {
           particle2ToCompare = new Particle(
                   particle2.getId(),
-                  particle2.getX() + M,
+                  particle2.getX() + L,
                   particle2.getY(),
                   particle2.getRadius());
         } else if (xModified && particle1.getX() < particle2ToCompare.getX()) {
           particle1ToCompare = new Particle(
                   particle1.getId(),
-                  particle1.getX() + M,
+                  particle1.getX() + L,
                   particle1.getY(),
                   particle1.getRadius());
         }
@@ -112,7 +112,7 @@ public class CellIndexMethod extends DistanceCalculator {
           particle2ToCompare = new Particle(
                   particle2.getId(),
                   particle2ToCompare.getX(),
-                  particle2ToCompare.getY() + M,
+                  particle2ToCompare.getY() + L,
                   particle2.getRadius());
         }
 

@@ -38,7 +38,7 @@ public class Main extends Exercise {
     writeTo(BRUTE_FORCE_OUTPUT, generateOutput(bruteForceBoard));
     // Generate XYZ output
     lines = formatter.fformat(bruteForceBoard, fileReader.getParticleCount(), interestingParticleId, CONVERGENCE_RADIUS);
-    writeTo(CELL_INDEX_METHOD_XYZ_OUTPUT, lines);
+    //writeTo(CELL_INDEX_METHOD_XYZ_OUTPUT, lines);
   }
 
 }
