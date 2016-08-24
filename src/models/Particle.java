@@ -1,8 +1,6 @@
 package models;
 
 import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Set;
 
 public class Particle {
@@ -10,6 +8,9 @@ public class Particle {
 	private double x, y;
 	private double radius;
 	private double color;
+	private double speed = 0.03;
+	private double angle;
+
 	private Set<Particle> neighbours;
 
 	public Particle(int id, double x, double y, double radius, double color) {
@@ -23,10 +24,21 @@ public class Particle {
 
 	public Particle(int id, double x, double y, double radius) {
 		this.id = id;
+		this.x = x;
+		this.y = y;
+		this.radius = radius;
+		this.neighbours = new HashSet<>();
+	}
+
+	public Particle(int id, double x, double y, double radius, double speed, double angle) {
+		this.id = id;
     this.x = x;
     this.y = y;
 		this.radius = radius;
     this.neighbours = new HashSet<>();
+
+		this.speed = speed;
+		this.angle = angle;
 	}
 
   public static Particle random(int id, int boardSize) {
@@ -37,7 +49,7 @@ public class Particle {
     }
     double x = (randomX * boardSize);
     double y = (randomY * boardSize);
-    return new Particle(id, x, y, 0.25);
+    return new Particle(id, x, y, 0.25, 0.03, 0);
   }
 
   public double getX() {
@@ -62,6 +74,18 @@ public class Particle {
 
 	public double getColor() {
 		return color;
+	}
+
+	public double getAngle() {
+		return angle;
+	}
+
+	public void setAngle(double angle) {
+		this.angle = angle;
+	}
+
+	public double getSpeed() {
+		return speed;
 	}
 
 	public Set<Particle> getNeighbours() {
@@ -89,6 +113,25 @@ public class Particle {
 	public void addNeighbour(Particle particle) {
 	  neighbours.add(particle);
     return;
+  }
+
+  public void move(int boardSize) {
+	x += Math.cos(angle) * speed;
+  	y += Math.sin(angle) * speed;
+	  if (x > boardSize) {
+	  	x = 0;
+	  } else if (x < 0) {
+	  	x = boardSize;
+	  }
+	  if (y > boardSize) {
+		  y = 0;
+	  } else if (y < 0) {
+		  y = boardSize;
+	  }
+  }
+
+  public void clearNeighbours() {
+  	neighbours.clear();
   }
 
 	public String getTwoDecimalRadius() {

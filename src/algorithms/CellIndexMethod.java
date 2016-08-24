@@ -8,6 +8,8 @@ import java.util.List;
 
 public class CellIndexMethod extends DistanceCalculator {
 
+  private float AMPLITUD = 0.2f;
+
   public CellIndexMethod(List<Particle> particles, int M, int L, int convergenceRadius) {
     super(particles, M, L, convergenceRadius);
   }
@@ -122,6 +124,40 @@ public class CellIndexMethod extends DistanceCalculator {
         }
       }
     }
+  }
+
+  public void nextStep() {
+    for (int i = 0; i < board.getM(); i++) {
+      for (int j = 0; j < board.getM(); j++) {
+        for (Particle particle : board.getCell(i, j).getParticles()) {
+          particle.move(L);
+          updateParticleAngle(particle);
+          particle.clearNeighbours();
+        }
+      }
+    }
+  }
+
+  private void updateParticleAngle(Particle particle) {
+    double sinSum = Math.sin(particle.getAngle());
+    double cosSum = Math.cos(particle.getAngle());
+
+    for (Particle neighbour : particle.getNeighbours()) {
+      sinSum += Math.sin(neighbour.getAngle());
+      cosSum += Math.cos(neighbour.getAngle());
+    }
+    int size = particle.getNeighbours().size() + 1;
+    double newAngle = Math.atan2(sinSum / size, cosSum / size);
+
+    newAngle += Math.random() * AMPLITUD - AMPLITUD / 2;
+
+    if (newAngle < 0) {
+      newAngle += Math.PI * 2;
+    } else if (newAngle > Math.PI * 2) {
+      newAngle -= Math.PI * 2;
+    }
+
+    particle.setAngle(newAngle);
   }
 
 }

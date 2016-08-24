@@ -62,7 +62,13 @@ public class Exercise {
 
       while (line != null) {
         String[] properties = line.trim().split("\t");
-        list.add(new Particle(Integer.valueOf(properties[0]), Double.valueOf(properties[1]), Double.valueOf(properties[2]), radius));
+        list.add(new Particle(
+                Integer.valueOf(properties[0]),
+                Double.valueOf(properties[1]),
+                Double.valueOf(properties[2]),
+                radius,
+                0.03,
+                Math.random() * 2 * Math.PI));
 
         line = buffer.readLine();
       }

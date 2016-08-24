@@ -7,6 +7,7 @@ import output.XYZFormatter;
 import java.util.List;
 
 public class Main extends Exercise {
+
   public static void main(String[] args) {
     XYZFormatter formatter = new XYZFormatter();
     int interestingParticleId = 1;
