@@ -92,13 +92,13 @@ public class Particle {
 	  return neighbours;
   }
 
-	public boolean isInRadius(Particle otherParticle, int convergenceRadius) {
+	public boolean isInRadius(Particle otherParticle, int interactionRadius) {
 		double xDiff = Math.abs(x - otherParticle.getX());
 		double yDiff = Math.abs(y - otherParticle.getY());
 		double totalDiff = Math.sqrt(xDiff * xDiff + yDiff * yDiff);
 		totalDiff -= radius;
 		totalDiff -= otherParticle.radius;
-		return totalDiff <= convergenceRadius;
+		return totalDiff <= interactionRadius;
 	}
 
 	public boolean isNeighbourOf(int particleId) {

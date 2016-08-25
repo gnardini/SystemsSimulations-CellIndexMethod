@@ -2,6 +2,7 @@ package ui;
 
 import models.Board;
 import models.Particle;
+import models.State;
 
 import javax.swing.*;
 import java.awt.*;
@@ -10,7 +11,7 @@ import static ui.ParticlePrinter.SCREEN_SIZE;
 
 public class BoardPanel extends JPanel {
 
-    private Board board;
+    private State state;
 
     @Override
     public Dimension getPreferredSize() {
@@ -21,10 +22,12 @@ public class BoardPanel extends JPanel {
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
 
-        double multiplier = 1;
-        if (board != null) {
-            multiplier = SCREEN_SIZE / board.getL();
+        if (state == null || state.getBoard() == null) {
+            return;
         }
+
+        Board board = state.getBoard();
+        double multiplier = SCREEN_SIZE / state.getL();
         g.setColor(Color.red);
 
         if (board != null) {
@@ -34,16 +37,16 @@ public class BoardPanel extends JPanel {
                         g.fillOval(
                                 (int) (particle.getX() * multiplier),
                                 (int) (particle.getY() * multiplier),
-                                (int) (particle.getRadius() * multiplier),
-                                (int) (particle.getRadius() * multiplier));
+                                (int) (multiplier),
+                                (int) (multiplier));
                     }
                 }
             }
         }
     }
 
-    public void setBoard(Board board) {
-        this.board = board;
+    public void setState(State state) {
+        this.state = state;
     }
 
 }

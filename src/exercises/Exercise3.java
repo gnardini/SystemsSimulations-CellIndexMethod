@@ -9,7 +9,7 @@ import java.util.Map;
 
 public class Exercise3 extends Exercise {
 	private static final int L = 20;
-	private static final int convergenceRadius = 1;
+	private static final int interactionRadius = 1;
 	private static final double radius = 0.25;
 
 	public static void main(String[] args) {
@@ -32,7 +32,7 @@ public class Exercise3 extends Exercise {
         particleList = getParticlesFromNewRandomInput(RANDOM_INPUT_PATH, currentParticleCount, currentM, radius);
 
         Long start = System.currentTimeMillis();
-        cellIndexMethodWithEdge(particleList, currentM, L, convergenceRadius);
+        cellIndexMethodWithEdge(particleList, currentM, L, 0, interactionRadius);
         Long end = System.currentTimeMillis();
         Long cellIndexMethodDuration = end - start;
 

@@ -1,8 +1,10 @@
 package output;
+import models.Board;
+
 import java.util.List;
 
 
 public interface Formatter {
 
-	public List<String> format();
+	List<String> format(Board board, int particlesCount, int chosenParticleId, int interactionRadius);
 }

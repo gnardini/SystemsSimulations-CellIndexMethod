@@ -10,12 +10,7 @@ import java.util.List;
 public class XYZFormatter implements Formatter {
 
 	@Override
-	public List<String> format() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public List<String> fformat(Board board, int particlesCount, int chosenParticleId, int convergenceRadius) {
+	public List<String> format(Board board, int particlesCount, int chosenParticleId, int interactionRadius) {
 		List<String> lines = new LinkedList<>();
 
 		lines.add(String.valueOf(particlesCount + 1));

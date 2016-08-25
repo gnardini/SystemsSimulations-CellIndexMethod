@@ -1,6 +1,7 @@
 package ui;
 
 import models.Board;
+import models.State;
 
 import javax.swing.*;
 
@@ -22,8 +23,8 @@ public class ParticlePrinter extends JFrame {
         setVisible(true);
     }
 
-    public void setBoard(Board board) {
-        boardPanel.setBoard(board);
+    public void setState(State state) {
+        boardPanel.setState(state);
         repaint();
     }
 
