@@ -157,7 +157,7 @@ public class CellIndexMethod implements DistanceCalculator {
             for (int j = 0; j < board.getM(); j++) {
                 for (Particle particle : board.getCell(i, j).getParticles()) {
                     particle.move(state.getL());
-                    updateParticleAngle(particle);
+//                    updateParticleAngle(particle);
                     particle.clearNeighbours();
                 }
             }

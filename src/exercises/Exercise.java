@@ -69,7 +69,7 @@ public class Exercise {
                 Integer.valueOf(properties[0]),
                 Double.valueOf(properties[1]),
                 Double.valueOf(properties[2]),
-                radius,
+                0,
                 0.03,
                 Math.random() * 2 * Math.PI));
 

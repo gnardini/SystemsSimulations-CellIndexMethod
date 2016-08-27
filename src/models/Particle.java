@@ -92,6 +92,10 @@ public class Particle {
 	  return neighbours;
   }
 
+  	public void setSpeed(double speed) {
+  		this.speed = speed;
+	}
+
 	public boolean isInRadius(Particle otherParticle, int interactionRadius) {
 		double xDiff = Math.abs(x - otherParticle.getX());
 		double yDiff = Math.abs(y - otherParticle.getY());
