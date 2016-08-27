@@ -9,7 +9,7 @@ import java.awt.*;
 
 public class CellIndexMethod implements DistanceCalculator {
 
-    private float AMPLITUD = 0.2f;
+    private float AMPLITUD = .1f;
 
     @Override
     public void calculateDistanceWithEdges(State state) {
@@ -103,7 +103,7 @@ public class CellIndexMethod implements DistanceCalculator {
         int size = particle.getNeighbours().size() + 1;
         double newAngle = Math.atan2(sinSum / size, cosSum / size);
 
-        newAngle += Math.random() * AMPLITUD - AMPLITUD / 2;
+        newAngle += (Math.random() - .5) * AMPLITUD;
 
         if (newAngle < 0) {
             newAngle += Math.PI * 2;
@@ -157,7 +157,7 @@ public class CellIndexMethod implements DistanceCalculator {
             for (int j = 0; j < board.getM(); j++) {
                 for (Particle particle : board.getCell(i, j).getParticles()) {
                     particle.move(state.getL());
-//                    updateParticleAngle(particle);
+                    updateParticleAngle(particle);
                     particle.clearNeighbours();
                 }
             }

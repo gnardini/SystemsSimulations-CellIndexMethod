@@ -9,11 +9,11 @@ import java.util.List;
 
 public class OffLatice {
 
-    private static final int N = 50; // Number of particles
-    private static final int L = 100; // Length of side
-    private static final int M = 10; // Number of cells (M * M)
-    private static final int INTERACTION_RADIUS = 0; // Particles will only take into account those others in its radious
-    private static final int PARTICLES_RADIUS = 0; // They have no mass nor radious.
+    private static final int N = 300; // Number of particles
+    private static final int L = 25; // Length of side
+    private static final int M = 5; // Number of cells (M * M)
+    private static final int INTERACTION_RADIUS = 1; // Particles will only take into account those others in its radious
+    private static final int PARTICLES_RADIUS = 0; // They have no mass nor radius.
     private static final double SPEED = 0.003; // They all move at the same speed (but not same direction).
 
     protected static final String OUTPUT_DIRECTORY_PATH = "filesToVisualize";
@@ -24,8 +24,7 @@ public class OffLatice {
 
         for (Particle p: particles) {
             p.setSpeed(SPEED);
-            p.setAngle((3/2) *Math.PI);
-            System.out.println("x: " + p.getX() + ", y: " + p.getY() + ", angle(radians): " + p.getAngle());
+            //System.out.println("x: " + p.getX() + ", y: " + p.getY() + ", angle(radians): " + p.getAngle());
 
         }
 
