@@ -40,4 +40,13 @@ public class RandomInputGenerator {
 		  }
 	  }
 
+	  public List<Particle> generateRandomParticles(int particleCount, int boardSize, double radius, double speed) {
+          final List<Particle> particles = new LinkedList<>();
+          for (int i = 0; i < particleCount; i++) {
+              Particle particle = Particle.random(i, boardSize, radius, speed);
+              particles.add(particle);
+          }
+          return particles;
+      }
+
 }

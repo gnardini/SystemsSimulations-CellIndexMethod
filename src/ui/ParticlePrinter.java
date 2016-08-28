@@ -1,6 +1,5 @@
 package ui;
 
-import models.Board;
 import models.State;
 
 import javax.swing.*;

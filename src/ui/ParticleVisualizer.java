@@ -1,19 +1,12 @@
 package ui;
 
-import models.Board;
-import models.Particle;
 import output.JavaVisualizerFormatter;
-import ui.ParticlePrinter;
 
-import java.io.*;
+import java.io.IOException;
 import java.nio.file.*;
-import java.util.List;
 
 import static java.nio.file.StandardWatchEventKinds.*;
 
-/**
- * Created by FranDepascuali on 8/24/16.
- */
 public class ParticleVisualizer {
 
     private WatchService watcher;

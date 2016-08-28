@@ -2,9 +2,6 @@ package models;
 
 import java.util.List;
 
-/**
- * Created by FranDepascuali on 8/25/16.
- */
 public class State {
 
     private Board board;
@@ -59,5 +56,9 @@ public class State {
         return board.getParticles();
     }
 
+
+    public int getParticleCount() {
+        return board.getParticles().size();
+    }
 
 }

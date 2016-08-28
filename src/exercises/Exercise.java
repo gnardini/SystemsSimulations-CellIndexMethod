@@ -43,12 +43,22 @@ public class Exercise {
     return state.getBoard();
   }
 
-  protected static void writeTo(String fileName, List<String> lines) {
+  public static void writeTo(String fileName, List<String> lines) {
     Path path = Paths.get(fileName);
     try {
       Files.write(path, lines, Charset.forName("UTF-8"));
     } catch (IOException ioException) {
       ioException.printStackTrace();
+    }
+  }
+
+  public static List<String> readFrom(String fileName) {
+    Path path = Paths.get(fileName);
+    try {
+      return Files.readAllLines(path, Charset.forName("UTF-8"));
+    } catch (IOException ioException) {
+      ioException.printStackTrace();
+      return new LinkedList<>();
     }
   }
 
@@ -69,9 +79,7 @@ public class Exercise {
                 Integer.valueOf(properties[0]),
                 Double.valueOf(properties[1]),
                 Double.valueOf(properties[2]),
-                0,
-                0.03,
-                Math.random() * 2 * Math.PI));
+                0));
 
         line = buffer.readLine();
       }

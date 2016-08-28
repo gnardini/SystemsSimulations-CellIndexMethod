@@ -24,9 +24,7 @@ public class Board {
 
 	public Board(int M, int L, List<Particle> particles) {
         this(M, L);
-        for (Particle particle: particles) {
-            addParticle(particle);
-        }
+		particles.forEach(this::addParticle);
     }
 
 	public void addParticle(Particle particle) {
