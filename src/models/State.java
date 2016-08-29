@@ -9,11 +9,14 @@ public class State {
 
     private int interactionRadius;
 
+    public int particleCount;
+
     public State(Board board, double speed, int interactionRadius) {
         if (Double.valueOf(board.getL()) / board.getM() <= interactionRadius) {
             throw new IllegalArgumentException("Invalid M");
         }
         this.board = board;
+        this.particleCount = board.getParticles().size();
         this.speed = speed;
         this.interactionRadius = interactionRadius;
     }
@@ -58,7 +61,10 @@ public class State {
 
 
     public int getParticleCount() {
-        return board.getParticles().size();
+        return particleCount;
     }
 
+    public double getSpeed() {
+        return speed;
+    }
 }

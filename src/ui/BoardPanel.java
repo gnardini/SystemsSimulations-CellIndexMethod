@@ -28,6 +28,12 @@ public class BoardPanel extends JPanel {
 
         Board board = state.getBoard();
         double multiplier = SCREEN_SIZE / state.getL();
+
+        g.setColor(Color.blue);
+        // TODO: add eta value
+        g.drawString("Particles: " + state.getParticleCount() + ", Speed: " + state.getSpeed() + ", eta: " + "1 (MODIFY THIS)", 20, 20);
+        g.drawString("polarization: " + String.format("%.6f", state.polarization()), 20, SCREEN_SIZE - 20);
+
         g.setColor(Color.red);
 
         if (board != null) {
