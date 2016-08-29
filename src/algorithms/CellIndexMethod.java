@@ -7,6 +7,9 @@ import models.State;
 
 import java.awt.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class CellIndexMethod implements DistanceCalculator {
 
     @Override
@@ -89,7 +92,7 @@ public class CellIndexMethod implements DistanceCalculator {
         }
     }
 
-    private void updateParticleAngle(Particle particle, float amplitude) {
+    private double updatedParticleAngle(Particle particle, float amplitude) {
         double sinSum = Math.sin(particle.getAngle());
         double cosSum = Math.cos(particle.getAngle());
 
@@ -109,7 +112,7 @@ public class CellIndexMethod implements DistanceCalculator {
             newAngle -= Math.PI * 2;
         }
 
-        particle.setAngle(newAngle);
+        return newAngle;
     }
 
     private void doUpdate(Cell cell1, Cell cell2, boolean xModified, boolean yModified, State state) {
@@ -147,18 +150,33 @@ public class CellIndexMethod implements DistanceCalculator {
         }
     }
 
+    private class UpdateFields {
+        private double angle;
+        private double x;
+        private double y;
+
+    }
+
+    public void updateParticlesAngles(List<Particle> particles, float amplitude) {
+        List<Double> angles = new ArrayList();
+
+        for (Particle particle : particles) {
+            angles.add(updatedParticleAngle(particle, amplitude));
+        }
+
+        for (int i = 0; i < particles.size(); i++) {
+            particles.get(i).setAngle(angles.get(i));
+        }
+    }
+
     public void nextStep(State state, float amplitude) {
         calculateDistanceWithEdges(state);
-        Board board = state.getBoard();
 
-        for (int i = 0; i < board.getM(); i++) {
-            for (int j = 0; j < board.getM(); j++) {
-                for (Particle particle : board.getCell(i, j).getParticles()) {
-                    particle.move(state.getL());
-                    updateParticleAngle(particle, amplitude);
-                    particle.clearNeighbours();
-                }
-            }
+        updateParticlesAngles(state.getParticles(), amplitude);
+
+        for (Particle particle : state.getParticles()) {
+            particle.move(state.getL());
+            particle.clearNeighbours();
         }
     }
 
