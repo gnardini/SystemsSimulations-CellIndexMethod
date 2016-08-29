@@ -19,6 +19,7 @@ public class OffLatticeFileManager {
     public void generateFrame(State state, String fileNameFormat) {
         List<String> lines = new LinkedList<>();
         lines.add(String.valueOf(state.getParticleCount()));
+        lines.add("");
         state.getParticles().forEach(particle -> addParticleLine(lines, particle));
         Exercise.writeTo(String.format(fileNameFormat, frameNumber), lines);
         frameNumber++;
@@ -31,7 +32,8 @@ public class OffLatticeFileManager {
             return particles;
         }
         int particlesCount = Integer.valueOf(lines.get(0));
-        for (int i = 1; i <= particlesCount; i++) {
+        // Starts in 2 because first line is a comment (XYZ format)
+        for (int i = 2; i <= particlesCount; i++) {
             Scanner lineScanner = new Scanner(lines.get(i));
             int id = lineScanner.nextInt();
             double x = lineScanner.nextDouble();
