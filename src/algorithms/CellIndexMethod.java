@@ -150,13 +150,6 @@ public class CellIndexMethod implements DistanceCalculator {
         }
     }
 
-    private class UpdateFields {
-        private double angle;
-        private double x;
-        private double y;
-
-    }
-
     public void updateParticlesAngles(List<Particle> particles, float amplitude) {
         List<Double> angles = new ArrayList();
 
