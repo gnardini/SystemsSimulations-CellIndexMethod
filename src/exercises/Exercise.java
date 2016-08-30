@@ -29,15 +29,17 @@ public class Exercise {
   protected static final String CELL_INDEX_METHOD_XYZ_OUTPUT = "files/cimOutput.xyz";
   protected static final String BRUTE_FORCE_XYZ_OUTPUT = "files/bfOutput.xyz";
 
-  protected static Board cellIndexMethodWithEdge(List<Particle> particles, int M, int L, double speed, int interactionRadius) {
-    State state = new State(particles, M, L, speed, interactionRadius);
+  protected static Board cellIndexMethodWithEdge(List<Particle> particles, int M, int L, double speed,
+                                                 int interactionRadius, double eta) {
+    State state = new State(particles, M, L, speed, interactionRadius, eta);
     CellIndexMethod cellIndexMethod = new CellIndexMethod();
     cellIndexMethod.calculateDistanceWithEdges(state);
     return state.getBoard();
   }
 
-  protected static Board bruteForceMethodWithEdge(List<Particle> particles, int M, int L, double speed, int interactionRadius) {
-    State state = new State(particles, M, L, speed, interactionRadius);
+  protected static Board bruteForceMethodWithEdge(List<Particle> particles, int M, int L, double speed,
+                                                  int interactionRadius, double eta) {
+    State state = new State(particles, M, L, speed, interactionRadius, eta);
     BruteForce bruteForce = new BruteForce();
     bruteForce.calculateDistanceWithEdges(state);
     return state.getBoard();

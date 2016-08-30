@@ -17,7 +17,7 @@ public class Main extends Exercise {
 
     Board cellIndexMethodBoard;
     long start = System.currentTimeMillis();
-    cellIndexMethodBoard = cellIndexMethodWithEdge(list, BOARD_M, fileReader.getL(), 0, CONVERGENCE_RADIUS);
+    cellIndexMethodBoard = cellIndexMethodWithEdge(list, BOARD_M, fileReader.getL(), 0, CONVERGENCE_RADIUS, 0);
     long end = System.currentTimeMillis();
     long cellIndexMethodDuration = end - start;
     System.out.println("Cell index method with edges duration: " + cellIndexMethodDuration + " milliseconds");
@@ -31,7 +31,7 @@ public class Main extends Exercise {
     list = fileReader.getParticles();
     Board bruteForceBoard;
     start = System.currentTimeMillis();
-    bruteForceBoard = bruteForceMethodWithEdge(list, BOARD_M, fileReader.getL(), 0, CONVERGENCE_RADIUS);
+    bruteForceBoard = bruteForceMethodWithEdge(list, BOARD_M, fileReader.getL(), 0, CONVERGENCE_RADIUS, 0);
     end = System.currentTimeMillis();
     long bruteForceMethodDuration = end - start;
     System.out.println("Brute force method with edges duration: " + bruteForceMethodDuration + " milliseconds");

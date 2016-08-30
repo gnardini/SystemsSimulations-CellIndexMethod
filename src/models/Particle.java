@@ -128,7 +128,6 @@ public class Particle {
 
     public void addNeighbour(Particle particle) {
         neighbours.add(particle);
-        return;
     }
 
     public void move(int boardSize) {
@@ -173,6 +172,12 @@ public class Particle {
         }
         ans.append("]");
         return ans.toString();
+    }
+
+    public Particle clone() {
+        Particle particle = new Particle(id, x, y, radius, speed, angle);
+        neighbours.forEach(particle::addNeighbour);
+        return particle;
     }
 
 }

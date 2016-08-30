@@ -92,7 +92,7 @@ public class CellIndexMethod implements DistanceCalculator {
         }
     }
 
-    private double updatedParticleAngle(Particle particle, float amplitude) {
+    private double updatedParticleAngle(Particle particle, double amplitude) {
         double sinSum = Math.sin(particle.getAngle());
         double cosSum = Math.cos(particle.getAngle());
 
@@ -150,7 +150,7 @@ public class CellIndexMethod implements DistanceCalculator {
         }
     }
 
-    public void updateParticlesAngles(List<Particle> particles, float amplitude) {
+    public void updateParticlesAngles(List<Particle> particles, double amplitude) {
         List<Double> angles = new ArrayList();
 
         for (Particle particle : particles) {
@@ -162,14 +162,14 @@ public class CellIndexMethod implements DistanceCalculator {
         }
     }
 
-    public void nextStep(State state, float amplitude) {
+    public void nextStep(State state) {
+        state.getParticles().forEach(Particle::clearNeighbours);
         calculateDistanceWithEdges(state);
 
-        updateParticlesAngles(state.getParticles(), amplitude);
+        updateParticlesAngles(state.getParticles(), state.getEta());
 
         for (Particle particle : state.getParticles()) {
             particle.move(state.getL());
-            particle.clearNeighbours();
         }
     }
 

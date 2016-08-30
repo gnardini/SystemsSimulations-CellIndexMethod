@@ -6,12 +6,13 @@ public class State {
 
     private Board board;
     private double speed;
+    private double eta;
 
     private int interactionRadius;
 
     public int particleCount;
 
-    public State(Board board, double speed, int interactionRadius) {
+    public State(Board board, double speed, int interactionRadius, double eta) {
         if (Double.valueOf(board.getL()) / board.getM() <= interactionRadius) {
             throw new IllegalArgumentException("Invalid M");
         }
@@ -19,10 +20,11 @@ public class State {
         this.particleCount = board.getParticles().size();
         this.speed = speed;
         this.interactionRadius = interactionRadius;
+        this.eta = eta;
     }
 
-    public State(List<Particle> particles, int M, int L, double speed, int interactionRadius) {
-        this(new Board(M, L, particles), speed, interactionRadius);
+    public State(List<Particle> particles, int M, int L, double speed, int interactionRadius, double eta) {
+        this(new Board(M, L, particles), speed, interactionRadius, eta);
     }
 
     public double polarization() {
@@ -67,4 +69,13 @@ public class State {
     public double getSpeed() {
         return speed;
     }
+
+    public double getEta() {
+        return eta;
+    }
+
+    public State copy() {
+        return new State(board.copy(), speed, interactionRadius, eta);
+    }
+
 }

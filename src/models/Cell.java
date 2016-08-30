@@ -8,7 +8,7 @@ public class Cell {
   private List<Particle> particles;
 
   public Cell() {
-    this.particles = new ArrayList<Particle>();
+    this.particles = new ArrayList<>();
   }
 
   public List<Particle> getParticles() {

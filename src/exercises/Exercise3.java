@@ -32,7 +32,7 @@ public class Exercise3 extends Exercise {
         particleList = getParticlesFromNewRandomInput(RANDOM_INPUT_PATH, currentParticleCount, currentM, radius);
 
         Long start = System.currentTimeMillis();
-        cellIndexMethodWithEdge(particleList, currentM, L, 0, interactionRadius);
+        cellIndexMethodWithEdge(particleList, currentM, L, 0, interactionRadius, 0);
         Long end = System.currentTimeMillis();
         Long cellIndexMethodDuration = end - start;
 

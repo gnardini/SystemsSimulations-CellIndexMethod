@@ -1,7 +1,6 @@
 package exercises;
 
 import models.Particle;
-import models.State;
 
 import java.util.List;
 
@@ -45,13 +44,13 @@ public class Exercise2 extends Exercise {
   private static void exercise2Run(List<Particle> particleList, int particleCount, int M, int L, int interactionRadius) {
     // Calculate using cell index method
     long start = System.currentTimeMillis();
-    cellIndexMethodWithEdge(particleList, M, L, 0, interactionRadius);
+    cellIndexMethodWithEdge(particleList, M, L, 0, interactionRadius, 0);
     long end = System.currentTimeMillis();
     long cellIndexMethodDuration = end - start;
 
     // Now calculate using brute force method
     start = System.currentTimeMillis();
-    bruteForceMethodWithEdge(particleList, M, L, 0, interactionRadius);
+    bruteForceMethodWithEdge(particleList, M, L, 0, interactionRadius, 0);
     end = System.currentTimeMillis();
     long bruteForceMethodDuration = end - start;
     if(particleCount == 1300)

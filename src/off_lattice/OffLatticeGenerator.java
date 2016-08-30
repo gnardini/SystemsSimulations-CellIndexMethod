@@ -14,12 +14,13 @@ public class OffLatticeGenerator {
     public OffLatticeGenerator() {
         // Generate a random starting state.
         RandomInputGenerator randomInputGenerator = new RandomInputGenerator();
+        InitialParams initialParams = OffLatticeParameters.defaultParams();
         List<Particle> particles = randomInputGenerator.generateRandomParticles(
-                OffLatticeParameters.N,
-                OffLatticeParameters.L,
+                initialParams.N,
+                initialParams.L,
                 OffLatticeParameters.PARTICLES_RADIUS,
                 OffLatticeParameters.SPEED);
-        State state = OffLatticeParameters.createState(particles);
+        State state = OffLatticeParameters.createState(particles, initialParams);
         CellIndexMethod cellIndexMethod = new CellIndexMethod();
 
         // Start the simulation.
@@ -36,8 +37,9 @@ public class OffLatticeGenerator {
     private void playLocal(State state, CellIndexMethod cellIndexMethod) {
         ParticlePrinter particlePrinter = new ParticlePrinter();
         while (true) {
-            cellIndexMethod.nextStep(state, OffLatticeParameters.AMPLITUDE);
+            cellIndexMethod.nextStep(state);
             particlePrinter.setState(state);
+            state = state.copy();
         }
     }
 
@@ -51,7 +53,7 @@ public class OffLatticeGenerator {
         int generations = OffLatticeParameters.GENERATIONS;
         for (int i = 0; i < generations; i++) {
             completionTracker.updateCompletedPercentage((double) i / generations);
-            cellIndexMethod.nextStep(state, OffLatticeParameters.AMPLITUDE);
+            cellIndexMethod.nextStep(state);
             offLatticeFileManager.generateFrame(state, OffLatticeParameters.LATTICE_FORMAT);
         }
     }

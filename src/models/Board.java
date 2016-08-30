@@ -1,6 +1,7 @@
 package models;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 public class Board {
@@ -64,6 +65,12 @@ public class Board {
 		}
 
 		return particles;
+	}
+
+	public Board copy() {
+	    List<Particle> particles = new LinkedList<>();
+        getParticles().forEach(particle -> particles.add(particle.clone()));
+		return new Board(M, L, particles);
 	}
 
 }
