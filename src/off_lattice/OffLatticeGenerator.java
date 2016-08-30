@@ -54,9 +54,11 @@ public class OffLatticeGenerator {
         for (int i = 0; i < generations; i++) {
             completionTracker.updateCompletedPercentage((double) i / generations);
             cellIndexMethod.nextStep(state);
+            offLatticeFileManager.saveDataForState(state);
             offLatticeFileManager.generateFrame(state, OffLatticeParameters.LATTICE_FORMAT);
             state = state.copy();
         }
+        offLatticeFileManager.printGraphDataSet(state, OffLatticeParameters.GRAPH_DATA_SET);
     }
 
     public static void main(String[] args) {

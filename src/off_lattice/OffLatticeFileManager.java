@@ -11,10 +11,12 @@ import java.util.Scanner;
 
 public class OffLatticeFileManager {
 
+    private List<String> graphDataSet;
     private int frameNumber;
 
     public OffLatticeFileManager() {
         frameNumber = 1;
+        graphDataSet = new LinkedList<>();
     }
 
     public void generateFrame(State state, String fileNameFormat) {
@@ -58,6 +60,15 @@ public class OffLatticeFileManager {
                 + color.getRed() + " "
                 + color.getGreen() + " "
                 + color.getBlue());
+    }
+
+    public void saveDataForState(State state) {
+        graphDataSet.add(frameNumber + "\t" + state.polarization());
+    }
+
+    public void printGraphDataSet(State state, String filename) {
+        graphDataSet.add(0, state.getEta() + " " + state.getDensity());
+        Exercise.writeTo(filename, graphDataSet);
     }
 
 }

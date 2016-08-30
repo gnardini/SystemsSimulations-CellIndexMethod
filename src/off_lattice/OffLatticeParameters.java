@@ -8,6 +8,7 @@ import java.util.List;
 public class OffLatticeParameters {
 
     static final String LATTICE_FORMAT = "files/off_lattice/frame_%d";
+    static final String GRAPH_DATA_SET = "files/graph_dataset.csv";
     static final int GENERATIONS = 500;
 
     private static final int N = 300; // Number of particles
@@ -36,7 +37,7 @@ public class OffLatticeParameters {
     }
 
     static InitialParams getInitialParameters() {
-        return defaultParams();
+        return chaosParams();
     }
 
     static InitialParams defaultParams() {

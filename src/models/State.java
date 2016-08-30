@@ -78,4 +78,8 @@ public class State {
         return new State(board.copy(), speed, interactionRadius, eta);
     }
 
+    public double getDensity() {
+        return particleCount / Math.pow(board.getL(), 2);
+    }
+
 }
