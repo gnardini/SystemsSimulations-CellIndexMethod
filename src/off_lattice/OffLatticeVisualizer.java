@@ -23,7 +23,7 @@ public class OffLatticeVisualizer {
             completionTracker.updateCompletedPercentage((double) i / generations);
             List<Particle> particles = offLatticeFileManager.getParticles(
                     String.format(OffLatticeParameters.LATTICE_FORMAT, i));
-            states.add(OffLatticeParameters.createState(particles, OffLatticeParameters.defaultParams()));
+            states.add(OffLatticeParameters.createState(particles));
         }
 
         // After that, we just iterate through the queue and show each state with a set delay.

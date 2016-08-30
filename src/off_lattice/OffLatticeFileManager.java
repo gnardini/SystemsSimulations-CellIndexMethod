@@ -4,6 +4,7 @@ import exercises.Exercise;
 import models.Particle;
 import models.State;
 
+import java.awt.*;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Scanner;
@@ -33,12 +34,15 @@ public class OffLatticeFileManager {
         }
         int particlesCount = Integer.valueOf(lines.get(0));
         // Starts in 2 because first line is a comment (XYZ format)
-        for (int i = 2; i <= particlesCount; i++) {
+        for (int i = 2; i < particlesCount + 2; i++) {
             Scanner lineScanner = new Scanner(lines.get(i));
             int id = lineScanner.nextInt();
             double x = lineScanner.nextDouble();
             double y = lineScanner.nextDouble();
             double angle = lineScanner.nextDouble();
+            int red = lineScanner.nextInt();
+            int green = lineScanner.nextInt();
+            int blue = lineScanner.nextInt();
             particles.add(new Particle(id, x, y,
                     OffLatticeParameters.PARTICLES_RADIUS, OffLatticeParameters.SPEED, angle));
         }
@@ -46,10 +50,14 @@ public class OffLatticeFileManager {
     }
 
     private void addParticleLine(List<String> lines, Particle particle) {
+        Color color = particle.getColorForAngle();
         lines.add(particle.getId() + " "
                 + particle.getX() + " "
                 + particle.getY() + " "
-                + particle.getAngle());
+                + particle.getAngle() + " "
+                + color.getRed() + " "
+                + color.getGreen() + " "
+                + color.getBlue());
     }
 
 }

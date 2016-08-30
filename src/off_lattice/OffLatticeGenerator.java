@@ -14,7 +14,7 @@ public class OffLatticeGenerator {
     public OffLatticeGenerator() {
         // Generate a random starting state.
         RandomInputGenerator randomInputGenerator = new RandomInputGenerator();
-        InitialParams initialParams = OffLatticeParameters.defaultParams();
+        InitialParams initialParams = OffLatticeParameters.getInitialParameters();
         List<Particle> particles = randomInputGenerator.generateRandomParticles(
                 initialParams.N,
                 initialParams.L,
@@ -55,6 +55,7 @@ public class OffLatticeGenerator {
             completionTracker.updateCompletedPercentage((double) i / generations);
             cellIndexMethod.nextStep(state);
             offLatticeFileManager.generateFrame(state, OffLatticeParameters.LATTICE_FORMAT);
+            state = state.copy();
         }
     }
 

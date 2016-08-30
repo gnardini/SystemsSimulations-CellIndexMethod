@@ -2,6 +2,7 @@ package models;
 
 import com.sun.tools.javac.util.Pair;
 
+import java.awt.*;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -180,4 +181,10 @@ public class Particle {
         return particle;
     }
 
+    public Color getColorForAngle() {
+        if (angle < Math.PI * .5f) return Color.red;
+        if (angle < Math.PI) return Color.green.darker();
+        if (angle < Math.PI * 1.5f) return Color.cyan.darker();
+        return Color.magenta;
+    }
 }

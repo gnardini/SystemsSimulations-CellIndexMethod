@@ -39,6 +39,7 @@ public class BoardPanel extends JPanel {
         g.setColor(Color.red);
 
         for (Particle particle : board.getParticles()) {
+            g.setColor(particle.getColorForAngle());
             double angle = particle.getAngle();
             double xPart = Math.cos(angle);
             double yPart = Math.sin(angle);
