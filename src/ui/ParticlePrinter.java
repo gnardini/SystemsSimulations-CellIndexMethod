@@ -7,13 +7,15 @@ import javax.swing.*;
 public class ParticlePrinter extends JFrame {
 
     public static final int SCREEN_SIZE = 500;
+    public static final int MARGIN = 20;
+
     private BoardPanel boardPanel;
 
     public ParticlePrinter() {
         setTitle("SS");
 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(SCREEN_SIZE, SCREEN_SIZE);
+        setSize(SCREEN_SIZE, SCREEN_SIZE + MARGIN);
 
         boardPanel = new BoardPanel();
         add(boardPanel);

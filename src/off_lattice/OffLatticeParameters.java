@@ -15,14 +15,14 @@ public class OffLatticeParameters {
     private static final int L = 25; // Length of side
     static final int INTERACTION_RADIUS = 1; // Particles will only take into account those others in its radious
     static final int PARTICLES_RADIUS = 0; // They have no mass nor radius.
-    static final double SPEED = 0.03; // They all move at the same speed (but not same direction).
+    public static final double SPEED = 0.03; // They all move at the same speed (but not same direction).
     private static final float AMPLITUDE = .1f;
 
     // If true, the simulation will be displayed real-time instead of saved to a file.
     static final boolean PLAY_LOCAL = false;
 
     // Delay in millis between each frame when playing from saved files.
-    static final long VISUALIZATION_DELAY_MILLIS = 5;
+    static final long VISUALIZATION_DELAY_MILLIS = 15;
 
     static State createState(List<Particle> particleList) {
         return createState(particleList, getInitialParameters());

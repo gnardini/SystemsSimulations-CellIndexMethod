@@ -3,6 +3,7 @@ package ui;
 import models.Board;
 import models.Particle;
 import models.State;
+import off_lattice.OffLatticeParameters;
 
 import javax.swing.*;
 import java.awt.*;
@@ -29,16 +30,15 @@ public class BoardPanel extends JPanel {
         Board board = state.getBoard();
         double multiplier = SCREEN_SIZE / state.getL();
 
-        g.setColor(Color.blue);
-        g.drawString("Particles: " + state.getParticleCount()
-                + ", Speed: " + state.getSpeed()
-                + ", eta: " + String.format("%.02f", state.getEta()),
-                20, 20);
-        g.drawString("polarization: " + String.format("%.6f", state.polarization()), 20, SCREEN_SIZE - 20);
-
         g.setColor(Color.red);
 
+        double xSpeedSum = 0;
+        double ySpeedSum = 0;
+
         for (Particle particle : board.getParticles()) {
+            xSpeedSum += particle.getSpeed() * Math.cos(particle.getAngle());
+            ySpeedSum += particle.getSpeed() * Math.sin(particle.getAngle());
+
             g.setColor(particle.getColorForAngle());
             double angle = particle.getAngle();
             double xPart = Math.cos(angle);
@@ -58,6 +58,13 @@ public class BoardPanel extends JPanel {
                     ovalSize,
                     ovalSize);
         }
+
+        double polarization = Math.sqrt(Math.pow(xSpeedSum, 2) + Math.pow(ySpeedSum, 2)) / (OffLatticeParameters.SPEED * board.getParticles().size());
+        g.setColor(Color.blue);
+        g.drawString("Particles: " + state.getParticleCount()
+                + ", Speed: " + state.getSpeed()
+                + ", eta: " + String.format("%.02f", state.getEta())
+                + ", polarization: " + String.format("%.6f", polarization), ParticlePrinter.MARGIN, SCREEN_SIZE + ParticlePrinter.MARGIN);
     }
 
     public void setState(State state) {
