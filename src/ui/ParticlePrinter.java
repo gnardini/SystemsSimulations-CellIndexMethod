@@ -15,7 +15,7 @@ public class ParticlePrinter extends JFrame {
         setTitle("SS");
 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(SCREEN_SIZE, SCREEN_SIZE + MARGIN);
+        setSize(SCREEN_SIZE, SCREEN_SIZE + MARGIN * 3);
 
         boardPanel = new BoardPanel();
         add(boardPanel);

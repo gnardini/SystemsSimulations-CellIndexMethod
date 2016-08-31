@@ -16,7 +16,7 @@ public class BoardPanel extends JPanel {
 
     @Override
     public Dimension getPreferredSize() {
-        return new Dimension(SCREEN_SIZE, SCREEN_SIZE);
+        return new Dimension(SCREEN_SIZE, SCREEN_SIZE + ParticlePrinter.MARGIN * 3);
     }
 
     @Override
@@ -64,7 +64,7 @@ public class BoardPanel extends JPanel {
         g.drawString("Particles: " + state.getParticleCount()
                 + ", Speed: " + state.getSpeed()
                 + ", eta: " + String.format("%.02f", state.getEta())
-                + ", polarization: " + String.format("%.6f", polarization), ParticlePrinter.MARGIN, SCREEN_SIZE + ParticlePrinter.MARGIN);
+                + ", polarization: " + String.format("%.6f", polarization), ParticlePrinter.MARGIN, SCREEN_SIZE + ParticlePrinter.MARGIN * 2);
     }
 
     public void setState(State state) {
