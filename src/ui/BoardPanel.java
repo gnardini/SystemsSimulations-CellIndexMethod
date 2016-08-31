@@ -63,6 +63,7 @@ public class BoardPanel extends JPanel {
         g.setColor(Color.blue);
         g.drawString("Particles: " + state.getParticleCount()
                 + ", Speed: " + state.getSpeed()
+                + ", L: " + state.getL()
                 + ", eta: " + String.format("%.02f", state.getEta())
                 + ", polarization: " + String.format("%.6f", polarization), ParticlePrinter.MARGIN, SCREEN_SIZE + ParticlePrinter.MARGIN * 2);
     }

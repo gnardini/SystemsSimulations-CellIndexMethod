@@ -37,7 +37,7 @@ public class OffLatticeParameters {
     }
 
     static InitialParams getInitialParameters() {
-        return groupsParams();
+        return polarizedParams();
     }
 
     static InitialParams defaultParams() {
