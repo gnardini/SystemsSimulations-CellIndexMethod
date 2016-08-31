@@ -19,7 +19,7 @@ public class OffLatticeParameters {
     private static final float AMPLITUDE = .1f;
 
     // If true, the simulation will be displayed real-time instead of saved to a file.
-    static final boolean PLAY_LOCAL = false;
+    static final boolean PLAY_LOCAL = true;
 
     // Delay in millis between each frame when playing from saved files.
     static final long VISUALIZATION_DELAY_MILLIS = 15;
@@ -37,7 +37,7 @@ public class OffLatticeParameters {
     }
 
     static InitialParams getInitialParameters() {
-        return chaosParams();
+        return groupsParams();
     }
 
     static InitialParams defaultParams() {
