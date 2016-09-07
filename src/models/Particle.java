@@ -10,6 +10,7 @@ public class Particle {
     private int id;
     private double x, y;
     private double radius;
+    private double mass;
     private double color;
     private double speed = 0.03;
     private double angle;
@@ -44,17 +45,29 @@ public class Particle {
         this.angle = angle;
     }
 
-    public static Particle random(int id, int boardSize) {
+    public Particle(int id, double x, double y, double radius, double speed, double angle, double mass) {
+        this.id = id;
+        this.x = x;
+        this.y = y;
+        this.radius = radius;
+        this.neighbours = new HashSet<>();
+
+        this.speed = speed;
+        this.angle = angle;
+        this.mass = mass;
+    }
+
+    public static Particle random(int id, double boardSize) {
         Pair<Double, Double> coordinates = randomPoint(boardSize);
         return new Particle(id, coordinates.fst, coordinates.snd, 0);
     }
 
-    public static Particle random(int id, int boardSize, double radius, double speed) {
+    public static Particle random(int id, double boardSize, double radius, double speed) {
         Pair<Double, Double> coordinates = randomPoint(boardSize);
         return new Particle(id, coordinates.fst, coordinates.snd, radius, speed, Math.random() * 2 * Math.PI);
     }
 
-    private static Pair<Double, Double> randomPoint(int boardSize) {
+    private static Pair<Double, Double> randomPoint(double boardSize) {
         double randomX = 0, randomY = 0;
         while (randomX == 0 || randomY == 0) {
             randomX = Math.random();
@@ -187,4 +200,5 @@ public class Particle {
         if (angle < Math.PI * 1.5f) return Color.cyan.darker();
         return Color.magenta;
     }
+
 }
