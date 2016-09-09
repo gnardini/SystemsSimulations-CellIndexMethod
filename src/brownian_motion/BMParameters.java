@@ -14,18 +14,16 @@ public class BMParameters {
     private static final double SMALL_MASS = .1;
     private static final double LARGE_RADIUS = .05;
     private static final double LARGE_MASS = 100;
-    private static final double MAX_ABSOLUTE_INITIAL_SPEED = .01;
-    private static final Color SMALL_PARTICLE_COLOR = Color.blue;
-    private static final Color BIG_PARTICLE_COLOR = Color.red;
-    public static final int ANIMATION_DELAY = 0;
+    public static final double MAX_ABSOLUTE_INITIAL_SPEED = .01;
+    public static final int ANIMATION_DELAY = 10;
 
     // Constants that may change.
-    private static final int N = 100;
+    public static final int N = 1;
 
     public static BMBoard getInitialBoard() {
         List<BMParticle> particles =
-                BMParticleGenerator.randomParticles(N, SIZE, SMALL_RADIUS, SMALL_MASS, MAX_ABSOLUTE_INITIAL_SPEED, SMALL_PARTICLE_COLOR);
-        BMParticle bigParticle = BMParticle.random(N, SIZE, LARGE_RADIUS, LARGE_MASS, 0, BIG_PARTICLE_COLOR);
+                BMParticleGenerator.randomParticles(N, SIZE, SMALL_RADIUS, SMALL_MASS, MAX_ABSOLUTE_INITIAL_SPEED);
+        BMParticle bigParticle = BMParticle.random(N, SIZE, LARGE_RADIUS, LARGE_MASS, 0);
         return new BMBoard(bigParticle, particles, SIZE);
     }
 

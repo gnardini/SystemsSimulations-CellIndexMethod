@@ -1,6 +1,9 @@
 package brownian_motion.crash;
 
+import brownian_motion.BMParameters;
 import brownian_motion.model.BMParticle;
+
+import java.awt.*;
 
 public class ParticleCrash implements Crash {
 

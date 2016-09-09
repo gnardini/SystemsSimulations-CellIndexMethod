@@ -1,5 +1,6 @@
 package brownian_motion.ui;
 
+import brownian_motion.BMParameters;
 import brownian_motion.model.BMBoard;
 import brownian_motion.model.BMParticle;
 

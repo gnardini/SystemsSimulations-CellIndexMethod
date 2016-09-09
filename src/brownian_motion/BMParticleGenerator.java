@@ -10,12 +10,12 @@ import java.util.List;
 public class BMParticleGenerator {
 
     public static List<BMParticle> randomParticles(
-            int particleCount, double boardSize, double radius, double mass, double speedMaxAbs, Color color) {
+            int particleCount, double boardSize, double radius, double mass, double speedMaxAbs) {
         final List<BMParticle> particles = new ArrayList<>();
         for (int i = 0; i < particleCount; i++) {
             BMParticle particle;
             do {
-                particle = BMParticle.random(i, boardSize, radius, mass, speedMaxAbs, color);
+                particle = BMParticle.random(i, boardSize, radius, mass, speedMaxAbs);
             } while (!isValidParticle(boardSize, particles, particle));
             particles.add(particle);
         }

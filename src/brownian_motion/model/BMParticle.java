@@ -1,5 +1,6 @@
 package brownian_motion.model;
 
+import brownian_motion.BMParameters;
 import com.sun.tools.javac.util.Pair;
 
 import java.awt.*;
@@ -12,9 +13,8 @@ public class BMParticle {
     private double mass;
     private double xSpeed;
     private double ySpeed;
-    private Color color;
 
-    public BMParticle(int id, double x, double y, double radius, double mass, double xSpeed, double ySpeed, Color color) {
+    public BMParticle(int id, double x, double y, double radius, double mass, double xSpeed, double ySpeed) {
         this.id = id;
         this.x = x;
         this.y = y;
@@ -22,7 +22,6 @@ public class BMParticle {
         this.mass = mass;
         this.xSpeed = xSpeed;
         this.ySpeed = ySpeed;
-        this.color = color;
     }
 
     public boolean collidesWith(BMParticle particle) {
@@ -80,13 +79,34 @@ public class BMParticle {
         ySpeed *= -1;
     }
 
-    public Color getColor() { return color; }
+    public Color getColor() {
+      double speed = calculateColor(Math.sqrt(Math.pow(xSpeed, 2) + Math.pow(ySpeed, 2)));
+      if (id == BMParameters.N) {
+        return new Color((int) speed, 0, 0);
+      }
+      return new Color(0, (int) speed, (int) speed);
+    }
 
-    public static BMParticle random(int id, double boardSize, double radius, double mass, double maxAxisAbsValue, Color color) {
+    private int calculateColor(final double speed) {
+      // Assuming max speeds
+      final double maxSpeed = 0.02;
+      final double minSpeed = -0.02;
+      final int minColor = 0;
+      final int maxColor = 255;
+
+      // Use a linear scale
+      int scaledSpeed = (int) (((maxColor - minColor) * (Math.abs(speed) - minSpeed)) / (maxSpeed - minSpeed)) + minColor;
+
+      if (scaledSpeed > 255) { return 255; }
+      if (scaledSpeed < 0) { return 0; }
+      return scaledSpeed;
+    }
+
+    public static BMParticle random(int id, double boardSize, double radius, double mass, double maxAxisAbsValue) {
         Pair<Double, Double> coordinates = randomPoint(boardSize);
         double xSpeed = (2 * Math.random() - 1) * maxAxisAbsValue;
         double ySpeed = (2 * Math.random() - 1) * maxAxisAbsValue;
-        return new BMParticle(id, coordinates.fst, coordinates.snd, radius, mass, xSpeed, ySpeed, color);
+        return new BMParticle(id, coordinates.fst, coordinates.snd, radius, mass, xSpeed, ySpeed);
     }
 
     private static Pair<Double, Double> randomPoint(double boardSize) {
