@@ -2,6 +2,8 @@ package brownian_motion.model;
 
 import com.sun.tools.javac.util.Pair;
 
+import java.awt.*;
+
 public class BMParticle {
 
     private int id;
@@ -10,8 +12,9 @@ public class BMParticle {
     private double mass;
     private double xSpeed;
     private double ySpeed;
+    private Color color;
 
-    public BMParticle(int id, double x, double y, double radius, double mass, double xSpeed, double ySpeed) {
+    public BMParticle(int id, double x, double y, double radius, double mass, double xSpeed, double ySpeed, Color color) {
         this.id = id;
         this.x = x;
         this.y = y;
@@ -19,6 +22,7 @@ public class BMParticle {
         this.mass = mass;
         this.xSpeed = xSpeed;
         this.ySpeed = ySpeed;
+        this.color = color;
     }
 
     public boolean collidesWith(BMParticle particle) {
@@ -76,11 +80,13 @@ public class BMParticle {
         ySpeed *= -1;
     }
 
-    public static BMParticle random(int id, double boardSize, double radius, double mass, double maxAxisAbsValue) {
+    public Color getColor() { return color; }
+
+    public static BMParticle random(int id, double boardSize, double radius, double mass, double maxAxisAbsValue, Color color) {
         Pair<Double, Double> coordinates = randomPoint(boardSize);
         double xSpeed = (2 * Math.random() - 1) * maxAxisAbsValue;
         double ySpeed = (2 * Math.random() - 1) * maxAxisAbsValue;
-        return new BMParticle(id, coordinates.fst, coordinates.snd, radius, mass, xSpeed, ySpeed);
+        return new BMParticle(id, coordinates.fst, coordinates.snd, radius, mass, xSpeed, ySpeed, color);
     }
 
     private static Pair<Double, Double> randomPoint(double boardSize) {

@@ -27,8 +27,9 @@ public class BMPanel extends JPanel {
         }
 
         double multiplier = SCREEN_SIZE / board.getSize();
-        g.setColor(Color.red);
+
         for (BMParticle particle : board.getParticles()) {
+            g.setColor(particle.getColor());
             double radius = particle.getRadius();
             double x = particle.getX() - radius;
             double y = particle.getY() - radius;

@@ -18,6 +18,7 @@ public class BMGenerator {
             totalTime += crash.getTimeUntilCrash();
             board.advanceTime(crash.getTimeUntilCrash());
             crash.applyCrash();
+            sleep(BMParameters.ANIMATION_DELAY);
         }
     }
 
