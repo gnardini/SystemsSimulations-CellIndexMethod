@@ -34,10 +34,10 @@ public class BMParticle {
     }
 
     public boolean isInBoard(double boardSize) {
-        if (x - radius <= 0 || x + radius >= boardSize) {
+        if (x - radius < 0 || x + radius > boardSize) {
             return false;
         }
-        if (y - radius <= 0 || y + radius >= boardSize) {
+        if (y - radius < 0 || y + radius > boardSize) {
             return false;
         }
         return true;

@@ -22,7 +22,6 @@ public class BMBoard {
         }
         this.bigParticle = bigParticle;
         this.particles = particles;
-        particles.add(bigParticle);
         this.size = size;
     }
 
@@ -127,6 +126,10 @@ public class BMBoard {
         } else {
             return crash2;
         }
+    }
+
+    public BMParticle getBigParticle() {
+        return bigParticle;
     }
 
 }

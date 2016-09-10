@@ -8,14 +8,19 @@ public class BMGenerator {
 
     public BMGenerator() {
         BMBoard board = BMParameters.getInitialBoard();
-        BMPrinter printer = new BMPrinter();
 
-        double totalTime = 0;
+        BMStats stats = new BMStats(board);
+        BMPrinter printer = new BMPrinter(board, stats);
+
         while (true) {
-            printer.setBoard(board);
+            printer.updateBoard();
 
             Crash crash = board.calculateTimeUntilNextCrash();
-            totalTime += crash.getTimeUntilCrash();
+            stats.onCollision(crash.getTimeUntilCrash());
+
+            if (crash.getTimeUntilCrash() < 0) {
+                throw new IllegalStateException("Time < 0");
+            }
             board.advanceTime(crash.getTimeUntilCrash());
             crash.applyCrash();
             sleep(BMParameters.ANIMATION_DELAY);
