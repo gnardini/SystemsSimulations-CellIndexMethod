@@ -82,9 +82,9 @@ public class BMParticle {
     public Color getColor() {
       double speed = calculateColor(Math.sqrt(Math.pow(xSpeed, 2) + Math.pow(ySpeed, 2)));
       if (id == BMParameters.N) {
-        return new Color((int) speed, 0, 0);
+        return new Color(255 - (int) speed, 0, 0); // Horrible hack for ovito
       }
-      return new Color(0, (int) speed, (int) speed);
+      return new Color((int) speed, 0, 0); // Horrible hack for ovito
     }
 
     private int calculateColor(final double speed) {
@@ -92,7 +92,7 @@ public class BMParticle {
       final double maxSpeed = 0.02;
       final double minSpeed = -0.02;
       final int minColor = 0;
-      final int maxColor = 255;
+      final int maxColor = 64;
 
       // Use a linear scale
       int scaledSpeed = (int) (((maxColor - minColor) * (Math.abs(speed) - minSpeed)) / (maxSpeed - minSpeed)) + minColor;
@@ -129,4 +129,23 @@ public class BMParticle {
         xSpeed += xDiff;
         ySpeed += yDiff;
     }
+
+    public double getSpeedAngle() {
+      return Math.atan2(this.xSpeed, this.ySpeed);
+    }
+
+  /*
+   * Prints particle into the following format:
+   * xPosition yPosition xVelocity yVelocity colorR colorG colorB radius
+   */
+  public String toDrawableString() {
+    return x + " " +
+            y + " " +
+            xSpeed + " " +
+            ySpeed + " " +
+            getColor().getRed() + " " +
+            getColor().getGreen() + " " +
+            getColor().getBlue() + " " +
+            radius;
+  }
 }

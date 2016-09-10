@@ -9,7 +9,7 @@ import java.util.List;
 public class BMParameters {
 
     // Static constants (they don't change).
-    private static final double SIZE = .5;
+    public static final double SIZE = .5;
     private static final double SMALL_RADIUS = .005;
     private static final double SMALL_MASS = .1;
     private static final double LARGE_RADIUS = .05;
@@ -18,7 +18,7 @@ public class BMParameters {
     public static final int ANIMATION_DELAY = 10;
 
     // Constants that may change.
-    public static final int N = 1;
+    public static final int N = 10;
 
     public static BMBoard getInitialBoard() {
         List<BMParticle> particles =
