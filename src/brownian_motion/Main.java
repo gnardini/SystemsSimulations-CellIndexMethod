@@ -9,7 +9,7 @@ import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 
 public class Main {
-  private static final String OUTPUT = "src/brownian_motion/file/output.xyz";
+  private static final String OUTPUT = "files/output.xyz";
   private static final int SIMULATION_TIME_SECONDS = 30;
   private static final int FRAMES_PER_SECOND = 60 * 5;
   private static final int PRINT_STEPS = 1;
@@ -46,7 +46,7 @@ public class Main {
     writer.println(time);
 
     writer.println("0 0 0 0 0 0 0 0");
-    writer.println(BMParameters.SIZE + " " + BMParameters.SIZE + " 0 0 0 0 0 0");
+    writer.println(BMParameters.BOARD_SIDE_LENGTH + " " + BMParameters.BOARD_SIDE_LENGTH + " 0 0 0 0 0 0");
 
     for (BMParticle p : board.getParticles()) {
       writer.println(p.toDrawableString());
