@@ -10,9 +10,16 @@ import java.io.UnsupportedEncodingException;
 
 public class Main {
   private static final String OUTPUT = "files/output.xyz";
+    private static final String STATISTICS_OUTPUT_PATH = "files/statistics/output.txt";
+
   private static final int SIMULATION_TIME_SECONDS = 30;
   private static final int FRAMES_PER_SECOND = 60 * 5;
   private static final int PRINT_STEPS = 1;
+
+  private static final boolean WITH_ANIMATION = false;
+  private static final boolean RECORD_STATISTICS = true;
+
+
 
   public static void main(String[] args) throws FileNotFoundException, UnsupportedEncodingException {
     int totalFrames = SIMULATION_TIME_SECONDS * FRAMES_PER_SECOND * PRINT_STEPS;
@@ -23,18 +30,28 @@ public class Main {
     BMBoard board = BMParameters.getInitialBoard();
 
     double totalTime = 0;
+
+    BMStats stats = new BMStats(board);
+
     while (frames < totalFrames) {
-      if (frames % PRINT_STEPS == 0) {
-        print(board, writer, frames);
+      if (WITH_ANIMATION) {
+        if (frames % PRINT_STEPS == 0) {
+          print(board, writer, frames);
+        }
       }
 
       Crash crash = board.calculateTimeUntilNextCrash();
+      stats.onCollision(crash.getTimeUntilCrash());
       totalTime += crash.getTimeUntilCrash();
       board.advanceTime(crash.getTimeUntilCrash());
       crash.applyCrash();
       frames += 1;
 
       System.out.println("Frame " + frames + " of " + totalFrames);
+    }
+
+    if (RECORD_STATISTICS) {
+        recordStadisticsTo(STATISTICS_OUTPUT_PATH, stats);
     }
 
     writer.close();
@@ -51,5 +68,26 @@ public class Main {
     for (BMParticle p : board.getParticles()) {
       writer.println(p.toDrawableString());
     }
+  }
+
+  private static void recordStadisticsTo(String path, BMStats stats) {
+      PrintWriter basicWriter = null;
+      try {
+          basicWriter = new PrintWriter(path, "UTF-8");
+      } catch (FileNotFoundException e) {
+          e.printStackTrace();
+      } catch (UnsupportedEncodingException e) {
+          e.printStackTrace();
+      }
+
+      PrintWriter writer = new PrintWriter(basicWriter, true);
+
+      System.out.println("Recording statistics to file");
+
+      for (int i = 0; i < stats.collissionsPerSecond.size(); i++) {
+          writer.println(stats.collissionsPerSecond.get(i));
+      }
+
+      System.out.println("Finished recording statistics");
   }
 }

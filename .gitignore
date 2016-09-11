@@ -238,3 +238,4 @@ buildNumber.properties
 hs_err_pid*
 
 !files/.git-keep
+!files/statistics/.git-keep
