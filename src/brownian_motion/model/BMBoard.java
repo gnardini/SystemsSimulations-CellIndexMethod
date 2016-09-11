@@ -46,9 +46,25 @@ public class BMBoard {
             fastestCrash = getFastestCrash(fastestCrash, crash);
             for (int j = i + 1; j < particles.size(); j++) {
                 crash = timeUntilParticleCrash(particle, particles.get(j));
+
+                if (crash != null && crash.getTimeUntilCrash() < 0) {
+                    System.out.println("Time cannot be < 0");
+                    throw new RuntimeException();
+                }
                 fastestCrash = getFastestCrash(fastestCrash, crash);
             }
         }
+
+        if (fastestCrash == null) {
+            System.out.println("There was an error, particle must crash");
+            throw new RuntimeException();
+        }
+
+        if (fastestCrash.getTimeUntilCrash() < 0) {
+            System.out.println("Time cannot be < 0");
+            throw new RuntimeException();
+        }
+
         return fastestCrash;
     }
 
