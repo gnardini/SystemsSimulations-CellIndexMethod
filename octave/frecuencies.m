@@ -1,23 +1,8 @@
-pkg load statistics;
+f = load('files/statistics/frequencies.txt');
 
-x = load('files/statistics/output.txt');
+bar(f(:,1), f(:,2))
+text(f(:,1), f(:,2), num2str(f(:,2),'%0.2f'))
 
-histfit(x);
-title ("Frecuencia de colisiones");
-
-xlabel ("Tiempo(s)");
-ylabel ("Colisiones");
-
-#text (pi, 0.7, "arbitrary text"); # TODO: This should have the parameters
-
-set(gca,'XTick', min(x):1:max(x))
-
-axis([min(x) max(x)]
-
-#hold on
-
-#plot(x, normpdf(x));
-
-#hold off
-
-# print -dpng "-S400,400" normal.png
+xlabel('Cantidad de particulas')
+ylabel('Colisiones por unidad de tiempo')
+title('Frequencia de colisiones')

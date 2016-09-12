@@ -14,7 +14,8 @@ public class BMStats {
     private List<Point> bigParticlePath;
 
     public List<Integer> collissionsPerSecond = new LinkedList<>();
-    private List<Double> timePerCollision = new LinkedList<>();
+    public List<Double> timePerCollision = new LinkedList<>();
+
     private int collissionsInSecond = 0;
     private int nextSecond = 1;
 

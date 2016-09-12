@@ -20,9 +20,13 @@ public class BMParameters {
     public static final int ANIMATION_DELAY = 0;
 
     // Constants that may change.
-    public static final int N = 50;
+    public static final int N = 300;
 
     public static BMBoard getInitialBoard() {
+        return getBoard(N);
+    }
+
+    public static BMBoard getBoard(int N) {
         BMParticle bigParticle = BMParticleGenerator.randomBigParticle(N, BOARD_SIDE_LENGTH, LARGE_PARTICLE_RADIUS, LARGE_PARTICLE_MASS);
         List<BMParticle> particles =
                 BMParticleGenerator.randomParticles(N, BOARD_SIDE_LENGTH, SMALL_PARTICLE_RADIUS, SMALL_PARTICLE_MASS, SMALL_PARTICLE_INITIAL_SPEED,
