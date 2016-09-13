@@ -23,8 +23,8 @@ public class Main {
   private static final boolean RECORD_STATISTICS = false;
 
   public static void main(String[] args) {
-//        run(BMParameters.getInitialBoard());
-    collisionTimes();
+        run(BMParameters.getInitialBoard());
+//    collisionTimes();
   }
 
   public static void collisionTimes() {
@@ -94,6 +94,9 @@ public class Main {
     BMStats stats = new BMStats(board);
 
     while (frames < totalFrames) {
+      stats.setStoringInitialSpeeds(frames >= .05 * totalFrames && frames <= .15 * totalFrames);
+      stats.setStoringLastSpeeds(frames >= totalFrames * 2 / 3);
+
       if (WITH_ANIMATION) {
         if (frames % PRINT_STEPS == 0) {
           print(board, writer, frames);
@@ -107,7 +110,7 @@ public class Main {
       crash.applyCrash();
       frames += 1;
 
-      System.out.println("Frame " + frames + " of " + totalFrames);
+      //System.out.println("Frame " + frames + " of " + totalFrames);
     }
 
     if (RECORD_STATISTICS) {

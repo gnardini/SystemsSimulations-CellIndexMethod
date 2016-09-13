@@ -15,11 +15,17 @@ public class BMStats {
 
     public List<Integer> collissionsPerSecond = new LinkedList<>();
     public List<Double> timePerCollision = new LinkedList<>();
+    public List<Double> speedsInFirstPeriod = new LinkedList<>();
+    public List<Double> speedsInLastPeriod = new LinkedList<>();
+    public List<Double> temperatures = new LinkedList<>();
 
     private int collissionsInSecond = 0;
     private int nextSecond = 1;
 
     private double totalTime = 0;
+
+    private boolean storeInitialSpeeds;
+    private boolean storeLastSpeeds;
 
     public BMStats(BMBoard board) {
         this.board = board;
@@ -45,6 +51,25 @@ public class BMStats {
         synchronized (bigParticlePath) {
             bigParticlePath.add(Point.forParticle(board.getBigParticle()));
         }
+
+        if (storeInitialSpeeds) {
+            board.getParticles().forEach(particle -> speedsInFirstPeriod.add(particle.getSpeed()));
+        }
+        if (storeLastSpeeds) {
+            board.getParticles().forEach(particle -> speedsInLastPeriod.add(particle.getSpeed()));
+        }
+        double totalTemperature = board.getParticles().stream()
+                .mapToDouble(particle -> .5 * particle.getMass() * particle.getSpeed() * particle.getSpeed())
+                .sum();
+        temperatures.add(totalTemperature);
+    }
+
+    public void setStoringInitialSpeeds(boolean storingInitialSpeeds) {
+        storeInitialSpeeds = storingInitialSpeeds;
+    }
+
+    public void setStoringLastSpeeds(boolean storingLastSpeeds) {
+        storeLastSpeeds = storingLastSpeeds;
     }
 
     public double getCollisionsPerSecond() {
@@ -69,6 +94,18 @@ public class BMStats {
         synchronized (bigParticlePath) {
             return new ArrayList<>(bigParticlePath);
         }
+    }
+
+    public List<Double> getSpeedsInFirstPeriod() {
+        return speedsInFirstPeriod;
+    }
+
+    public List<Double> getSpeedsInLastPeriod() {
+        return speedsInLastPeriod;
+    }
+
+    public List<Double> getTemperatures() {
+        return temperatures;
     }
 
 }

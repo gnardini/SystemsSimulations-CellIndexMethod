@@ -148,4 +148,9 @@ public class BMParticle {
             getColor().getBlue() + " " +
             radius;
   }
+
+    public double getSpeed() {
+        return Math.sqrt(xSpeed * xSpeed + ySpeed * ySpeed);
+    }
+
 }
