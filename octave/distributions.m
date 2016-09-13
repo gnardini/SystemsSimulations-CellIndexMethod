@@ -1,10 +1,19 @@
-x = load('files/statistics/timePerCollision_401.txt');
+function result = distributions(file_name)
+  hold all;
 
-[hy, hx] = hist(x);
-title ("Frecuencia de colisiones");
+  x = load(file_name);
 
-xlabel ("Tiempo(s)");
-ylabel ("Colisión");
+  [hy, hx] = hist(x);
+  title ("Distribución de tiempos de colisión");
 
-PDF = hy./(sum(hy)*(hx(2) - hx(1)));
-semilogy(hx,PDF, 'o');
+  xlabel ("Tiempo(s)");
+  ylabel ("Colisión");
+
+
+  PDF = hy./(sum(hy)*(hx(2) - hx(1)));
+  semilogy(hx,PDF, 'o');
+
+  hold off
+
+  result = x;
+endfunction
