@@ -1,7 +1,9 @@
 package brownian_motion;
 
 import brownian_motion.model.BMBoard;
+import brownian_motion.model.BMParticle;
 import brownian_motion.model.Point;
+import com.sun.xml.internal.bind.v2.schemagen.xmlschema.Particle;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -17,7 +19,6 @@ public class BMStats {
     public List<Double> timePerCollision = new LinkedList<>();
     public List<Double> speedsInFirstPeriod = new LinkedList<>();
     public List<Double> speedsInLastPeriod = new LinkedList<>();
-    public List<Double> temperatures = new LinkedList<>();
 
     private int collissionsInSecond = 0;
     private int nextSecond = 1;
@@ -58,10 +59,6 @@ public class BMStats {
         if (storeLastSpeeds) {
             board.getParticles().forEach(particle -> speedsInLastPeriod.add(particle.getSpeed()));
         }
-        double totalTemperature = board.getParticles().stream()
-                .mapToDouble(particle -> .5 * particle.getMass() * particle.getSpeed() * particle.getSpeed())
-                .sum();
-        temperatures.add(totalTemperature);
     }
 
     public void setStoringInitialSpeeds(boolean storingInitialSpeeds) {
@@ -104,8 +101,13 @@ public class BMStats {
         return speedsInLastPeriod;
     }
 
-    public List<Double> getTemperatures() {
-        return temperatures;
-    }
+    public Double getTemperature() {
+        Double temperature = board.getParticles().stream()
+                .mapToDouble(particle -> .5 * particle.getMass() * particle.getSpeed() * particle.getSpeed())
+                .sum();
 
+        temperature += .5 * board.getBigParticle().getMass() * board.getBigParticle().getSpeed() * board.getBigParticle().getSpeed();
+
+        return temperature;
+    }
 }

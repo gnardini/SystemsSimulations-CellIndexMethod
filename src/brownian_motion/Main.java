@@ -8,7 +8,9 @@ import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Main {
   private static final String OUTPUT = "files/output.xyz";
@@ -20,11 +22,11 @@ public class Main {
   private static final int PRINT_STEPS = 1;
 
   private static final boolean WITH_ANIMATION = false;
-  private static final boolean RECORD_STATISTICS = false;
 
   public static void main(String[] args) {
-        run(BMParameters.getInitialBoard());
-//    collisionTimes();
+//        run(BMParameters.getInitialBoard());
+
+    temperatures();
   }
 
   public static void collisionTimes() {
@@ -39,7 +41,63 @@ public class Main {
     }
   }
 
-  public static void frequencies() throws FileNotFoundException, UnsupportedEncodingException {
+  public static void temperatures() {
+    Integer[] particles = {11, 51, 101, 201, 401, 601, 801};
+    Double[] velocities = {0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8};
+
+    Map<Integer, List<Double>> particlesTemperatures = new HashMap<>();
+
+    for (int i = 0; i < particles.length; i++) {
+      particlesTemperatures.put(particles[i], new ArrayList<>());
+      for (int j = 0; j < velocities.length; j++) {
+        BMBoard board = BMParameters.getBoard(particles[i], velocities[j]);
+        BMStats stats = new BMStats(board);
+
+        particlesTemperatures.get(particles[i]).add(stats.getTemperature());
+      }
+    }
+
+    for (Map.Entry temperatures: particlesTemperatures.entrySet()) {
+      recordTo("files/statistics/temperatures_" + (Integer)temperatures.getKey() + ".txt", (List<Double>) temperatures.getValue());
+    }
+
+  }
+
+  public static void velocities() {
+    Integer[] particles = {11, 51, 101, 201, 401, 601, 801};
+
+    for (int i = 0; i < particles.length; i++) {
+      System.out.println("Particles: " + particles[i]);
+      BMBoard board = BMParameters.getBoard(particles[i]);
+      BMStats stats = run(board);
+
+      List<Double> initialSpeeds = stats.getSpeedsInFirstPeriod();
+      List<Double> lastSpeeds = stats.getSpeedsInLastPeriod();
+
+      recordTo("files/statistics/velocities_initial_" + String.valueOf(particles[i] + ".txt"), initialSpeeds);
+      recordTo("files/statistics/velocities_last_" + String.valueOf(particles[i] + ".txt"), lastSpeeds);
+    }
+
+  }
+
+  private static void recordTo(String path, List<Double> speeds) {
+    PrintWriter basicWriter = null;
+    try {
+      basicWriter = new PrintWriter(path, "UTF-8");
+    } catch (FileNotFoundException e) {
+      e.printStackTrace();
+    } catch (UnsupportedEncodingException e) {
+      e.printStackTrace();
+    }
+
+    PrintWriter writer = new PrintWriter(basicWriter, true);
+
+    for (int i = 0; i < speeds.size(); i++) {
+      writer.println(speeds.get(i).doubleValue());
+    }
+  }
+
+  public static void frequencies()  {
     Integer[] particles = {11, 51, 101, 201, 401, 601, 801};
 
     List<Double> frequencies = new ArrayList();
@@ -110,11 +168,7 @@ public class Main {
       crash.applyCrash();
       frames += 1;
 
-      //System.out.println("Frame " + frames + " of " + totalFrames);
-    }
-
-    if (RECORD_STATISTICS) {
-      recordTimePerCollision(TIME_PER_COLLISION_OUTPUT_PATH, stats);
+      System.out.println("Frame " + frames + " of " + totalFrames);
     }
 
     writer.close();

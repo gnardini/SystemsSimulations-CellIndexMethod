@@ -23,15 +23,19 @@ public class BMParameters {
     public static final int N = 300;
 
     public static BMBoard getInitialBoard() {
-        return getBoard(N);
+        return getBoard(N, SMALL_PARTICLE_INITIAL_SPEED);
+    }
+
+    public static BMBoard getBoard(int N, double small_particle_speed) {
+        BMParticle bigParticle = BMParticleGenerator.randomBigParticle(N, BOARD_SIDE_LENGTH, LARGE_PARTICLE_RADIUS, LARGE_PARTICLE_MASS);
+        List<BMParticle> particles =
+                BMParticleGenerator.randomParticles(N, BOARD_SIDE_LENGTH, SMALL_PARTICLE_RADIUS, SMALL_PARTICLE_MASS, small_particle_speed,
+                        bigParticle);
+        return new BMBoard(bigParticle, particles, BOARD_SIDE_LENGTH);
     }
 
     public static BMBoard getBoard(int N) {
-        BMParticle bigParticle = BMParticleGenerator.randomBigParticle(N, BOARD_SIDE_LENGTH, LARGE_PARTICLE_RADIUS, LARGE_PARTICLE_MASS);
-        List<BMParticle> particles =
-                BMParticleGenerator.randomParticles(N, BOARD_SIDE_LENGTH, SMALL_PARTICLE_RADIUS, SMALL_PARTICLE_MASS, SMALL_PARTICLE_INITIAL_SPEED,
-                        bigParticle);
-        return new BMBoard(bigParticle, particles, BOARD_SIDE_LENGTH);
+        return getBoard(N, SMALL_PARTICLE_INITIAL_SPEED);
     }
 
 }
