@@ -1,7 +1,7 @@
-package output;
+package cell_index_method.output;
 
-import models.Board;
-import models.Particle;
+import cell_index_method.models.Board;
+import cell_index_method.models.Particle;
 
 import java.util.LinkedList;
 import java.util.List;

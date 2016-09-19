@@ -1,9 +1,9 @@
-package algorithms;
+package cell_index_method.algorithms;
 
-import models.Board;
-import models.Cell;
-import models.Particle;
-import models.State;
+import cell_index_method.models.Board;
+import cell_index_method.models.Cell;
+import cell_index_method.models.Particle;
+import cell_index_method.models.State;
 
 import java.awt.*;
 

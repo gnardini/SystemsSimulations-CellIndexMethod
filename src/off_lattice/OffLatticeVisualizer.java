@@ -1,9 +1,9 @@
 package off_lattice;
 
 import helper.CompletionTracker;
-import models.Particle;
-import models.State;
-import ui.ParticlePrinter;
+import cell_index_method.models.Particle;
+import cell_index_method.models.State;
+import cell_index_method.ui.ParticlePrinter;
 
 import java.util.LinkedList;
 import java.util.List;

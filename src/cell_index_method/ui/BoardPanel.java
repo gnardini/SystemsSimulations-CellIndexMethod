@@ -1,14 +1,14 @@
-package ui;
+package cell_index_method.ui;
 
-import models.Board;
-import models.Particle;
-import models.State;
+import cell_index_method.models.Board;
+import cell_index_method.models.Particle;
+import cell_index_method.models.State;
 import off_lattice.OffLatticeParameters;
 
 import javax.swing.*;
 import java.awt.*;
 
-import static ui.ParticlePrinter.SCREEN_SIZE;
+import static cell_index_method.ui.ParticlePrinter.SCREEN_SIZE;
 
 public class BoardPanel extends JPanel {
 

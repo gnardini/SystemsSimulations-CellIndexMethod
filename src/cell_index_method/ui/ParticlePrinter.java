@@ -1,6 +1,6 @@
-package ui;
+package cell_index_method.ui;
 
-import models.State;
+import cell_index_method.models.State;
 
 import javax.swing.*;
 

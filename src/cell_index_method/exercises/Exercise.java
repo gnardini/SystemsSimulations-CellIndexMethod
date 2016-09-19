@@ -1,11 +1,11 @@
-package exercises;
+package cell_index_method.exercises;
 
-import algorithms.BruteForce;
-import algorithms.CellIndexMethod;
-import input.RandomInputGenerator;
-import models.Board;
-import models.Particle;
-import models.State;
+import cell_index_method.algorithms.BruteForce;
+import cell_index_method.algorithms.CellIndexMethod;
+import cell_index_method.input.RandomInputGenerator;
+import cell_index_method.models.Board;
+import cell_index_method.models.Particle;
+import cell_index_method.models.State;
 
 import java.io.*;
 import java.nio.charset.Charset;

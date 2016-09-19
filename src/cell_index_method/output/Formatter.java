@@ -1,5 +1,5 @@
-package output;
-import models.Board;
+package cell_index_method.output;
+import cell_index_method.models.Board;
 
 import java.util.List;
 

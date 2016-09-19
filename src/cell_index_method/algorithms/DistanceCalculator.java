@@ -1,6 +1,6 @@
-package algorithms;
+package cell_index_method.algorithms;
 
-import models.State;
+import cell_index_method.models.State;
 
 public interface DistanceCalculator {
 

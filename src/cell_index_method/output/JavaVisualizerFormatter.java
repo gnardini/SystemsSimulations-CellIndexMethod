@@ -1,17 +1,4 @@
-package output;
-
-import models.Board;
-import models.Particle;
-import models.State;
-
-import java.io.IOException;
-import java.nio.charset.Charset;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
+package cell_index_method.output;
 
 /**
  * Created by FranDepascuali on 8/24/16.

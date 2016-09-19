@@ -1,6 +1,6 @@
-package input;
+package cell_index_method.input;
 
-import models.Particle;
+import cell_index_method.models.Particle;
 
 import java.io.*;
 import java.util.ArrayList;

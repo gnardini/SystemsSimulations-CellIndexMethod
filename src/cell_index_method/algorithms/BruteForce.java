@@ -1,7 +1,7 @@
-package algorithms;
+package cell_index_method.algorithms;
 
-import models.Particle;
-import models.State;
+import cell_index_method.models.Particle;
+import cell_index_method.models.State;
 
 import java.util.List;
 

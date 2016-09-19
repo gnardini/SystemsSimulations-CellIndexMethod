@@ -1,8 +1,8 @@
 package off_lattice;
 
-import exercises.Exercise;
-import models.Particle;
-import models.State;
+import cell_index_method.exercises.Exercise;
+import cell_index_method.models.Particle;
+import cell_index_method.models.State;
 
 import java.awt.*;
 import java.util.LinkedList;

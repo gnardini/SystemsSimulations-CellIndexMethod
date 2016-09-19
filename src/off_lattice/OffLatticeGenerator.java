@@ -1,11 +1,11 @@
 package off_lattice;
 
-import algorithms.CellIndexMethod;
+import cell_index_method.algorithms.CellIndexMethod;
 import helper.CompletionTracker;
-import input.RandomInputGenerator;
-import models.Particle;
-import models.State;
-import ui.ParticlePrinter;
+import cell_index_method.input.RandomInputGenerator;
+import cell_index_method.models.Particle;
+import cell_index_method.models.State;
+import cell_index_method.ui.ParticlePrinter;
 
 import java.util.List;
 

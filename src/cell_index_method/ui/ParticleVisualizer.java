@@ -1,6 +1,6 @@
-package ui;
+package cell_index_method.ui;
 
-import output.JavaVisualizerFormatter;
+import cell_index_method.output.JavaVisualizerFormatter;
 
 import java.io.IOException;
 import java.nio.file.*;

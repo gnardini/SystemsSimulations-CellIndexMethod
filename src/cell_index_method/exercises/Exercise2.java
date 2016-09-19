@@ -1,6 +1,6 @@
-package exercises;
+package cell_index_method.exercises;
 
-import models.Particle;
+import cell_index_method.models.Particle;
 
 import java.util.List;
 

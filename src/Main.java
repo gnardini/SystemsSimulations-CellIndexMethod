@@ -1,8 +1,8 @@
-import exercises.Exercise;
-import input.InputFileReader;
-import models.Board;
-import models.Particle;
-import output.XYZFormatter;
+import cell_index_method.exercises.Exercise;
+import cell_index_method.input.InputFileReader;
+import cell_index_method.models.Board;
+import cell_index_method.models.Particle;
+import cell_index_method.output.XYZFormatter;
 
 import java.util.List;
 
@@ -21,9 +21,9 @@ public class Main extends Exercise {
     long end = System.currentTimeMillis();
     long cellIndexMethodDuration = end - start;
     System.out.println("Cell index method with edges duration: " + cellIndexMethodDuration + " milliseconds");
-    // Generate normal output
+    // Generate normal cell_index_method.output
     writeTo(CELL_INDEX_METHOD_OUTPUT, generateOutput(cellIndexMethodBoard));
-    // Generate XYZ output
+    // Generate XYZ cell_index_method.output
     List<String> lines = formatter.format(cellIndexMethodBoard, fileReader.getParticleCount(), interestingParticleId, CONVERGENCE_RADIUS);
     writeTo(CELL_INDEX_METHOD_XYZ_OUTPUT, lines);
 
@@ -35,9 +35,9 @@ public class Main extends Exercise {
     end = System.currentTimeMillis();
     long bruteForceMethodDuration = end - start;
     System.out.println("Brute force method with edges duration: " + bruteForceMethodDuration + " milliseconds");
-    // Generate normal output
+    // Generate normal cell_index_method.output
     writeTo(BRUTE_FORCE_OUTPUT, generateOutput(bruteForceBoard));
-    // Generate XYZ output
+    // Generate XYZ cell_index_method.output
     lines = formatter.format(bruteForceBoard, fileReader.getParticleCount(), interestingParticleId, CONVERGENCE_RADIUS);
     //writeTo(CELL_INDEX_METHOD_XYZ_OUTPUT, lines);
   }

@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Map;
 
 public class Main {
-  private static final String OUTPUT = "files/output.xyz";
+  private static final String OUTPUT = "files/cell_index_method.output.xyz";
   private static final String TIME_PER_COLLISION_OUTPUT_PATH = "files/statistics/timePerCollision";
   private static final String FREQUENCIES_OUTPUT_PATH = "files/statistics/frequencies.txt";
 

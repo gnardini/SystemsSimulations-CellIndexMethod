@@ -1,4 +1,4 @@
-package models;
+package cell_index_method.models;
 
 import java.util.List;
 
