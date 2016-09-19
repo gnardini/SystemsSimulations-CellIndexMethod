@@ -24,7 +24,7 @@ public class Main {
         System.out.println("GPD Error: " + gearPredictorData.getError());
         System.out.println("Verlet Error: " + verletData.getError());
 
-        new OscillatorPrinter(analyticalData.getInstants(), verletData.getInstants());
+        new OscillatorPrinter(analyticalData.getInstants(), gearPredictorData.getInstants());
     }
 
     public static void main(String[] args) {

@@ -34,6 +34,16 @@ public class Parameters {
     }
 
     static OscillatorState initialState() {
-        return new OscillatorState(GAMMA, MASS, K, 0, INITIAL_POSITION, INITIAL_SPEED);
+        return new OscillatorState(GAMMA, MASS, K, 0, INITIAL_POSITION, INITIAL_SPEED, initialGearPositions());
+    }
+
+    static double[] initialGearPositions() {
+        double[] initialPositions = new double[6];
+        initialPositions[0] = INITIAL_POSITION;
+        initialPositions[1] = INITIAL_SPEED;
+        for (int i = 2; i < 6; i++) {
+            initialPositions[i] = (-K * initialPositions[i - 2] - GAMMA * initialPositions[i - 1]) / MASS;
+        }
+        return initialPositions;
     }
 }
