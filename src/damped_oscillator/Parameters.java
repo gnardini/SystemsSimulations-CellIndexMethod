@@ -1,10 +1,10 @@
-package tp4;
+package damped_oscillator;
 
-import tp4.oscillator.AnalyticalOscillator;
-import tp4.oscillator.BeemanOscillator;
-import tp4.model.OscillatorState;
-import tp4.oscillator.GearPredictorCorrectorOscillator;
-import tp4.oscillator.VerletOscillator;
+import damped_oscillator.oscillator.AnalyticalOscillator;
+import damped_oscillator.oscillator.BeemanOscillator;
+import damped_oscillator.model.OscillatorState;
+import damped_oscillator.oscillator.GearPredictorCorrectorOscillator;
+import damped_oscillator.oscillator.VerletOscillator;
 
 public class Parameters {
 

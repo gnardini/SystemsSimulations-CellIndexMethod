@@ -1,6 +1,6 @@
-package tp4;
+package damped_oscillator;
 
-import tp4.ui.OscillatorPrinter;
+import damped_oscillator.ui.OscillatorPrinter;
 
 public class Main {
 

@@ -1,6 +1,6 @@
-package tp4.oscillator;
+package damped_oscillator.oscillator;
 
-import tp4.model.OscillatorState;
+import damped_oscillator.model.OscillatorState;
 
 public class VerletOscillator implements Oscillator {
 

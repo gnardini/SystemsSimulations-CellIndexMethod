@@ -1,8 +1,8 @@
-package tp4;
+package damped_oscillator;
 
-import tp4.model.OscillatorInstant;
-import tp4.oscillator.Oscillator;
-import tp4.model.OscillatorState;
+import damped_oscillator.model.OscillatorInstant;
+import damped_oscillator.oscillator.Oscillator;
+import damped_oscillator.model.OscillatorState;
 
 import java.util.LinkedList;
 import java.util.List;

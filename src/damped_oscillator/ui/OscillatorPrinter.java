@@ -1,6 +1,6 @@
-package tp4.ui;
+package damped_oscillator.ui;
 
-import tp4.model.OscillatorInstant;
+import damped_oscillator.model.OscillatorInstant;
 
 import javax.swing.*;
 import java.awt.*;

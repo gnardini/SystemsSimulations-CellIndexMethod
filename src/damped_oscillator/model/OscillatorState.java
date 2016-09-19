@@ -1,4 +1,4 @@
-package tp4.model;
+package damped_oscillator.model;
 
 public class OscillatorState {
 
