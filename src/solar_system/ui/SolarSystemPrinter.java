@@ -50,6 +50,7 @@ public class SolarSystemPrinter  extends JFrame {
             printParticle(g, state.getSun());
             printParticle(g, state.getEarth());
             printParticle(g, state.getMars());
+            printParticle(g, state.getShip());
         }
 
         private void printParticle(Graphics g, Particle particle) {
@@ -58,8 +59,8 @@ public class SolarSystemPrinter  extends JFrame {
             Vector position = particle.getPosition();
             int planetSize = (int) Math.min(30, particle.getRadius() * 4000 * multiplier);
             g.fillOval(
-                    SCREEN_WIDTH / 2 + (int) ((position.getX() - particle.getRadius()) * multiplier),
-                    SCREEN_WIDTH / 2 + (int) ((position.getY() - particle.getRadius()) * multiplier),
+                    SCREEN_WIDTH / 2 + (int) (position.getX() * multiplier) - planetSize / 2,
+                    SCREEN_WIDTH / 2 + (int) (position.getY() * multiplier) - planetSize / 2,
                     planetSize,
                     planetSize);
         }

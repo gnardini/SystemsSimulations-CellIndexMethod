@@ -33,13 +33,21 @@ public class Parameters {
     private static final double SUN_MASS = 1.988E30;
     private static final Color SUN_COLOR = Color.yellow;
 
+    private static final double SHIP_INITIAL_HEIGHT = 1500 * 1000;
+    private static final double SHIP_INITIAL_BASE_SPEED = 7.12 * 1000;
+    private static final double SHIP_INITIAL_ADDED_SPEED = 17 * 1000;
+    private static final double SHIP_RADIUS = MARS_RADIUS;
+    private static final double SHIP_MASS = 2E5;
+    private static final Color SHIP_COLOR = Color.green;
+
     public static final double TIME_STEP = 10;
 
     public static State initialState() {
-        State state =  new State(initialSun(), initialEarth(), initialMars());
+        State state =  new State(initialSun(), initialEarth(), initialMars(), initialShip());
         Particle updatedMars = state.getMars().withOldPosition(previousPosition(state, state.getMars()));
         Particle updatedEarth = state.getEarth().withOldPosition(previousPosition(state, state.getEarth()));
-        return new State(state.getSun(), updatedEarth, updatedMars);
+        Particle updatedShip = state.getShip().withOldPosition(previousPosition(state, state.getShip()));
+        return new State(state.getSun(), updatedEarth, updatedMars, updatedShip);
     }
 
     private static Particle initialSun() {
@@ -70,6 +78,32 @@ public class Parameters {
                 EARTH_MASS,
                 EARTH_RADIUS,
                 EARTH_COLOR);
+    }
+
+    private static Particle initialShip() {
+        return new Particle(
+                4,
+                initialShipPosition(),
+                initialShipSpeed(),
+                SHIP_MASS,
+                SHIP_RADIUS,
+                SHIP_COLOR);
+    }
+
+    private static Vector initialShipPosition() {
+        double xPercentage = EARTH_INITIAL_X / new Vector(EARTH_INITIAL_X, EARTH_INITIAL_Y).norm();
+        double xPosition = EARTH_INITIAL_X + EARTH_RADIUS + xPercentage * SHIP_INITIAL_HEIGHT;
+        double yPosition = EARTH_INITIAL_Y + EARTH_RADIUS + (1 - xPercentage) * SHIP_INITIAL_HEIGHT;
+        return new Vector(xPosition, yPosition);
+    }
+
+    private static Vector initialShipSpeed() {
+        double earthSpeed = new Vector(EARTH_INITIAL_SPEED_X, EARTH_INITIAL_SPEED_Y).norm();
+        double xPercentage = EARTH_INITIAL_SPEED_X / earthSpeed;
+        double totalSpeed = earthSpeed + SHIP_INITIAL_BASE_SPEED + SHIP_INITIAL_ADDED_SPEED;
+        double xSpeed = xPercentage * totalSpeed;
+        double ySpeed = (1 - xPercentage) * totalSpeed;
+        return new Vector(xSpeed, ySpeed);
     }
 
     private static Vector previousPosition(State state, Particle particle) {

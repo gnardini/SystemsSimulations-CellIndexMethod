@@ -64,8 +64,13 @@ public class Particle {
         return new Particle(id, position, speed, mass, radius, color, this.position);
     }
 
+    public boolean collidesWith(Particle other) {
+        return position.subtract(other.getPosition()).norm() < radius + other.radius;
+    }
+
     @Override
     public String toString() {
-        return "x: " + position.getX() + ", y: " + position.getY() + ", radius: " + radius;
+        return "x: " + position.getX() + ", y: " + position.getY();
     }
+
 }
