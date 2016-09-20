@@ -239,4 +239,8 @@ hs_err_pid*
 
 !files/.git-keep
 !files/statistics/.git-keep
+octave/TP3/*
+!octave/TP3/*.m
+octave/TP4/files/*
+!octave/TP4/files/*.m
 octave-workspace

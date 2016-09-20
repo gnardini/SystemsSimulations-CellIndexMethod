@@ -6,6 +6,7 @@ import damped_oscillator.model.OscillatorState;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class OscillatorCalculator {
 
@@ -17,11 +18,14 @@ public class OscillatorCalculator {
     private double totalError;
     private double steps;
 
-    public OscillatorCalculator(Oscillator oscillator) {
+    private String name;
+
+    public OscillatorCalculator(Oscillator oscillator, String name) {
         this.oscillator = oscillator;
         state = Parameters.initialState();
         instants = new LinkedList<>();
         instants.add(new OscillatorInstant(state));
+        this.name = name;
     }
 
     public void update(double time) {
@@ -47,5 +51,13 @@ public class OscillatorCalculator {
 
     public double getLastPosition() {
         return state.getLastPosition();
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public List<Double> getPositions() {
+        return instants.stream().map(instant -> instant.getPosition()).collect(Collectors.toList());
     }
 }

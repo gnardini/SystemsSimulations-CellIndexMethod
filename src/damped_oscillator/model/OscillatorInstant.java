@@ -15,4 +15,5 @@ public class OscillatorInstant {
     public double getPosition() {
         return state.getLastPosition();
     }
+
 }

@@ -11,7 +11,7 @@ public class Parameters {
     static double MASS = 70;
     static double K = 10000;
     static double GAMMA = 100;
-    static double TOTAL_TIME = 5;
+    static int TOTAL_TIME = 5;
     static double TIME_STEP = 0.0001;
 
     static double INITIAL_POSITION = 1;
