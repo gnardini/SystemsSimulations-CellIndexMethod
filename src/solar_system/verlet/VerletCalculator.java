@@ -20,13 +20,13 @@ public class VerletCalculator {
 
     private Particle evolveParticle(Particle particle, State state, double deltaTime) {
 
-        //x(i+1) = 2 x(i) - x(i-1) + t^2/m * f(i)
+        //x(t+dt) = 2 x(t) - x(t-dt) + dt^2/m * f(t)
         Vector newPosition = particle.getPosition()
                 .scale(2)
                 .subtract(particle.getOldPosition())
                 .add(calculateForce(state, particle).scale(deltaTime * deltaTime / particle.getMass()));
 
-        //v(i) = (x(i+1) - x(i -1)) / 2*t
+        //v(t) = (x(t+dt) - x(t-dt)) / 2*dt
         Vector newSpeed = newPosition.subtract(particle.getOldPosition()).scale(1.0 / (2 * deltaTime));
 
         return particle.withNewData(newPosition, newSpeed);
