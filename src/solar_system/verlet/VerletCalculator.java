@@ -19,6 +19,7 @@ public class VerletCalculator {
     }
 
     private Particle evolveParticle(Particle particle, State state, double deltaTime) {
+        if (!particle.isLaunched()) return particle;
 
         //x(i+1) = 2 x(i) - x(i-1) + t^2/m * f(i)
         Vector newPosition = particle.getPosition()
@@ -40,7 +41,7 @@ public class VerletCalculator {
     }
 
     private Vector forceBetween(Particle particle1, Particle particle2) {
-        if (particle1.getId() == particle2.getId()) {
+        if (particle1.getId() == particle2.getId() || !particle1.isLaunched() || !particle2.isLaunched()) {
             return new Vector(0, 0);
         }
         Vector particle1Position = particle1.getPosition();

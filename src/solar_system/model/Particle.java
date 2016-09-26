@@ -13,11 +13,18 @@ public class Particle {
 
     private Vector oldPosition;
 
+    private boolean isLaunched;
+
     public Particle(int id, Vector position, Vector speed, double mass, double radius, Color color) {
-        this(id, position, speed, mass, radius, color, new Vector(0, 0));
+        this(id, position, speed, mass, radius, color, new Vector(0, 0), true);
     }
 
-    public Particle(int id, Vector position, Vector speed, double mass, double radius, Color color, Vector oldPosition) {
+    public Particle(int id, Vector position, Vector speed, double mass, double radius, Color color, boolean hasLaunched) {
+        this(id, position, speed, mass, radius, color, new Vector(0, 0), hasLaunched);
+    }
+
+    public Particle(int id, Vector position, Vector speed, double mass, double radius, Color color, Vector oldPosition,
+                    boolean hasLaunched) {
         this.id = id;
         this.position = position;
         this.speed = speed;
@@ -26,6 +33,7 @@ public class Particle {
         this.color = color;
 
         this.oldPosition = oldPosition;
+        this.isLaunched = hasLaunched;
     }
 
     public int getId() {
@@ -56,12 +64,20 @@ public class Particle {
         return oldPosition;
     }
 
+    public boolean isLaunched() {
+        return isLaunched;
+    }
+
+    public Particle launch() {
+        return new Particle(id, position, speed, mass, radius, color, oldPosition, true);
+    }
+
     public Particle withOldPosition(Vector oldPosition) {
-        return new Particle(id, position, speed, mass, radius, color, oldPosition);
+        return new Particle(id, position, speed, mass, radius, color, oldPosition, isLaunched);
     }
 
     public Particle withNewData(Vector position, Vector speed) {
-        return new Particle(id, position, speed, mass, radius, color, this.position);
+        return new Particle(id, position, speed, mass, radius, color, this.position, isLaunched);
     }
 
     public boolean collidesWith(Particle other) {

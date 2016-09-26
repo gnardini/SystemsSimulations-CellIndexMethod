@@ -1,5 +1,7 @@
 package solar_system.model;
 
+import solar_system.Parameters;
+
 public class State {
 
     private final Particle sun;
@@ -28,6 +30,43 @@ public class State {
 
     public Particle getShip() {
         return ship;
+    }
+
+    public State launchShip() {
+
+        Particle newShip = ship.launch().withNewData(initialShipPosition(), initialShipSpeed());
+        newShip = newShip.withOldPosition(Parameters.previousPosition(this, newShip));
+
+        return new State(sun, earth, mars, newShip);
+    }
+
+    private Vector initialShipPosition() {
+        double mod = earth.getPosition().norm();
+        double enx =  earth.getPosition().getX() / mod;
+        double eny =  earth.getPosition().getY() / mod;
+
+        double etx = -eny;
+        double ety = enx;
+
+        double totalHeight = mod + earth.getRadius() + ship.getRadius() + Parameters.SHIP_INITIAL_HEIGHT;
+        return new Vector(enx * totalHeight, eny * totalHeight);
+    }
+
+    private Vector initialShipSpeed() {
+        double mod = earth.getPosition().norm();
+        double enx =  earth.getPosition().getX() / mod;
+        double eny =  earth.getPosition().getY() / mod;
+
+        double etx = -eny;
+        double ety = enx;
+
+        double totalSpeed = earth.getSpeed().norm()
+                + Parameters.SHIP_INITIAL_BASE_SPEED
+                + Parameters.SHIP_INITIAL_ADDED_SPEED;
+
+        double xSpeed = totalSpeed * etx;
+        double ySpeed = totalSpeed * ety;
+        return new Vector(xSpeed, ySpeed);
     }
 
 }
