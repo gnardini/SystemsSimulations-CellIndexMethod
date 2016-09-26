@@ -6,7 +6,7 @@ import solar_system.ui.SolarSystemPrinter;
 import solar_system.verlet.VerletCalculator;
 
 // Mejor dia con v0 = 3 -> 570 * ONE_DAY
-// Mejor dia con v0 = 8 -> 580 * ONE_DAY - Profesor: 575.9
+// Mejor dia con v0 = 8 -> 586.11 * ONE_DAY - Profesor: 575.9
 
 public class Main {
 
@@ -14,8 +14,8 @@ public class Main {
     private static final double ONE_WEEK = 7 * ONE_DAY;
     private static final double ONE_YEAR = 365 * ONE_DAY;
 
-    private static final boolean RUN_SINGLE_SIMULATION = false;
-    private static final double SINGLE_SIMULATION_DAY = 575.9 * ONE_DAY;
+    private static final boolean RUN_SINGLE_SIMULATION = true;
+    private static final double SINGLE_SIMULATION_DAY = 586.11 * ONE_DAY;
     private static final double OFFSET_STEP = 20 * ONE_DAY;
 
     private static final double MIN_DAY = 0;
@@ -51,7 +51,7 @@ public class Main {
             stats.printStats();
         }
 
-        System.out.println(minDay + ": " + minDistance);
+        System.out.println(minDay / ONE_DAY + ": " + minDistance);
     }
 
     public double playSimulation(State state, double timeOffset, boolean print) {
@@ -90,6 +90,7 @@ public class Main {
                 }
                 if (ship.collidesWith(mars)) {
                     System.out.println("Collision! " + totalTime);
+                    return 0;
                 }
             }
         }
