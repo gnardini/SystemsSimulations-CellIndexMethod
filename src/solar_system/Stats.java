@@ -13,8 +13,8 @@ public class Stats {
         distanceOverTime = new LinkedList<>();
     }
 
-    public void addDistance(double distance) {
-        distanceOverTime.add(String.valueOf(distance));
+    public void addDistance(double timeInDays, double distance) {
+        distanceOverTime.add(timeInDays + "\t" + distance);
     }
 
     public void printStats() {

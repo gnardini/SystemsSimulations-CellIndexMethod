@@ -54,6 +54,9 @@ public class SolarSystemPrinter  extends JFrame {
         }
 
         private void printParticle(Graphics g, Particle particle) {
+            if (!particle.isLaunched()) {
+                return;
+            }
             g.setColor(particle.getColor());
             double multiplier = SCREEN_WIDTH / 8E11;
             Vector position = particle.getPosition();

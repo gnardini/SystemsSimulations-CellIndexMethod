@@ -34,7 +34,20 @@ public class State {
 
     public State launchShip() {
 
-        Particle newShip = ship.launch().withNewData(initialShipPosition(), initialShipSpeed());
+        Particle newShip = ship.launch()
+                .withNewData(initialShipPosition(), initialShipSpeed(Parameters.SHIP_INITIAL_ADDED_SPEED, 0));
+        newShip = newShip.withOldPosition(Parameters.previousPosition(this, newShip));
+
+        return new State(sun, earth, mars, newShip);
+    }
+
+    public State withShipStartingAngle(double angle) {
+        return withShipStartingConditions(Parameters.SHIP_INITIAL_ADDED_SPEED, angle);
+    }
+
+    public State withShipStartingConditions(double speed, double angle) {
+        Particle newShip = ship.launch()
+                .withNewData(initialShipPosition(), initialShipSpeed(speed, angle));
         newShip = newShip.withOldPosition(Parameters.previousPosition(this, newShip));
 
         return new State(sun, earth, mars, newShip);
@@ -52,7 +65,7 @@ public class State {
         return new Vector(enx * totalHeight, eny * totalHeight);
     }
 
-    private Vector initialShipSpeed() {
+    private Vector initialShipSpeed(double speed, double angle) {
         double mod = earth.getPosition().norm();
         double enx =  earth.getPosition().getX() / mod;
         double eny =  earth.getPosition().getY() / mod;
@@ -60,9 +73,14 @@ public class State {
         double etx = -eny;
         double ety = enx;
 
+        double targetAngle = Math.atan2(ety, etx) - angle;
+
+        etx = Math.cos(targetAngle);
+        ety = Math.sin(targetAngle);
+
         double totalSpeed = earth.getSpeed().norm()
                 + Parameters.SHIP_INITIAL_BASE_SPEED
-                + Parameters.SHIP_INITIAL_ADDED_SPEED;
+                + speed;
 
         double xSpeed = totalSpeed * etx;
         double ySpeed = totalSpeed * ety;

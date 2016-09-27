@@ -37,7 +37,7 @@ public class Parameters {
 
     public static final double SHIP_INITIAL_HEIGHT = 1500 * KM;
     public static final double SHIP_INITIAL_BASE_SPEED = 7.12 * KM;
-    public static final double SHIP_INITIAL_ADDED_SPEED = 8 * KM;
+    public static final double SHIP_INITIAL_ADDED_SPEED = 3 * KM;
     public static final double SHIP_RADIUS = MARS_RADIUS;
     private static final double SHIP_MASS = 2E5;
     private static final Color SHIP_COLOR = Color.green;
