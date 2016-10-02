@@ -10,9 +10,14 @@ import java.util.List;
 public class FileManager {
 
     private static final String DISTANCE_OVER_TIME = "files/distance_over_time_%d.txt";
+    private static final String POSITIONS_OVER_TIME = "files/positions_over_time.txt";
 
     public void saveDistancesOverTime(List<String> distances, double initialSpeed) {
         writeTo(String.format(DISTANCE_OVER_TIME, (int) initialSpeed), distances);
+    }
+
+    public void savePositionsOverTime(List<String> positions) {
+        writeTo(POSITIONS_OVER_TIME, positions);
     }
 
     private void writeTo(String fileName, List<String> lines) {

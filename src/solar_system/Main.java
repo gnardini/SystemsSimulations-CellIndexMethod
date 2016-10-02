@@ -17,8 +17,8 @@ public class Main {
     private static final double ONE_WEEK = 7 * ONE_DAY;
     private static final double ONE_YEAR = 365 * ONE_DAY;
 
-    private static final boolean RUN_SINGLE_SIMULATION = false;
-    private static final double SINGLE_SIMULATION_DAY = 0 * ONE_DAY;
+    private static final boolean RUN_SINGLE_SIMULATION = true;
+    private static final double SINGLE_SIMULATION_DAY = 565.12 * ONE_DAY;
     private static final double SINGLE_SIMULATION_ANGLE = 0.82535 * Math.PI;
     private static final double OFFSET_STEP = 10 * ONE_DAY;
 
@@ -33,7 +33,8 @@ public class Main {
         State initialState = Parameters.initialState();
 
         if (RUN_SINGLE_SIMULATION) {
-            playSimulation(initialState.withShipStartingAngle(SINGLE_SIMULATION_ANGLE), SINGLE_SIMULATION_DAY, true);
+//            playSimulation(initialState.withShipStartingAngle(SINGLE_SIMULATION_ANGLE), 0, true);
+            playSimulation(initialState, SINGLE_SIMULATION_DAY, true);
         } else {
             runSimulationSetWithTimeOffset(initialState);
 //            runSimulationSetWithInitialAngles(initialState);
@@ -81,6 +82,7 @@ public class Main {
     }
 
     private SimulationResult playSimulation(State state, double timeOffset, boolean print) {
+        Stats stats = new Stats();
         VerletCalculator verletCalculator = new VerletCalculator();
         SolarSystemPrinter solarSystemPrinter = null;
         if (print) {
@@ -108,6 +110,9 @@ public class Main {
             totalTime += Parameters.TIME_STEP;
             Particle ship = state.getShip();
             if (ship.isLaunched()) {
+                if (totalTime % 1000 == 0) {
+                    stats.addPositions(state);
+                }
                 Particle mars = state.getMars();
 
                 double distance = ship.getPosition().distanceTo(mars.getPosition()) - ship.getRadius() - mars.getRadius();
@@ -117,10 +122,12 @@ public class Main {
                 if (ship.collidesWith(mars)) {
                     System.out.println("Collision! Travel time: " + (totalTime - timeOffset) / ONE_DAY
                         + "days. Speed: " + ship.getSpeed().norm() / Parameters.KM + " km/s");
+                    stats.printStats();
                     return new SimulationResult(totalTime - timeOffset, 0);
                 }
             }
         }
+        stats.printStats();
         return new SimulationResult(ONE_YEAR, minDistance);
     }
 
