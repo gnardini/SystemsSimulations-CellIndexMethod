@@ -9,8 +9,8 @@ import java.util.List;
 
 public class FileManager {
 
-    private static final String DISTANCE_OVER_TIME = "files/distance_over_time_%d.txt";
-    private static final String POSITIONS_OVER_TIME = "files/positions_over_time.txt";
+    private static final String DISTANCE_OVER_TIME = "octave/TP4/files/distance_over_time_%d.txt";
+    private static final String POSITIONS_OVER_TIME = "octave/TP4/files/positions_over_time.txt";
 
     public void saveDistancesOverTime(List<String> distances, double initialSpeed) {
         writeTo(String.format(DISTANCE_OVER_TIME, (int) initialSpeed), distances);
