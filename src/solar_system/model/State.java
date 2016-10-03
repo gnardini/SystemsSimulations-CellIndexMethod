@@ -7,12 +7,14 @@ public class State {
     private final Particle sun;
     private final Particle earth;
     private final Particle mars;
+    private final Particle mercury;
     private final Particle ship;
 
-    public State(Particle sun, Particle earth, Particle mars, Particle ship) {
+    public State(Particle sun, Particle earth, Particle mars, Particle mercury, Particle ship) {
         this.sun = sun;
         this.earth = earth;
         this.mars = mars;
+        this.mercury = mercury;
         this.ship = ship;
     }
 
@@ -28,6 +30,10 @@ public class State {
         return mars;
     }
 
+    public Particle getMercury() {
+        return mercury;
+    }
+
     public Particle getShip() {
         return ship;
     }
@@ -38,7 +44,7 @@ public class State {
                 .withNewData(initialShipPosition(), initialShipSpeed(Parameters.SHIP_INITIAL_ADDED_SPEED, 0));
         newShip = newShip.withOldPosition(Parameters.previousPosition(this, newShip));
 
-        return new State(sun, earth, mars, newShip);
+        return new State(sun, earth, mars, mercury, newShip);
     }
 
     public State withShipStartingAngle(double angle) {
@@ -50,7 +56,7 @@ public class State {
                 .withNewData(initialShipPosition(), initialShipSpeed(speed, angle));
         newShip = newShip.withOldPosition(Parameters.previousPosition(this, newShip));
 
-        return new State(sun, earth, mars, newShip);
+        return new State(sun, earth, mars, mercury, newShip);
     }
 
     private Vector initialShipPosition() {

@@ -50,6 +50,7 @@ public class SolarSystemPrinter  extends JFrame {
             printParticle(g, state.getSun());
             printParticle(g, state.getEarth());
             printParticle(g, state.getMars());
+            printParticle(g, state.getMercury());
             printParticle(g, state.getShip());
         }
 

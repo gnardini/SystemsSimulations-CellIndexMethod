@@ -42,4 +42,8 @@ public class Vector {
         return Math.sqrt((x - other.x) * (x - other.x) + (y - other.y) * (y - other.y));
     }
 
+    @Override
+    public String toString() {
+        return getX() + " " + getY();
+    }
 }

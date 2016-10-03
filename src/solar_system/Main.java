@@ -18,16 +18,16 @@ public class Main {
     private static final double ONE_YEAR = 365 * ONE_DAY;
 
     private static final boolean RUN_SINGLE_SIMULATION = true;
-    private static final double SINGLE_SIMULATION_DAY = 565.12 * ONE_DAY;
+    private static final double SINGLE_SIMULATION_DAY = 586.11 * ONE_DAY;
     private static final double SINGLE_SIMULATION_ANGLE = 0.82535 * Math.PI;
     private static final double OFFSET_STEP = 10 * ONE_DAY;
 
     private static final double MIN_DAY = 0 * ONE_DAY;
     private static final double MAX_DAY = 2 * ONE_YEAR;
 
-    private static final double MIN_ANGLE = 0 * Math.PI;
-    private static final double MAX_ANGLE = 2 * Math.PI;
-    private static final double ANGLE_STEP = .1 * Math.PI;
+    private static final double MIN_ANGLE = -.7196 * Math.PI;
+    private static final double MAX_ANGLE = -.7194 * Math.PI;
+    private static final double ANGLE_STEP = .00001 * Math.PI;
 
     public Main() {
         State initialState = Parameters.initialState();
@@ -36,8 +36,8 @@ public class Main {
 //            playSimulation(initialState.withShipStartingAngle(SINGLE_SIMULATION_ANGLE), 0, true);
             playSimulation(initialState, SINGLE_SIMULATION_DAY, true);
         } else {
-            runSimulationSetWithTimeOffset(initialState);
-//            runSimulationSetWithInitialAngles(initialState);
+//            runSimulationSetWithTimeOffset(initialState);
+            runSimulationSetWithInitialAngles(initialState);
         }
     }
 

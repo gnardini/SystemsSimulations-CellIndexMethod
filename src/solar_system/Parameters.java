@@ -27,6 +27,14 @@ public class Parameters {
     private static final double MARS_MASS = 6.4185E23;
     private static final Color MARS_COLOR = Color.red;
 
+    private static final double MERCURY_INITIAL_X = 57.91E6 * KM;
+    private static final double MERCURY_INITIAL_Y = 0 * KM;
+    private static final double MERCURY_INITIAL_SPEED_X = 0 * KM;
+    private static final double MERCURY_INITIAL_SPEED_Y = 48 * KM;
+    private static final double MERCURY_RADIUS = 2439.7 * KM;
+    private static final double MERCURY_MASS = 3.3011E23;
+    private static final Color MERCURY_COLOR = Color.orange;
+
     private static final double SUN_INITIAL_X = 0;
     private static final double SUN_INITIAL_Y = 0;
     private static final double SUN_INITIAL_SPEED_X = 0;
@@ -37,7 +45,7 @@ public class Parameters {
 
     public static final double SHIP_INITIAL_HEIGHT = 1500 * KM;
     public static final double SHIP_INITIAL_BASE_SPEED = 7.12 * KM;
-    public static final double SHIP_INITIAL_ADDED_SPEED = 3 * KM;
+    public static final double SHIP_INITIAL_ADDED_SPEED = 8 * KM;
     public static final double SHIP_RADIUS = MARS_RADIUS;
     private static final double SHIP_MASS = 2E5;
     private static final Color SHIP_COLOR = Color.green;
@@ -45,11 +53,12 @@ public class Parameters {
     public static final double TIME_STEP = 10;
 
     public static State initialState() {
-        State state =  new State(initialSun(), initialEarth(), initialMars(), initialShip());
+        State state =  new State(initialSun(), initialEarth(), initialMars(), initialMercury(), initialShip());
         Particle updatedMars = state.getMars().withOldPosition(previousPosition(state, state.getMars()));
         Particle updatedEarth = state.getEarth().withOldPosition(previousPosition(state, state.getEarth()));
+        Particle updatedMercury = state.getMercury().withOldPosition(previousPosition(state, state.getMercury()));
         Particle updatedShip = state.getShip().withOldPosition(previousPosition(state, state.getShip()));
-        return new State(state.getSun(), updatedEarth, updatedMars, updatedShip);
+        return new State(state.getSun(), updatedEarth, updatedMars, updatedMercury, updatedShip);
     }
 
     private static Particle initialSun() {
@@ -82,6 +91,17 @@ public class Parameters {
                 EARTH_COLOR);
     }
 
+    private static Particle initialMercury() {
+        return new Particle(
+                5,
+                new Vector(MERCURY_INITIAL_X, MERCURY_INITIAL_Y),
+                new Vector(MERCURY_INITIAL_SPEED_X, MERCURY_INITIAL_SPEED_Y),
+                MERCURY_MASS,
+                MERCURY_RADIUS,
+                MERCURY_COLOR,
+                false);
+    }
+
     private static Particle initialShip() {
         return new Particle(
                 4,
@@ -105,7 +125,7 @@ public class Parameters {
         double etx = -eny;
         double ety = enx;
 
-        double totalHeight = mod + EARTH_RADIUS + SHIP_RADIUS + SHIP_INITIAL_HEIGHT;
+        double totalHeight = mod - (EARTH_RADIUS + SHIP_RADIUS + SHIP_INITIAL_HEIGHT);
         return new Vector(enx * totalHeight, eny * totalHeight);
     }
 

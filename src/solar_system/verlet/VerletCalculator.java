@@ -13,9 +13,10 @@ public class VerletCalculator {
         Particle sun = evolveParticle(previousState.getSun(), previousState, deltaTime);
         Particle earth = evolveParticle(previousState.getEarth(), previousState, deltaTime);
         Particle mars = evolveParticle(previousState.getMars(), previousState, deltaTime);
+        Particle mercury = evolveParticle(previousState.getMercury(), previousState, deltaTime);
         Particle ship = evolveParticle(previousState.getShip(), previousState, deltaTime);
 
-        return new State(sun, earth, mars, ship);
+        return new State(sun, earth, mars, mercury, ship);
     }
 
     private Particle evolveParticle(Particle particle, State state, double deltaTime) {
@@ -37,6 +38,7 @@ public class VerletCalculator {
         return forceBetween(state.getSun(), particle)
                 .add(forceBetween(state.getEarth(), particle))
                 .add(forceBetween(state.getMars(), particle))
+                .add(forceBetween(state.getMercury(), particle))
                 .add(forceBetween(state.getShip(), particle));
     }
 
