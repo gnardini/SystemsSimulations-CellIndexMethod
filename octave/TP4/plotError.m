@@ -10,7 +10,7 @@ function result = plotError(file_name)
   axis([1 length(x)]);
   set(gca,'XTick', 0:1:length(x))
 
-  font_size = 13;
+  font_size = 16;
 
   fig=figure(1);
   FN = findall(fig,'-property','FontName');
