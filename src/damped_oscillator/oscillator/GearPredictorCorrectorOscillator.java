@@ -5,7 +5,7 @@ import damped_oscillator.model.OscillatorState;
 public class GearPredictorCorrectorOscillator implements Oscillator {
 
     private static final int[] FACTORIAL = { 1, 1, 2, 6, 24, 120 };
-    private static final double[] ALPHA = { 3.0 / 20, 251.0 / 360, 1.0, 11.0 / 18, 1.0 / 6, 1.0 / 60 };
+    private static final double[] ALPHA = { 3.0 / 16, 251.0 / 360, 1.0, 11.0 / 18, 1.0 / 6, 1.0 / 60 };
 
     @Override
     public OscillatorState updateState(OscillatorState state, double time) {
@@ -32,9 +32,8 @@ public class GearPredictorCorrectorOscillator implements Oscillator {
     }
 
     private double calculateDeltaR2(OscillatorState state, double[] predictions, double deltaTime) {
-        double[] previousPositions = state.getGearPositions();
         double deltaAcceleration =
-                calculateAcceleration(state, previousPositions[0], previousPositions[1]) - predictions[2];
+                calculateAcceleration(state, predictions[0], predictions[1]) - predictions[2];
         return deltaAcceleration * deltaTime * deltaTime / FACTORIAL[2];
     }
 
