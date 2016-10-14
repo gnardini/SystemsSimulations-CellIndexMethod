@@ -1,61 +1,67 @@
 package GranularMedium;
 
+import GranularMedium.models.Particle;
+import GranularMedium.models.Vector;
+
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by FranDepascuali on 10/9/16.
- */
 public class ParticleGenerator {
 
-  public static List<Particle> generateParticles(double L, double W, double radius, double mass, double time) {
-    List<Particle> particles = new ArrayList<Particle>();
+  public static List<Particle> generateParticles(double L, double W, double D, double mass, double time) {
+    List<Particle> particles = new ArrayList<>();
+
+    Color redColor = Color.RED;
 
     double startTime = System.currentTimeMillis();
-    int particle_number = 0;
+    int id = 0;
+
+    double minRadius = (D / 7) / 2;
+    double maxRadius = (D / 5) / 2;
 
     while (System.currentTimeMillis() - startTime < time) {
-      System.out.println("Generating particle position");
-      Point particlePosition = generateValidPosition(particles, W, L, radius);
-      System.out.println("Particle position: " + particlePosition.getX() + ", "+ particlePosition.getY());
+      double radius = minRadius + Math.random() * (maxRadius - minRadius);
+      radius = Math.max(.05, radius);
+      Vector particlePosition = generateValidPosition(particles, W, L, radius);
       particles.add(new Particle(
-              particle_number,
-              new Vector2D(particlePosition.getX(), particlePosition.getY()),
-              new Vector2D(0, 0),
-              new Vector2D(0, -9.8),
+              id,
+              new Vector(particlePosition.getX(), particlePosition.getY()),
+              new Vector(0, 0),
+              new Vector(0, -9.8),
               radius,
-              mass,
-              1.0));
+              redColor,
+              mass).calculatingOldPosition(Parameters.DELTA_TIME));
 
-      particle_number++;
+      id++;
     }
 
     return particles;
   }
 
-  private static boolean isValidPosition(double x1, double y1, double r1, double x2, double y2, double r2) {
-    return Math.pow(x1 - x2, 2) + Math.pow(y1 - y2, 2) > Math.pow(r1 + r2, 2);
-  }
-
-  private static Point generateValidPosition(List<Particle> particles, double W, double L, double radius) {
+  private static Vector generateValidPosition(List<Particle> particles, double W, double L, double radius) {
     while (true) {
+      double x = radius + Math.random() * (W - 2 * radius);
+      double y = 2 * radius + Math.random() * (L - 3 * radius);
 
-      double x = Math.random() * (W - 2 * radius) + radius;
-      double y = Math.random() * (L - 2 * radius) + radius + 1;
-
-      if (particles.size() == 0) {
-        return new Point(x, y);
-      }
-
-      for (int j = 0; j < particles.size(); j++) {
-        double x2 = particles.get(j).getPosition().getX();
-        double y2 = particles.get(j).getPosition().getY();
-        double r2 = particles.get(j).getRadius();
-
-        if (isValidPosition(x, y, radius, x2, y2, r2)) {
-          return new Point(x, y);
-        }
+      if (particles.size() == 0 || isValidPosition(particles, x, y, radius)) {
+        return new Vector(x, y);
       }
     }
   }
+
+  private static boolean isValidPosition(List<Particle> particles, double x, double y, double radius) {
+    return particles.stream().noneMatch(particle -> {
+      double x2 = particle.getPosition().getX();
+      double y2 = particle.getPosition().getY();
+      double r2 = particle.getRadius();
+
+      return isCollision(x, y, radius, x2, y2, r2);
+    });
+  }
+
+  private static boolean isCollision(double x1, double y1, double r1, double x2, double y2, double r2) {
+    return Math.pow(x1 - x2, 2) + Math.pow(y1 - y2, 2) < Math.pow(r1 + r2, 2);
+  }
+
 }

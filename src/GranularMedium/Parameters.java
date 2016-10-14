@@ -1,26 +1,35 @@
 package GranularMedium;
 
-/**
- * Created by FranDepascuali on 10/8/16.
- */
 public class Parameters {
 
-  private static double kn = Math.pow(10, 5);
-  private static double kt =  2 * kn;
-  private static double particlesMass = 0.01;
-
-  private static double particleRadious;
+  private static final double kn = Math.pow(10, 5);
+  private static final double kt =  2 * kn;
+  public static final double PARTICLES_MASS = 0.01;
+  public static final double DELTA_TIME = 1e-5;
 
   // System parameters - L > W > D
-  private static double L;
-  private static double W;
-  private static double D;
+  public static final double L = 2;
+  public static final double W = 1;
+  public static final double D = 0.5;
 
-  public Parameters(double L, double W, double D, double particleRadious) {
-    this.L = L;
-    this.W = W;
-    this.D = D;
-    this.particleRadious = particleRadious;
+  public double getL() {
+    return L;
+  }
+
+  public double getW() {
+    return W;
+  }
+
+  public double getD() {
+    return D;
+  }
+
+  public double getKn() {
+    return kn;
+  }
+
+  public double getKt() {
+    return kt;
   }
 
 }
