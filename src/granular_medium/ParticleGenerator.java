@@ -50,7 +50,7 @@ public class ParticleGenerator {
     }
   }
 
-  private static boolean isValidPosition(List<Particle> particles, double x, double y, double radius) {
+  public static boolean isValidPosition(List<Particle> particles, double x, double y, double radius) {
     return particles.stream().noneMatch(particle -> {
       double x2 = particle.getPosition().getX();
       double y2 = particle.getPosition().getY();

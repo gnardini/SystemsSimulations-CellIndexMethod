@@ -21,7 +21,14 @@ public class Simulation {
                     .sub(particle.getOldPosition())
                     .sum(force.scale(deltaTime * deltaTime / particle.getMass()));
             Vector newSpeed = particle.getPosition().sub(particle.getOldPosition()).scale(1.0 / (2.0 * deltaTime));
-            newParticles.add(particle.withNewData(newPosition, newSpeed));
+            Particle newParticle = particle.withNewData(newPosition, newSpeed);
+            if (newPosition.getY() < -1) {
+                List<Particle> allParticles = new LinkedList<>();
+                allParticles.addAll(state.getParticles());
+                allParticles.addAll(newParticles);
+                newParticle = resetParticlePosition(allParticles,  newParticle, deltaTime);
+            }
+            newParticles.add(newParticle);
         }
         return state.withNewParticles(newParticles);
     }
@@ -70,6 +77,20 @@ public class Simulation {
         }
         return particle.getRadius() + neighbour.getRadius()
                 - neighbour.getPosition().sub(particle.getPosition()).norm();
+    }
+
+    private static Particle resetParticlePosition(List<Particle> particles, Particle particle, double deltaTime) {
+        double radius = particle.getRadius();
+        while (true) {
+            double x = radius + Math.random() * (Parameters.W - 2 * radius);
+            double y = Parameters.L;
+
+            if (particles.size() == 0 || ParticleGenerator.isValidPosition(particles, x, y, radius)) {
+                return particle
+                        .withNewData(new Vector(x, y), particle.getSpeed())
+                        .calculatingOldPosition(deltaTime);
+            }
+        }
     }
 
 }

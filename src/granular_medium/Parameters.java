@@ -10,7 +10,7 @@ public class Parameters {
   // System parameters - L > W > D
   public static final double L = 2;
   public static final double W = 1;
-  public static final double D = 0.5;
+  public static final double D = 0.25;
 
   public double getL() {
     return L;
