@@ -1,8 +1,8 @@
-package GranularMedium.ui;
+package granular_medium.ui;
 
-import GranularMedium.Parameters;
-import GranularMedium.models.Particle;
-import GranularMedium.models.State;
+import granular_medium.Parameters;
+import granular_medium.models.Particle;
+import granular_medium.models.State;
 
 import javax.swing.*;
 import java.awt.*;

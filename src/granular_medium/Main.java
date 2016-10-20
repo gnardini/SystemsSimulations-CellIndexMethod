@@ -1,8 +1,8 @@
-package GranularMedium;
+package granular_medium;
 
-import GranularMedium.models.Particle;
-import GranularMedium.models.State;
-import GranularMedium.ui.Printer;
+import granular_medium.models.Particle;
+import granular_medium.models.State;
+import granular_medium.ui.Printer;
 
 import java.util.List;
 

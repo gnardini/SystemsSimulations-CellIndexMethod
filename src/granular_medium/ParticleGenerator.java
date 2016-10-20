@@ -1,7 +1,7 @@
-package GranularMedium;
+package granular_medium;
 
-import GranularMedium.models.Particle;
-import GranularMedium.models.Vector;
+import granular_medium.models.Particle;
+import granular_medium.models.Vector;
 
 import java.awt.*;
 import java.util.ArrayList;

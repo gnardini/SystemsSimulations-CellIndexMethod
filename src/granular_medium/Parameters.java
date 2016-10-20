@@ -1,4 +1,4 @@
-package GranularMedium;
+package granular_medium;
 
 public class Parameters {
 

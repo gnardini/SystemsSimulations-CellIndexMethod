@@ -1,4 +1,4 @@
-package GranularMedium.models;
+package granular_medium.models;
 
 public class Vector {
 

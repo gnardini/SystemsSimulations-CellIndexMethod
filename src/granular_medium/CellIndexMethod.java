@@ -1,8 +1,8 @@
-package GranularMedium;
+package granular_medium;
 
-import GranularMedium.models.Cell;
-import GranularMedium.models.Particle;
-import GranularMedium.models.State;
+import granular_medium.models.Cell;
+import granular_medium.models.Particle;
+import granular_medium.models.State;
 
 import java.awt.*;
 

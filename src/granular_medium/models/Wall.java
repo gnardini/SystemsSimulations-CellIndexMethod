@@ -1,7 +1,7 @@
-package GranularMedium.models;
+package granular_medium.models;
 
-import GranularMedium.Parameters;
-import GranularMedium.Simulation;
+import granular_medium.Parameters;
+import granular_medium.Simulation;
 
 public enum Wall {
     //TOP(new Vector(0, 1), particle -> 1 + particle.getRadius()),

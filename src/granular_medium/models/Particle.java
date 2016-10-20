@@ -1,4 +1,4 @@
-package GranularMedium.models;
+package granular_medium.models;
 
 import java.awt.*;
 import java.util.HashSet;

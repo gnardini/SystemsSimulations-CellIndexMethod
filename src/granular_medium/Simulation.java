@@ -1,9 +1,9 @@
-package GranularMedium;
+package granular_medium;
 
-import GranularMedium.models.Particle;
-import GranularMedium.models.State;
-import GranularMedium.models.Vector;
-import GranularMedium.models.Wall;
+import granular_medium.models.Particle;
+import granular_medium.models.State;
+import granular_medium.models.Vector;
+import granular_medium.models.Wall;
 
 import java.util.LinkedList;
 import java.util.List;
