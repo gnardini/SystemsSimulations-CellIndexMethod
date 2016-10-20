@@ -1,14 +1,18 @@
 package granular_medium.models;
 
+import granular_medium.Parameters;
+
 import java.util.List;
 
 public class State {
 
     private Board board;
+    private final Parameters parameters;
     private int interactionRadius;
     public int particleCount;
 
-    public State(Board board, int interactionRadius) {
+    public State(Board board, Parameters parameters, int interactionRadius) {
+        this.parameters = parameters;
         if (Double.valueOf(board.getL()) / board.getM() <= interactionRadius) {
             throw new IllegalArgumentException("Invalid M");
         }
@@ -17,8 +21,14 @@ public class State {
         this.interactionRadius = interactionRadius;
     }
 
-    public State(List<Particle> particles, int M, double L, int interactionRadius) {
-        this(new Board(M, L, particles), interactionRadius);
+    public State(List<Particle> particles, int M, Parameters parameters, int interactionRadius) {
+        this(new Board(M, parameters.getL() + 1, particles), parameters, interactionRadius);
+    }
+
+    public double calculateKineticEnergy() {
+        return getParticles().stream()
+                .mapToDouble(particle -> .5 * particle.getMass() * Math.pow(particle.getSpeed().norm(), 2))
+                .sum();
     }
 
     public int getM() {
@@ -26,7 +36,15 @@ public class State {
     }
 
     public double getL() {
-        return board.getL();
+        return parameters.getL();
+    }
+
+    public double getW() {
+        return parameters.getW();
+    }
+
+    public double getD() {
+        return parameters.getD();
     }
 
     public int getInteractionRadius() {
@@ -47,11 +65,11 @@ public class State {
     }
 
     public State copy() {
-        return new State(board.copy(), interactionRadius);
+        return new State(board.copy(), parameters, interactionRadius);
     }
 
     public State withNewParticles(List<Particle> particles) {
-        return new State(board.withNewParticles(particles), interactionRadius);
+        return new State(board.withNewParticles(particles), parameters, interactionRadius);
     }
 
     public double getDensity() {

@@ -1,5 +1,6 @@
-package granular_medium;
+package granular_medium.simulation;
 
+import granular_medium.Parameters;
 import granular_medium.models.Particle;
 import granular_medium.models.Vector;
 

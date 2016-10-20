@@ -1,4 +1,4 @@
-package granular_medium;
+package granular_medium.simulation;
 
 import granular_medium.models.Cell;
 import granular_medium.models.Particle;

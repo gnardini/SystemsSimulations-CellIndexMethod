@@ -1,12 +1,12 @@
 package granular_medium.models;
 
 import granular_medium.Parameters;
-import granular_medium.Simulation;
+import granular_medium.simulation.Simulation;
 
 public enum Wall {
     BOTTOM(new Vector(0, -1), Wall::bottomWallOverlap),
-    LEFT(new Vector(-1, 0), particle -> particle.getRadius() - particle.getX()),
-    RIGHT(new Vector(1, 0), particle -> particle.getX() - Parameters.W + particle.getRadius());
+    LEFT(new Vector(-1, 0), (parameters, particle) -> particle.getRadius() - particle.getX()),
+    RIGHT(new Vector(1, 0), (parameters, particle) -> particle.getX() - parameters.getW() + particle.getRadius());
 
     private final Vector normalVector;
     private final OverlapCalculator overlapCalculator;
@@ -16,8 +16,8 @@ public enum Wall {
         this.overlapCalculator = overlapCalculator;
     }
 
-    public Vector getForce(Particle particle, double kn, double kt) {
-        double overlap = overlapCalculator.calculateOverlap(particle);
+    public Vector getForce(Parameters parameters, Particle particle, double kn, double kt) {
+        double overlap = overlapCalculator.calculateOverlap(parameters, particle);
         if (overlap < 0) {
             return Vector.ZERO;
         }
@@ -31,12 +31,12 @@ public enum Wall {
     }
 
     interface OverlapCalculator {
-        double calculateOverlap(Particle particle);
+        double calculateOverlap(Parameters parameters, Particle particle);
     }
 
-    private static double bottomWallOverlap(Particle particle) {
+    private static double bottomWallOverlap(Parameters parameters, Particle particle) {
         double x = particle.getX();
-        if (isInRange(x, Parameters.W / 2, Parameters.D / 2)
+        if (isInRange(x, parameters.getW() / 2, parameters.getD() / 2)
                 || particle.getY() < 0) {
             return 0;
         }

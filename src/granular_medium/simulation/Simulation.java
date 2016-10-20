@@ -1,5 +1,6 @@
-package granular_medium;
+package granular_medium.simulation;
 
+import granular_medium.Parameters;
 import granular_medium.models.Particle;
 import granular_medium.models.State;
 import granular_medium.models.Vector;
@@ -16,7 +17,7 @@ public class Simulation {
         cellIndexMethod.calculateDistance(state);
         List<Particle> newParticles = new LinkedList<>();
         for (Particle particle : state.getParticles()) {
-            Vector force = getForces(particle, parameters.getKn(), parameters.getKt());
+            Vector force = getForces(parameters, particle, parameters.getKn(), parameters.getKt());
             Vector newPosition = particle.getPosition().scale(2.0)
                     .sub(particle.getOldPosition())
                     .sum(force.scale(deltaTime * deltaTime / particle.getMass()));
@@ -26,14 +27,14 @@ public class Simulation {
                 List<Particle> allParticles = new LinkedList<>();
                 allParticles.addAll(state.getParticles());
                 allParticles.addAll(newParticles);
-                newParticle = resetParticlePosition(allParticles,  newParticle, deltaTime);
+                newParticle = resetParticlePosition(parameters, allParticles,  newParticle, deltaTime);
             }
             newParticles.add(newParticle);
         }
         return state.withNewParticles(newParticles);
     }
 
-    private static Vector getForces(Particle particle, double kn, double kt) {
+    private static Vector getForces(Parameters parameters, Particle particle, double kn, double kt) {
         Vector totalForce = particle.getAcceleration().scale(particle.getMass());
         for (Particle neighbor : particle.getNeighbours()) {
             double overlap = getOverlap(particle, neighbor);
@@ -48,7 +49,7 @@ public class Simulation {
                 totalForce = totalForce.sum(force);
             }
         }
-        totalForce = totalForce.sum(wallCollision(particle, kn, kt));
+        totalForce = totalForce.sum(wallCollision(parameters, particle, kn, kt));
         return totalForce;
     }
 
@@ -65,9 +66,9 @@ public class Simulation {
         return normalForce.sum(tangencialForce);
     }
 
-    private static Vector wallCollision(Particle particle, double kn, double kt) {
+    private static Vector wallCollision(Parameters parameters, Particle particle, double kn, double kt) {
         return Stream.of(Wall.values())
-                .map(wall -> wall.getForce(particle, kn, kt))
+                .map(wall -> wall.getForce(parameters, particle, kn, kt))
                 .reduce(Vector.ZERO, Vector::sum);
     }
 
@@ -79,15 +80,16 @@ public class Simulation {
                 - neighbour.getPosition().sub(particle.getPosition()).norm();
     }
 
-    private static Particle resetParticlePosition(List<Particle> particles, Particle particle, double deltaTime) {
+    private static Particle resetParticlePosition(
+            Parameters parameters, List<Particle> particles, Particle particle, double deltaTime) {
         double radius = particle.getRadius();
         while (true) {
-            double x = radius + Math.random() * (Parameters.W - 2 * radius);
-            double y = Parameters.L;
+            double x = radius + Math.random() * (parameters.getW() - 2 * radius);
+            double y = parameters.getL();
 
             if (particles.size() == 0 || ParticleGenerator.isValidPosition(particles, x, y, radius)) {
                 return particle
-                        .withNewData(new Vector(x, y), particle.getSpeed())
+                        .withNewData(new Vector(x, y), new Vector(0, 0))
                         .calculatingOldPosition(deltaTime);
             }
         }

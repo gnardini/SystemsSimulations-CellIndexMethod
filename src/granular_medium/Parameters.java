@@ -8,9 +8,21 @@ public class Parameters {
   public static final double DELTA_TIME = 1e-5;
 
   // System parameters - L > W > D
-  public static final double L = 2;
-  public static final double W = 1;
-  public static final double D = 0.25;
+  private final double L;
+  private final double W;
+  private final double D;
+
+  public Parameters() {
+    L = 2;
+    W = 1;
+    D = .25;
+  }
+
+  public Parameters(double l, double w, double d) {
+    L = l;
+    W = w;
+    D = d;
+  }
 
   public double getL() {
     return L;
