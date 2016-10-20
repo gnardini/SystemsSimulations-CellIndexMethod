@@ -69,8 +69,15 @@ public class Printer extends JFrame {
                     (int) (SCREEN_SIZE - Parameters.L * multiplier),
                     (int) (DRAWING_MARGIN + Parameters.W * multiplier),
                     SCREEN_SIZE);
+            double gapCenter = Parameters.W / 2;
+            double gapRadius = Parameters.D / 2;
             g.drawLine(
                     DRAWING_MARGIN,
+                    SCREEN_SIZE,
+                    (int) (DRAWING_MARGIN + (gapCenter - gapRadius) * multiplier),
+                    SCREEN_SIZE);
+            g.drawLine(
+                    (int) (DRAWING_MARGIN + (gapCenter + gapRadius) * multiplier),
                     SCREEN_SIZE,
                     (int) (DRAWING_MARGIN + Parameters.W * multiplier),
                     SCREEN_SIZE);
