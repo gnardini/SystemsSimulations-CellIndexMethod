@@ -5,17 +5,29 @@ import granular_medium.models.State;
 import granular_medium.simulation.ParticleGenerator;
 import granular_medium.simulation.Simulation;
 import granular_medium.ui.Printer;
+import granular_medium.ui.UiPrinter;
 
 import java.util.List;
 
 public class Main {
 
+  private static int SIMULATION_TIME = 2;
   private static int CREATION_TIME_MILLIS = 200;
   private static int M = 10;
 
   public static void main(String[] args) {
+//    makeVisualRun();
+    makeSilentRun();
+  }
+
+  private static void makeVisualRun() {
+    Printer printer = new UiPrinter();
+    makeRun(printer, new Parameters());
+  }
+
+  private static void makeSilentRun() {
     Printer printer = new Printer() {};
-    // makeRun(printer, new Parameters());
+
     makeRun(printer, new Parameters(2, 1, .25));
     makeRun(printer, new Parameters(4, 1, .25));
     makeRun(printer, new Parameters(6, 1, .25));
@@ -32,16 +44,15 @@ public class Main {
     Stats stats = new Stats();
 
     double time = 0;
-    double totalTime = 1;
 
     int steps = 0;
-    while (time < totalTime) {
+    while (time < SIMULATION_TIME && !stats.equilibriumReached()) {
       state = Simulation.simulateStep(state, parameters, Parameters.DELTA_TIME);
       time += Parameters.DELTA_TIME;
       stats.update(state, Parameters.DELTA_TIME, steps % 1000 == 0);
       steps++;
-      if (steps % 10000 == 0) {
-        System.out.println(time);
+      if (steps % (5 * 10000) == 0) {
+        System.out.println(time + " " + state.calculateKineticEnergy());
         printer.updateState(state);
       }
     }

@@ -7,20 +7,20 @@ import granular_medium.models.State;
 import javax.swing.*;
 import java.awt.*;
 
-public class UiPrinter extends JFrame {
+public class UiPrinter extends JFrame implements Printer {
 
     public static final int SCREEN_SIZE = 500;
     public static final int MARGIN = 20;
 
     private Panel statePanel;
 
-    public UiPrinter(State state) {
+    public UiPrinter() {
         setTitle("SS");
 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(SCREEN_SIZE, SCREEN_SIZE + MARGIN * 3);
 
-        statePanel = new Panel(state);
+        statePanel = new Panel();
         add(statePanel);
         pack();
 
@@ -38,10 +38,6 @@ public class UiPrinter extends JFrame {
 
         private State state;
 
-        public Panel(State state) {
-            this.state = state;
-        }
-
         public void setState(State state) {
             this.state = state;
         }
@@ -54,6 +50,7 @@ public class UiPrinter extends JFrame {
         @Override
         public void paintComponent(Graphics g) {
             super.paintComponent(g);
+            if (state == null) return;
 
             double multiplier = SCREEN_SIZE / state.getL();
             //multiplier *= .7;
