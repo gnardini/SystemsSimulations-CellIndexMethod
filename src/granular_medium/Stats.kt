@@ -11,7 +11,8 @@ class Stats(particleCount: Int, parameters: Parameters) {
 
     private var totalTime: Double = .0
     private val particleStream = mutableListOf<Double>()
-    private val energyOverTime = sortedMapOf<Double, Double>()
+    private val energyOverTime = mutableListOf<Double>()
+    private var nextStep = DELTA_T
     private var timeToEquilibrium: Double? = null
 
     private val parameters: Parameters
@@ -22,16 +23,18 @@ class Stats(particleCount: Int, parameters: Parameters) {
         this.particleCount = particleCount
     }
 
-    fun update(state: State, deltaTime: Double, isStep: Boolean) {
-        if (isStep && totalTime > 0) {
+    fun update(state: State, deltaTime: Double) {
+        totalTime += deltaTime
+        if (totalTime >= nextStep) {
+            nextStep += DELTA_T
+            println(totalTime)
             val kineticEnergy = state.calculateKineticEnergy()
-            energyOverTime.put(totalTime, kineticEnergy)
+            energyOverTime.add(kineticEnergy)
             if (timeToEquilibrium == null && kineticEnergy < EQUILIBRIUM_ENERGY) {
                 timeToEquilibrium = totalTime
                 println("Equilibrium reached after $timeToEquilibrium seconds")
             }
         }
-        totalTime += deltaTime
         particleStream.addAll(
                 state.particles
                     .filter { particle -> particle.oldPosition.y >= 0 && particle.position.y < 0 }
@@ -46,7 +49,7 @@ class Stats(particleCount: Int, parameters: Parameters) {
         particleStream.forEach { time -> print("$time, ") }
         println()
 //        println("The kinetic energy over time was:")
-//        energyOverTime.forEach { entry -> println("${entry.key} \t ${entry.value}") }
+//        energyOverTime.forEach { entry -> println("$entry") }
         calculateAccumulatedStream().forEach { count ->
             print(", $count")
         }

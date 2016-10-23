@@ -7,7 +7,6 @@ import granular_medium.simulation.Simulation;
 import granular_medium.ui.Printer;
 import granular_medium.ui.UiPrinter;
 
-import java.io.File;
 import java.util.List;
 
 public class Main {
@@ -44,7 +43,7 @@ public class Main {
 
   private static void recordingStatistics() {
     Printer printer = new Printer() {};
-    Stats stats = makeRun(printer, new Parameters(6, 1, 2));
+    Stats stats = makeRun(printer, new Parameters(6, 4, 2));
     FileManager.saveParticlesOverTime(stats);
     FileManager.saveEnergy(stats);
   }
@@ -58,7 +57,7 @@ public class Main {
     while (time < SIMULATION_TIME && !stats.equilibriumReached()) {
       state = Simulation.simulateStep(state, parameters, Parameters.DELTA_TIME);
       time += Parameters.DELTA_TIME;
-      stats.update(state, Parameters.DELTA_TIME, steps % 1000 == 0);
+      stats.update(state, Parameters.DELTA_TIME);
       steps++;
       if (steps % 1000 == 0) {
 //        System.out.println(time + " " + state.calculateKineticEnergy());
