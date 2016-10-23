@@ -41,7 +41,7 @@ public class Main {
   }
 
   private static Stats run(Parameters parameters, State state, Printer printer) {
-    Stats stats = new Stats();
+    Stats stats = new Stats(state.particleCount, parameters);
 
     double time = 0;
 

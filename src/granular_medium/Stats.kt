@@ -2,7 +2,7 @@ package granular_medium
 
 import granular_medium.models.State
 
-class Stats {
+class Stats(particleCount: Int, parameters: Parameters) {
 
     companion object {
         private val EQUILIBRIUM_ENERGY = 1E-8
@@ -13,6 +13,15 @@ class Stats {
     private val particleStream = mutableListOf<Double>()
     private val energyOverTime = sortedMapOf<Double, Double>()
     private var timeToEquilibrium: Double? = null
+
+
+    private val parameters: Parameters
+    private val particleCount: Int
+
+    init {
+        this.parameters = parameters
+        this.particleCount = particleCount
+    }
 
     fun update(state: State, deltaTime: Double, isStep: Boolean) {
         if (isStep && totalTime > 0) {
