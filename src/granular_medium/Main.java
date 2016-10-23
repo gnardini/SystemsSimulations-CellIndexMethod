@@ -11,13 +11,13 @@ import java.util.List;
 
 public class Main {
 
-  private static int SIMULATION_TIME = 2;
+  private static double SIMULATION_TIME = 1.5;
   private static int CREATION_TIME_MILLIS = 200;
   private static int M = 10;
 
   public static void main(String[] args) {
-//    makeVisualRun();
-    makeSilentRun();
+    makeVisualRun();
+//    makeSilentRun();
   }
 
   private static void makeVisualRun() {
@@ -51,8 +51,8 @@ public class Main {
       time += Parameters.DELTA_TIME;
       stats.update(state, Parameters.DELTA_TIME, steps % 1000 == 0);
       steps++;
-      if (steps % (5 * 10000) == 0) {
-        System.out.println(time + " " + state.calculateKineticEnergy());
+      if (steps % 1000 == 0) {
+//        System.out.println(time + " " + state.calculateKineticEnergy());
         printer.updateState(state);
       }
     }
