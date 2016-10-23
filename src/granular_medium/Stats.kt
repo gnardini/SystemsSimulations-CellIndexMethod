@@ -27,7 +27,6 @@ class Stats(particleCount: Int, parameters: Parameters) {
         totalTime += deltaTime
         if (totalTime >= nextStep) {
             nextStep += DELTA_T
-            println(totalTime)
             val kineticEnergy = state.calculateKineticEnergy()
             energyOverTime.add(kineticEnergy)
             if (timeToEquilibrium == null && kineticEnergy < EQUILIBRIUM_ENERGY) {
