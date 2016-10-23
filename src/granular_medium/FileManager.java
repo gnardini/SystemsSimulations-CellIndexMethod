@@ -28,7 +28,13 @@ public class FileManager {
 
     public static void saveEnergy(Stats stats) {
         System.out.println("Saving energy...");
+        List<String> energy = new ArrayList();
 
+        for (double particles: stats.getEnergyOverTime()) {
+            energy.add(String.valueOf(particles));
+        }
+
+        writeTo(String.format(CINETIC_ENERGY_PATH, (int)stats.getParameters().getL(), stats.getParticleCount()), energy);
     }
 
     private static void writeTo(String fileName, List<String> lines) {

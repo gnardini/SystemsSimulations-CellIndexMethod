@@ -15,7 +15,7 @@ public class Parameters {
   public Parameters() {
     L = 2;
     W = 1;
-    D = .25;
+    D = 2;
   }
 
   public Parameters(double l, double w, double d) {

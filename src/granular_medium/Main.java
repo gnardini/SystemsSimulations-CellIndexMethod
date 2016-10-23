@@ -13,7 +13,7 @@ public class Main {
 
   private static double SIMULATION_TIME = 10;
   private static int CREATION_TIME_MILLIS = 200;
-  private static int M = 10;
+  private static int M = 15;
 
   public static void main(String[] args) {
 //    makeVisualRun();
@@ -60,7 +60,6 @@ public class Main {
       stats.update(state, Parameters.DELTA_TIME);
       steps++;
       if (steps % 1000 == 0) {
-//        System.out.println(time + " " + state.calculateKineticEnergy());
         printer.updateState(state);
       }
     }
