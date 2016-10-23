@@ -14,9 +14,8 @@ class Stats(particleCount: Int, parameters: Parameters) {
     private val energyOverTime = sortedMapOf<Double, Double>()
     private var timeToEquilibrium: Double? = null
 
-
     private val parameters: Parameters
-    private val particleCount: Int
+    public val particleCount: Int
 
     init {
         this.parameters = parameters
@@ -66,4 +65,6 @@ class Stats(particleCount: Int, parameters: Parameters) {
         return particlesPerTimeFrame
     }
 
+    fun getParticleStream() = particleStream
+    fun getParameters() = parameters
 }

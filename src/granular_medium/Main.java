@@ -7,17 +7,19 @@ import granular_medium.simulation.Simulation;
 import granular_medium.ui.Printer;
 import granular_medium.ui.UiPrinter;
 
+import java.io.File;
 import java.util.List;
 
 public class Main {
 
-  private static double SIMULATION_TIME = 1.5;
+  private static double SIMULATION_TIME = 10;
   private static int CREATION_TIME_MILLIS = 200;
   private static int M = 10;
 
   public static void main(String[] args) {
-    makeVisualRun();
+//    makeVisualRun();
 //    makeSilentRun();
+    recordingStatistics();
   }
 
   private static void makeVisualRun() {
@@ -28,16 +30,23 @@ public class Main {
   private static void makeSilentRun() {
     Printer printer = new Printer() {};
 
-    makeRun(printer, new Parameters(2, 1, .25));
-    makeRun(printer, new Parameters(4, 1, .25));
-    makeRun(printer, new Parameters(6, 1, .25));
+//    makeRun(printer, new Parameters(2, 1, .25));
+//    makeRun(printer, new Parameters(4, 1, .25));
+    makeRun(printer, new Parameters(6, 1, 2));
   }
 
-  private static void makeRun(Printer printer, Parameters parameters) {
+  private static Stats makeRun(Printer printer, Parameters parameters) {
     List<Particle> particles = ParticleGenerator.generateParticles(
             parameters.getL(), parameters.getW(), parameters.getD(), Parameters.PARTICLES_MASS, CREATION_TIME_MILLIS);
     State state = new State(particles, M, parameters, 0);
-    run(parameters, state, printer);
+    return run(parameters, state, printer);
+  }
+
+  private static void recordingStatistics() {
+    Printer printer = new Printer() {};
+    Stats stats = makeRun(printer, new Parameters(6, 1, 2));
+    FileManager.saveParticlesOverTime(stats);
+    FileManager.saveEnergy(stats);
   }
 
   private static Stats run(Parameters parameters, State state, Printer printer) {
@@ -56,7 +65,6 @@ public class Main {
         printer.updateState(state);
       }
     }
-    stats.print();
     return stats;
   }
 
