@@ -25,23 +25,26 @@ public class ParticleGenerator {
       double radius = minRadius + Math.random() * (maxRadius - minRadius);
       radius = Math.max(.05, radius);
       Vector particlePosition = generateValidPosition(particles, W, L, radius);
-      particles.add(new Particle(
-              id,
-              new Vector(particlePosition.getX(), particlePosition.getY()),
-              new Vector(0, 0),
-              new Vector(0, -9.8),
-              radius,
-              redColor,
-              mass).calculatingOldPosition(Parameters.DELTA_TIME));
+      if (particlePosition != null) {
+        particles.add(new Particle(
+                id,
+                new Vector(particlePosition.getX(), particlePosition.getY()),
+                new Vector(0, 0),
+                new Vector(0, -9.8),
+                radius,
+                redColor,
+                mass).calculatingOldPosition(Parameters.DELTA_TIME));
 
-      id++;
+        id++;
+      }
     }
-
+    System.out.println(particles.size());
     return particles;
   }
 
   private static Vector generateValidPosition(List<Particle> particles, double W, double L, double radius) {
-    while (true) {
+    int tries = 0;
+    while (tries++ < 10) {
       double x = radius + Math.random() * (W - 2 * radius);
       double y = 2 * radius + Math.random() * (L - 3 * radius);
 
@@ -49,6 +52,7 @@ public class ParticleGenerator {
         return new Vector(x, y);
       }
     }
+    return null;
   }
 
   public static boolean isValidPosition(List<Particle> particles, double x, double y, double radius) {

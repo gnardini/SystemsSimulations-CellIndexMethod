@@ -13,9 +13,9 @@ public class Parameters {
   private final double D;
 
   public Parameters() {
-    L = 2;
-    W = 1;
-    D = 2;
+    L = 5;
+    W = 4;
+    D = 0;
   }
 
   public Parameters(double l, double w, double d) {

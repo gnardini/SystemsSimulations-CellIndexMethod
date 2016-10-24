@@ -11,7 +11,7 @@ import java.util.List;
 
 public class Main {
 
-  private static double SIMULATION_TIME = 10;
+  private static double SIMULATION_TIME = 20;
   private static int CREATION_TIME_MILLIS = 200;
   private static int M = 15;
 
@@ -43,14 +43,13 @@ public class Main {
 
   private static void recordingStatistics() {
     Printer printer = new Printer() {};
-    Stats stats = makeRun(printer, new Parameters(6, 4, 2));
+    Stats stats = makeRun(printer, new Parameters(6, 5, 2));
     FileManager.saveParticlesOverTime(stats);
     FileManager.saveEnergy(stats);
   }
 
   private static Stats run(Parameters parameters, State state, Printer printer) {
     Stats stats = new Stats(state.particleCount, parameters);
-
     double time = 0;
 
     int steps = 0;
@@ -59,7 +58,8 @@ public class Main {
       time += Parameters.DELTA_TIME;
       stats.update(state, Parameters.DELTA_TIME);
       steps++;
-      if (steps % 1000 == 0) {
+      if (steps % 10000 == 0) {
+        System.out.println(time + " " + state.calculateKineticEnergy());
         printer.updateState(state);
       }
     }
