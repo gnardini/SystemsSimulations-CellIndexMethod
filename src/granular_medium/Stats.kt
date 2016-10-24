@@ -15,6 +15,8 @@ class Stats(particleCount: Int, parameters: Parameters) {
     private var nextStep = DELTA_T
     private var timeToEquilibrium: Double? = null
 
+    val stateList = mutableListOf<State>()
+
     private val parameters: Parameters
     public val particleCount: Int
 
@@ -26,6 +28,7 @@ class Stats(particleCount: Int, parameters: Parameters) {
     fun update(state: State, deltaTime: Double) {
         totalTime += deltaTime
         if (totalTime >= nextStep) {
+            stateList.add(state)
             nextStep += DELTA_T
             val kineticEnergy = state.calculateKineticEnergy()
             energyOverTime.add(kineticEnergy)

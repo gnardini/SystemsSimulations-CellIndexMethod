@@ -18,7 +18,27 @@ public class Main {
   public static void main(String[] args) {
 //    makeVisualRun();
 //    makeSilentRun();
-    recordingStatistics();
+//    recordingStatistics();
+    makeVisualRecordingRun();
+  }
+
+  private static void makeVisualRecordingRun() {
+    Printer printer = new Printer() {};
+    Stats stats = makeRun(printer, new Parameters(6, 5, 2));
+    List<State> stateList = stats.getStateList();
+    printer = new UiPrinter();
+    for (State state: stateList) {
+      printer.updateState(state);
+      delay(100);
+    }
+  }
+
+  private static void delay(long millis) {
+    try {
+      Thread.sleep(millis);
+    } catch (Exception e) {
+
+    }
   }
 
   private static void makeVisualRun() {
@@ -43,7 +63,7 @@ public class Main {
 
   private static void recordingStatistics() {
     Printer printer = new Printer() {};
-    Stats stats = makeRun(printer, new Parameters(6, 5, 2));
+    Stats stats = makeRun(printer, new Parameters(6, 5, 0));
     FileManager.saveParticlesOverTime(stats);
     FileManager.saveEnergy(stats);
   }
