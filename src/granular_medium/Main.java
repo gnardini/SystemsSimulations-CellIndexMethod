@@ -16,10 +16,10 @@ public class Main {
   private static int M = 15;
 
   public static void main(String[] args) {
-//    makeVisualRun();
+    makeVisualRun();
 //    makeSilentRun();
 //    recordingStatistics();
-    makeVisualRecordingRun();
+//    makeVisualRecordingRun();
   }
 
   private static void makeVisualRecordingRun() {
@@ -43,7 +43,7 @@ public class Main {
 
   private static void makeVisualRun() {
     Printer printer = new UiPrinter();
-    makeRun(printer, new Parameters());
+    makeRun(printer, new Parameters(6, 5, 2));
   }
 
   private static void makeSilentRun() {
@@ -78,8 +78,10 @@ public class Main {
       time += Parameters.DELTA_TIME;
       stats.update(state, Parameters.DELTA_TIME);
       steps++;
-      if (steps % 10000 == 0) {
-        System.out.println(time + " " + state.calculateKineticEnergy());
+      if (steps % 1000 == 0) {
+        if (steps % 10000 == 0) {
+          System.out.println(time + " " + state.calculateKineticEnergy());
+        }
         printer.updateState(state);
       }
     }

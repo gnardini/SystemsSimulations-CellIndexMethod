@@ -85,19 +85,16 @@ public class Simulation {
     private static Particle resetParticlePosition(
             Parameters parameters, List<Particle> particles, Particle particle, double deltaTime) {
         double radius = particle.getRadius();
-        int tries = 0;
-        while (tries++ < 10) {
-            double x = radius + Math.random() * (parameters.getW() - 2 * radius);
-            double y = parameters.getL();
-
-            if (particles.size() == 0 || ParticleGenerator.isValidPosition(particles, x, y, radius)) {
-                return particle
-                        .withNewData(new Vector(x, y), new Vector(0, 0))
-                        .calculatingOldPosition(deltaTime);
-            }
-        }
-        System.out.println("Losing particle");
-        return null;
+        double x, y;
+        int run = 0;
+        do {
+            x = radius + Math.random() * (parameters.getW() - 2 * radius);
+            y = parameters.getL() + run * radius;
+            run++;
+        } while (!ParticleGenerator.isValidPosition(particles, x, y, radius));
+        return particle
+                .withNewData(new Vector(x, y), Vector.ZERO)
+                .calculatingOldPosition(deltaTime);
     }
 
 }
