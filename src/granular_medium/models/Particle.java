@@ -9,6 +9,7 @@ public class Particle {
     private final int id;
     private final Vector position;
     private final Vector speed;
+    private final Vector force;
     private final Vector acceleration;
     private final double radius;
     private final double mass;
@@ -24,19 +25,25 @@ public class Particle {
 
     public Particle(int id, Vector position, Vector speed, Vector acceleration, double radius, Color color,
                     double mass, Vector oldPosition) {
-        this(id, position, speed, acceleration, radius, color, mass, new HashSet<>(), oldPosition);
+        this(id, position, speed, acceleration, radius, color, mass, new HashSet<>(), oldPosition, Vector.ZERO);
+    }
+
+    public Particle(int id, Vector position, Vector speed, Vector acceleration, double radius, Color color,
+                    double mass, Vector oldPosition, Vector force) {
+        this(id, position, speed, acceleration, radius, color, mass, new HashSet<>(), oldPosition, force);
     }
 
     public Particle(int id, Vector position, Vector speed, Vector acceleration, double radius, Color color,
                     double mass, Set<Particle> neighbours) {
-        this(id, position, speed, acceleration, radius, color, mass, neighbours, new Vector(0, 0));
+        this(id, position, speed, acceleration, radius, color, mass, neighbours, Vector.ZERO, Vector.ZERO);
     }
 
     public Particle(int id, Vector position, Vector speed, Vector acceleration, double radius, Color color,
-                    double mass, Set<Particle> neighbours, Vector oldPosition) {
+                    double mass, Set<Particle> neighbours, Vector oldPosition, Vector force) {
         this.id = id;
         this.position = position;
         this.speed = speed;
+        this.force = force;
         this.acceleration = acceleration;
         this.radius = radius;
         this.color = color;
@@ -66,7 +73,14 @@ public class Particle {
     }
 
     public Color getColor() {
-        return color;
+        double multiplier = Math.min(1, Math.max(0, 1 - getPreassure() / 150));
+        int red = color.getRed();
+        int green = color.getGreen();
+        int blue = color.getBlue();
+        return new Color(
+                (int) (red * multiplier),
+                (int) (green * multiplier),
+                (int) (blue * multiplier));
     }
 
     public Vector getSpeed() {
@@ -79,6 +93,10 @@ public class Particle {
 
     public double getMass() {
         return mass;
+    }
+
+    public double getPreassure() {
+        return force.norm();
     }
 
     public Set<Particle> getNeighbours() {
@@ -156,6 +174,10 @@ public class Particle {
 
     public Particle withPositions(int id, double x, double y, double radius) {
         return new Particle(id, new Vector(x, y), speed, acceleration, radius, color, mass, position);
+    }
+
+    public Particle withForce(Vector force) {
+        return new Particle(id, position, speed, acceleration, radius, color, mass, oldPosition, force);
     }
 
     public Particle calculatingOldPosition(double deltaTime) {

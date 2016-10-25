@@ -22,7 +22,7 @@ public class Simulation {
                     .sub(particle.getOldPosition())
                     .sum(force.scale(deltaTime * deltaTime / particle.getMass()));
             Vector newSpeed = particle.getPosition().sub(particle.getOldPosition()).scale(1.0 / (2.0 * deltaTime));
-            Particle newParticle = particle.withNewData(newPosition, newSpeed);
+            Particle newParticle = particle.withNewData(newPosition, newSpeed).withForce(force);
             if (newPosition.getY() < -1) {
                 List<Particle> allParticles = new LinkedList<>();
                 allParticles.addAll(state.getParticles());

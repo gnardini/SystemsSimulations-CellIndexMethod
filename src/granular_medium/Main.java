@@ -11,14 +11,14 @@ import java.util.List;
 
 public class Main {
 
-  private static double SIMULATION_TIME = 1;
+  private static double SIMULATION_TIME = 20;
   private static int CREATION_TIME_MILLIS = 200;
   private static int M = 15;
 
   public static void main(String[] args) {
-//    makeVisualRun();
+    makeVisualRun();
 //    makeSilentRun();
-    recordingStatistics();
+//    recordingStatistics();
   }
 
   private static void makeVisualRecordingRun() {
@@ -50,7 +50,7 @@ public class Main {
 
 //    makeRunWithDefaultParticles(printer, new Parameters(2, 1, .25));
 //    makeRunWithDefaultParticles(printer, new Parameters(4, 1, .25));
-    makeRunWithDefaultParticles(printer, new Parameters(6, 1, 2));
+    makeRunWithDefaultParticles(printer, new Parameters(6, 5, 2));
   }
 
   private static Stats makeRunWithDefaultParticles(Printer printer, Parameters parameters) {
