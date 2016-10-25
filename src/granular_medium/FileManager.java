@@ -10,8 +10,8 @@ import java.util.List;
 
 public class FileManager {
 
-    private static final String STREAM_PATH = "octave/TP5/files/stream_particles_%d_L_%d_D_%d.txt";
-    private static final String CINETIC_ENERGY_PATH = "octave/TP5/files/cinetic_particles_%d_L_%d_D_%d.txt";
+    private static final String STREAM_PATH = "octave/TP5/files/stream_particles=%d_L=%d_D=%d.txt";
+    private static final String CINETIC_ENERGY_PATH = "octave/TP5/files/cinetic_particles=%d_L=%d_D=%d.txt";
 
     public static void saveParticlesOverTime(Stats stats) {
 

@@ -11,20 +11,19 @@ import java.util.List;
 
 public class Main {
 
-  private static double SIMULATION_TIME = 20;
+  private static double SIMULATION_TIME = 1;
   private static int CREATION_TIME_MILLIS = 200;
   private static int M = 15;
 
   public static void main(String[] args) {
-    makeVisualRun();
+//    makeVisualRun();
 //    makeSilentRun();
-//    recordingStatistics();
-//    makeVisualRecordingRun();
+    recordingStatistics();
   }
 
   private static void makeVisualRecordingRun() {
     Printer printer = new Printer() {};
-    Stats stats = makeRun(printer, new Parameters(6, 5, 2));
+    Stats stats = makeRunWithDefaultParticles(printer, new Parameters(6, 5, 2));
     List<State> stateList = stats.getStateList();
     printer = new UiPrinter();
     for (State state: stateList) {
@@ -43,29 +42,62 @@ public class Main {
 
   private static void makeVisualRun() {
     Printer printer = new UiPrinter();
-    makeRun(printer, new Parameters(6, 5, 2));
+    makeRunWithDefaultParticles(printer, new Parameters(6, 5, 2));
   }
 
   private static void makeSilentRun() {
     Printer printer = new Printer() {};
 
-//    makeRun(printer, new Parameters(2, 1, .25));
-//    makeRun(printer, new Parameters(4, 1, .25));
-    makeRun(printer, new Parameters(6, 1, 2));
+//    makeRunWithDefaultParticles(printer, new Parameters(2, 1, .25));
+//    makeRunWithDefaultParticles(printer, new Parameters(4, 1, .25));
+    makeRunWithDefaultParticles(printer, new Parameters(6, 1, 2));
   }
 
-  private static Stats makeRun(Printer printer, Parameters parameters) {
+  private static Stats makeRunWithDefaultParticles(Printer printer, Parameters parameters) {
     List<Particle> particles = ParticleGenerator.generateParticles(
             parameters.getL(), parameters.getW(), parameters.getD(), Parameters.PARTICLES_MASS, CREATION_TIME_MILLIS);
+    return makeRun(particles, printer, parameters);
+  }
+
+  private static Stats makeRun(List<Particle> particles, Printer printer, Parameters parameters) {
     State state = new State(particles, M, parameters, 0);
     return run(parameters, state, printer);
   }
 
+  private static void recordStatisticsWithHole(Printer printer, Parameters parameters) {
+    List<Particle> particles = ParticleGenerator.generateParticles(
+            parameters.getL(), parameters.getW(), parameters.getD(), Parameters.PARTICLES_MASS, CREATION_TIME_MILLIS);
+
+    System.out.println("Running simulation with hole");
+    Stats withHole = makeRun(particles, new Printer() {}, parameters);
+    particles.forEach(p -> p.clearNeighbours());
+
+    System.out.println("Running simulation without hole");
+    Stats withoutHole = makeRun(particles, new Printer() {}, new Parameters(parameters.getL(), parameters.getW(), 0));
+
+    System.out.println("Using D = 2: Max Energy: " + withHole.getEnergyOverTime().stream().mapToDouble(Double::doubleValue).max());
+    System.out.println("Using D = 0: Max Energy: " + withoutHole.getEnergyOverTime().stream().mapToDouble(Double::doubleValue).max());
+
+    FileManager.saveParticlesOverTime(withHole);
+    FileManager.saveEnergy(withHole);
+
+    FileManager.saveParticlesOverTime(withoutHole);
+    FileManager.saveEnergy(withoutHole);
+  }
+
   private static void recordingStatistics() {
     Printer printer = new Printer() {};
-    Stats stats = makeRun(printer, new Parameters(6, 5, 0));
-    FileManager.saveParticlesOverTime(stats);
-    FileManager.saveEnergy(stats);
+
+    recordStatisticsWithHole(printer, new Parameters(6, 4, 2));
+
+//    Stats stats1 = makeRunWithDefaultParticles(printer, new Parameters(6, 5, 0));
+//    Stats stats2 = makeRunWithDefaultParticles(printer, new Parameters(6, 5, 2));
+//
+//    System.out.println("Using D = 0: Max Energy: " + stats1.getEnergyOverTime().stream().mapToDouble(Double::doubleValue).max());
+//    System.out.println("Using D = 2: Max Energy: " + stats2.getEnergyOverTime().stream().mapToDouble(Double::doubleValue).max());
+//
+//    FileManager.saveParticlesOverTime(stats);
+//    FileManager.saveEnergy(stats);
   }
 
   private static Stats run(Parameters parameters, State state, Printer printer) {
