@@ -7,6 +7,7 @@ class Stats(particleCount: Int, parameters: Parameters) {
     companion object {
         private val EQUILIBRIUM_ENERGY = 1E-8
         private val DELTA_T = .1
+        private val STREAM_DELTA = .5
     }
 
     private var totalTime: Double = .0
@@ -61,10 +62,10 @@ class Stats(particleCount: Int, parameters: Parameters) {
     fun getEnergyOverTime() = energyOverTime
 
     fun calculateAccumulatedStream(): DoubleArray {
-        val totalFrames = (totalTime / DELTA_T).toInt()
+        val totalFrames = (totalTime / STREAM_DELTA).toInt()
         val particlesPerTimeFrame = DoubleArray(totalFrames)
         particleStream.forEach { time ->
-            val timeIndex = (time / DELTA_T).toInt()
+            val timeIndex = (time / STREAM_DELTA).toInt()
             (timeIndex..totalFrames - 1).forEach { index -> particlesPerTimeFrame[index]++ }
         }
         return particlesPerTimeFrame

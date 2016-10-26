@@ -107,7 +107,7 @@ public class Particle {
         return oldPosition;
     }
 
-    public boolean isInRadius(Particle otherParticle, int interactionRadius) {
+    public boolean isInRadius(Particle otherParticle, double interactionRadius) {
         double xDiff = Math.abs(getX() - otherParticle.getX());
         double yDiff = Math.abs(getY() - otherParticle.getY());
         double totalDiff = Math.sqrt(xDiff * xDiff + yDiff * yDiff);

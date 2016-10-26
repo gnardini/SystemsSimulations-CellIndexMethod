@@ -13,12 +13,12 @@ public class Main {
 
   private static double SIMULATION_TIME = 20;
   private static int CREATION_TIME_MILLIS = 200;
-  private static int M = 15;
+  private static int M = 20;
 
   public static void main(String[] args) {
-    makeVisualRun();
+//    makeVisualRun();
 //    makeSilentRun();
-//    recordingStatistics();
+    recordingStatistics();
   }
 
   private static void makeVisualRecordingRun() {
@@ -28,7 +28,7 @@ public class Main {
     printer = new UiPrinter();
     for (State state: stateList) {
       printer.updateState(state);
-      delay(100);
+      delay(50);
     }
   }
 
@@ -42,7 +42,7 @@ public class Main {
 
   private static void makeVisualRun() {
     Printer printer = new UiPrinter();
-    makeRunWithDefaultParticles(printer, new Parameters(6, 5, 2));
+    makeRunWithDefaultParticles(printer, new Parameters(6, 4, 0));
   }
 
   private static void makeSilentRun() {
@@ -60,7 +60,7 @@ public class Main {
   }
 
   private static Stats makeRun(List<Particle> particles, Printer printer, Parameters parameters) {
-    State state = new State(particles, M, parameters, 0);
+    State state = new State(particles, M, parameters, Math.max(parameters.getD() / 5, .1));
     return run(parameters, state, printer);
   }
 
@@ -69,8 +69,8 @@ public class Main {
             parameters.getL(), parameters.getW(), parameters.getD(), Parameters.PARTICLES_MASS, CREATION_TIME_MILLIS);
 
     System.out.println("Running simulation with hole");
-    Stats withHole = makeRun(particles, new Printer() {}, parameters);
-    particles.forEach(p -> p.clearNeighbours());
+    Stats withHole = makeRun(particles, printer, parameters);
+    particles.forEach(Particle::clearNeighbours);
 
     System.out.println("Running simulation without hole");
     Stats withoutHole = makeRun(particles, new Printer() {}, new Parameters(parameters.getL(), parameters.getW(), 0));

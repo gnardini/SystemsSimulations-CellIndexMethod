@@ -23,7 +23,6 @@ public class ParticleGenerator {
 
     while (System.currentTimeMillis() - startTime < time) {
       double radius = minRadius + Math.random() * (maxRadius - minRadius);
-      radius = Math.max(.05, radius);
       Vector particlePosition = generateValidPosition(particles, W, L, radius);
       if (particlePosition != null) {
         particles.add(new Particle(

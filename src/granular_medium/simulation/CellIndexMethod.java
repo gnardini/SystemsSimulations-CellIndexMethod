@@ -21,7 +21,7 @@ public class CellIndexMethod {
         }
     }
 
-    private void updateCellNeighbours(Cell cell, int interactionRadius) {
+    private void updateCellNeighbours(Cell cell, double interactionRadius) {
         for (Particle particle1 : cell.getParticles()) {
             for (Particle particle2 : cell.getParticles()) {
                 if (particle1.getId() != particle2.getId() && particle1.isInRadius(particle2, interactionRadius)) {

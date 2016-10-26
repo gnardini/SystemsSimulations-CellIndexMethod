@@ -8,10 +8,10 @@ public class State {
 
     private Board board;
     private final Parameters parameters;
-    private int interactionRadius;
+    private double interactionRadius;
     public int particleCount;
 
-    public State(Board board, Parameters parameters, int interactionRadius) {
+    public State(Board board, Parameters parameters, double interactionRadius) {
         this.parameters = parameters;
         if (Double.valueOf(board.getL()) / board.getM() <= interactionRadius) {
             throw new IllegalArgumentException("Invalid M");
@@ -21,14 +21,18 @@ public class State {
         this.interactionRadius = interactionRadius;
     }
 
-    public State(List<Particle> particles, int M, Parameters parameters, int interactionRadius) {
-        this(new Board(M, parameters.getL() + 1, particles), parameters, interactionRadius);
+    public State(List<Particle> particles, int M, Parameters parameters, double interactionRadius) {
+        this(
+                new Board((int) (parameters.getL() / (2*interactionRadius)), parameters.getL() + 1, particles),
+                parameters,
+                interactionRadius);
     }
 
     public double calculateKineticEnergy() {
         return getParticles().stream()
                 .mapToDouble(particle -> .5 * particle.getMass() * Math.pow(particle.getSpeed().norm(), 2))
-                .sum();
+                .sum()
+                / getParticles().size();
     }
 
     public int getM() {
@@ -47,7 +51,7 @@ public class State {
         return parameters.getD();
     }
 
-    public int getInteractionRadius() {
+    public double getInteractionRadius() {
         return interactionRadius;
     }
 
