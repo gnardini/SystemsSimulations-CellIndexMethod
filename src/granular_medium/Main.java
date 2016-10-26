@@ -11,9 +11,13 @@ import java.util.List;
 
 public class Main {
 
-  private static double SIMULATION_TIME = 20;
+  private static double SIMULATION_TIME = 30;
   private static int CREATION_TIME_MILLIS = 200;
   private static int M = 20;
+
+  private static int L = 8;
+  private static int W = 4;
+  private static int D = 2;
 
   public static void main(String[] args) {
 //    makeVisualRun();
@@ -42,7 +46,7 @@ public class Main {
 
   private static void makeVisualRun() {
     Printer printer = new UiPrinter();
-    makeRunWithDefaultParticles(printer, new Parameters(6, 4, 0));
+    makeRunWithDefaultParticles(printer, new Parameters(6, 4, 2));
   }
 
   private static void makeSilentRun() {
@@ -56,11 +60,11 @@ public class Main {
   private static Stats makeRunWithDefaultParticles(Printer printer, Parameters parameters) {
     List<Particle> particles = ParticleGenerator.generateParticles(
             parameters.getL(), parameters.getW(), parameters.getD(), Parameters.PARTICLES_MASS, CREATION_TIME_MILLIS);
-    return makeRun(particles, printer, parameters);
+    return makeRun(particles, printer, parameters, parameters.getD());
   }
 
-  private static Stats makeRun(List<Particle> particles, Printer printer, Parameters parameters) {
-    State state = new State(particles, M, parameters, Math.max(parameters.getD() / 5, .1));
+  private static Stats makeRun(List<Particle> particles, Printer printer, Parameters parameters, double D) {
+    State state = new State(particles, M, parameters, D / 5);
     return run(parameters, state, printer);
   }
 
@@ -69,11 +73,12 @@ public class Main {
             parameters.getL(), parameters.getW(), parameters.getD(), Parameters.PARTICLES_MASS, CREATION_TIME_MILLIS);
 
     System.out.println("Running simulation with hole");
-    Stats withHole = makeRun(particles, printer, parameters);
+    Stats withHole = makeRun(particles, printer, parameters, parameters.getD());
     particles.forEach(Particle::clearNeighbours);
 
     System.out.println("Running simulation without hole");
-    Stats withoutHole = makeRun(particles, new Printer() {}, new Parameters(parameters.getL(), parameters.getW(), 0));
+    Stats withoutHole = makeRun(
+            particles, new Printer() {}, new Parameters(parameters.getL(), parameters.getW(), 0), parameters.getD());
 
     System.out.println("Using D = 2: Max Energy: " + withHole.getEnergyOverTime().stream().mapToDouble(Double::doubleValue).max());
     System.out.println("Using D = 0: Max Energy: " + withoutHole.getEnergyOverTime().stream().mapToDouble(Double::doubleValue).max());
@@ -88,7 +93,7 @@ public class Main {
   private static void recordingStatistics() {
     Printer printer = new Printer() {};
 
-    recordStatisticsWithHole(printer, new Parameters(6, 4, 2));
+    recordStatisticsWithHole(printer, new Parameters(L, W, D));
 
 //    Stats stats1 = makeRunWithDefaultParticles(printer, new Parameters(6, 5, 0));
 //    Stats stats2 = makeRunWithDefaultParticles(printer, new Parameters(6, 5, 2));

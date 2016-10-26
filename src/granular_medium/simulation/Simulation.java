@@ -1,5 +1,6 @@
 package granular_medium.simulation;
 
+import com.sun.tools.javac.util.Pair;
 import granular_medium.Parameters;
 import granular_medium.models.Particle;
 import granular_medium.models.State;
@@ -17,12 +18,13 @@ public class Simulation {
         cellIndexMethod.calculateDistance(state);
         List<Particle> newParticles = new LinkedList<>();
         for (Particle particle : state.getParticles()) {
-            Vector force = getForces(parameters, particle, parameters.getKn(), parameters.getKt());
+            Pair<Vector, Double> forces = getForces(parameters, particle, parameters.getKn(), parameters.getKt());
+            Vector force = forces.fst;
             Vector newPosition = particle.getPosition().scale(2.0)
                     .sub(particle.getOldPosition())
                     .sum(force.scale(deltaTime * deltaTime / particle.getMass()));
             Vector newSpeed = particle.getPosition().sub(particle.getOldPosition()).scale(1.0 / (2.0 * deltaTime));
-            Particle newParticle = particle.withNewData(newPosition, newSpeed).withForce(force);
+            Particle newParticle = particle.withNewData(newPosition, newSpeed).withForce(forces.snd);
             if (newPosition.getY() < -1) {
                 List<Particle> allParticles = new LinkedList<>();
                 allParticles.addAll(state.getParticles());
@@ -36,8 +38,9 @@ public class Simulation {
         return state.withNewParticles(newParticles);
     }
 
-    private static Vector getForces(Parameters parameters, Particle particle, double kn, double kt) {
+    private static Pair<Vector, Double> getForces(Parameters parameters, Particle particle, double kn, double kt) {
         Vector totalForce = particle.getAcceleration().scale(particle.getMass());
+        double totalForceModule = 0;
         for (Particle neighbor : particle.getNeighbours()) {
             double overlap = getOverlap(particle, neighbor);
 
@@ -49,10 +52,13 @@ public class Simulation {
 
                 Vector force = getForce(normalVersor, tangencialVersor, relativeSpeed, overlap, kn, kt);
                 totalForce = totalForce.sum(force);
+                totalForceModule += force.norm();
             }
         }
-        totalForce = totalForce.sum(wallCollision(parameters, particle, kn, kt));
-        return totalForce;
+        Vector wallForce = wallCollision(parameters, particle, kn, kt);
+        totalForce = totalForce.sum(wallForce);
+        totalForceModule += wallForce.norm();
+        return new Pair<>(totalForce, totalForceModule);
     }
 
     private static Vector getNormalVersor(Particle particle, Particle neighbour) {

@@ -5,7 +5,6 @@ import granular_medium.models.State
 class Stats(particleCount: Int, parameters: Parameters) {
 
     companion object {
-        private val EQUILIBRIUM_ENERGY = 1E-8
         private val DELTA_T = .1
         private val STREAM_DELTA = .5
     }
@@ -14,7 +13,6 @@ class Stats(particleCount: Int, parameters: Parameters) {
     private val particleStream = mutableListOf<Double>()
     private val energyOverTime = mutableListOf<Double>()
     private var nextStep = DELTA_T
-    private var timeToEquilibrium: Double? = null
 
     val stateList = mutableListOf<State>()
 
@@ -33,10 +31,6 @@ class Stats(particleCount: Int, parameters: Parameters) {
             nextStep += DELTA_T
             val kineticEnergy = state.calculateKineticEnergy()
             energyOverTime.add(kineticEnergy)
-            if (timeToEquilibrium == null && kineticEnergy < EQUILIBRIUM_ENERGY) {
-                timeToEquilibrium = totalTime
-                println("Equilibrium reached after $timeToEquilibrium seconds")
-            }
         }
         particleStream.addAll(
                 state.particles
@@ -58,7 +52,7 @@ class Stats(particleCount: Int, parameters: Parameters) {
         }
     }
 
-    fun equilibriumReached() = timeToEquilibrium != null
+    fun equilibriumReached() = false
     fun getEnergyOverTime() = energyOverTime
 
     fun calculateAccumulatedStream(): DoubleArray {
