@@ -5,11 +5,11 @@ x = load(file_name);
 h = zeros(length(x), 1);
 
 for i = 2:length(x)
-  h(i) = (x(i) - x(i-1)) / 0.1;
+  h(i) = (x(i) - x(i-1)) / 0.5;
 endfor
 
 t = 1:length(h);
-t = t .* 0.1;
+t = t .* 0.5;
 
 m = mean(h);
 M = zeros(length(t), 1);
