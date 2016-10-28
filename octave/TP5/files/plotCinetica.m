@@ -5,7 +5,7 @@ x = load(file_name);
 t = 1:length(x);
 t = t .* 0.1;
 
-plot(t,x)
+semilogy(t,x)
 
 title ("Energía Cinética");
 

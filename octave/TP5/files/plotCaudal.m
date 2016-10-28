@@ -11,7 +11,7 @@ endfor
 t = 1:length(h);
 t = t .* 0.5;
 
-m = mean(h);
+m = mean(h)
 M = zeros(length(t), 1);
 for i = 1: length(t)
   M(i) = m;
