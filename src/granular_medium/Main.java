@@ -11,18 +11,19 @@ import java.util.List;
 
 public class Main {
 
-  private static double SIMULATION_TIME = 30;
+  private static double SIMULATION_TIME = 40;
   private static int CREATION_TIME_MILLIS = 200;
   private static int M = 20;
 
-  private static int L = 8;
+  private static int L = 5;
   private static int W = 4;
-  private static int D = 2;
+  private static int D = 0;
+  private static int PARTICLE_GENERATION_D = 2;
 
   public static void main(String[] args) {
-//    makeVisualRun();
+    makeVisualRun();
 //    makeSilentRun();
-    recordingStatistics();
+//    recordingStatistics();
   }
 
   private static void makeVisualRecordingRun() {
@@ -46,7 +47,7 @@ public class Main {
 
   private static void makeVisualRun() {
     Printer printer = new UiPrinter();
-    makeRunWithDefaultParticles(printer, new Parameters(6, 4, 2));
+    makeRunWithDefaultParticles(printer, new Parameters(L, W, D));
   }
 
   private static void makeSilentRun() {
@@ -59,8 +60,8 @@ public class Main {
 
   private static Stats makeRunWithDefaultParticles(Printer printer, Parameters parameters) {
     List<Particle> particles = ParticleGenerator.generateParticles(
-            parameters.getL(), parameters.getW(), parameters.getD(), Parameters.PARTICLES_MASS, CREATION_TIME_MILLIS);
-    return makeRun(particles, printer, parameters, parameters.getD());
+            parameters.getL(), parameters.getW(), PARTICLE_GENERATION_D, Parameters.PARTICLES_MASS, CREATION_TIME_MILLIS);
+    return makeRun(particles, printer, parameters, PARTICLE_GENERATION_D);
   }
 
   private static Stats makeRun(List<Particle> particles, Printer printer, Parameters parameters, double D) {
