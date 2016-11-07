@@ -11,16 +11,17 @@ public class Particle {
     private Vector acceleration;
     private double radius;
     private double mass;
-    private Color color;
+
+    private Parameters parameters;
 
     public Particle(Parameters parameters, int id, double radius, Vector position, Vector speed, Vector acceleration) {
+        this.parameters = parameters;
         this.id = id;
         this.radius = radius;
         this.position = position;
         this.speed = speed;
         this.acceleration = acceleration;
         this.mass = parameters.getMass();
-        this.color = Color.RED;
     }
 
     public Vector getPosition() {
@@ -32,7 +33,11 @@ public class Particle {
     }
 
     public Color getColor() {
-        return color;
+        int color = (int) (speed.norm() * 255 / parameters.getDesiredSpeed());
+        if (color > 255) {
+            color = 255;
+        }
+        return new Color(color, 0, 0);
     }
 
     @Override
