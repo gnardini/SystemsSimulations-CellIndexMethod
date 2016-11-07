@@ -28,6 +28,18 @@ public class Particle {
         return position;
     }
 
+    public double getX() {
+        return position.getX();
+    }
+
+    public double getY() {
+        return position.getY();
+    }
+
+    public Vector getSpeed() {
+        return speed;
+    }
+
     public double getRadius() {
         return radius;
     }
@@ -38,6 +50,11 @@ public class Particle {
             color = 255;
         }
         return new Color(color, 0, 0);
+    }
+
+    @Override
+    public Particle clone() {
+        return new Particle(parameters, id, radius, position, speed, acceleration);
     }
 
     @Override
