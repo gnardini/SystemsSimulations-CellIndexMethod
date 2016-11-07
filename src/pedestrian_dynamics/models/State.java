@@ -10,6 +10,7 @@ public class State {
     private final Parameters parameters;
     private double interactionRadius;
     public int particleCount;
+    private double currentTime = 0.0;
 
     public State(Board board, Parameters parameters, double interactionRadius) {
         this.parameters = parameters;
@@ -19,6 +20,11 @@ public class State {
         this.board = board;
         this.particleCount = board.getParticles().size();
         this.interactionRadius = interactionRadius;
+    }
+
+    public State(Board board, Parameters parameters, double interactionRadius, double time) {
+        this(board, parameters, interactionRadius);
+        this.currentTime = time;
     }
 
     public State(Parameters parameters, List<Particle> particles, double interactionRadius) {
@@ -76,11 +82,15 @@ public class State {
     }
 
     public State withNewParticles(List<Particle> particles) {
-        return new State(board.withNewParticles(particles), parameters, interactionRadius);
+        return new State(board.withNewParticles(particles), parameters, interactionRadius, currentTime + parameters.getDeltaTime());
     }
 
     public double getDensity() {
         return particleCount / Math.pow(board.getL(), 2);
+    }
+
+    public double getCurrentTime() {
+        return currentTime;
     }
 
 }
