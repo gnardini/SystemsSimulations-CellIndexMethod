@@ -16,7 +16,10 @@ public class ParticleGenerator {
         while (id < parameters.getParticleCount()) {
             double radius = randomRadius(parameters);
             Vector particlePosition = generateValidPosition(particles, parameters.getW(), parameters.getL(), radius);
-            particles.add(new Particle(parameters, id, radius, particlePosition, new Vector(0, 0), new Vector(0, 0)));
+            particles.add(
+                    new Particle(parameters, id, radius, particlePosition, Vector.ZERO, Vector.ZERO, Vector.ZERO, 0)
+                            .calculatingOldPosition(parameters.getDeltaTime())
+            );
             id++;
         }
         return particles;

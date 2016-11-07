@@ -3,18 +3,31 @@ package pedestrian_dynamics.models;
 import pedestrian_dynamics.Parameters;
 
 import java.awt.*;
+import java.util.HashSet;
+import java.util.Set;
 
 public class Particle {
-    private int id;
-    private Vector position;
-    private Vector speed;
-    private Vector acceleration;
-    private double radius;
-    private double mass;
+
+    private final int id;
+    private final Vector position;
+    private final Vector speed;
+    private final Vector acceleration;
+    private final double radius;
+    private final double mass;
+
+    private final Vector oldPosition;
+    private final double force;
+    private final Set<Particle> neighbours;
 
     private Parameters parameters;
 
-    public Particle(Parameters parameters, int id, double radius, Vector position, Vector speed, Vector acceleration) {
+    public Particle(Parameters parameters, int id, double radius, Vector position, Vector speed, Vector acceleration,
+                    Vector oldPosition, double force) {
+        this(parameters, id, radius, position, speed, acceleration, oldPosition, force, new HashSet<>());
+    }
+
+    public Particle(Parameters parameters, int id, double radius, Vector position, Vector speed, Vector acceleration,
+                    Vector oldPosition, double force, Set<Particle> neighbours) {
         this.parameters = parameters;
         this.id = id;
         this.radius = radius;
@@ -22,6 +35,13 @@ public class Particle {
         this.speed = speed;
         this.acceleration = acceleration;
         this.mass = parameters.getMass();
+        this.oldPosition = oldPosition;
+        this.force = force;
+        this.neighbours = neighbours;
+    }
+
+    public int getId() {
+        return id;
     }
 
     public Vector getPosition() {
@@ -44,6 +64,26 @@ public class Particle {
         return radius;
     }
 
+    public double getMass() {
+        return mass;
+    }
+
+    public Vector getAcceleration() {
+        return acceleration;
+    }
+
+    public Set<Particle> getNeighbours() {
+        return neighbours;
+    }
+
+    public Vector getOldPosition() {
+        return oldPosition;
+    }
+
+    public void addNeighbour(Particle particle) {
+        neighbours.add(particle);
+    }
+
     public Color getColor() {
         int color = (int) (speed.norm() * 255 / parameters.getDesiredSpeed());
         if (color > 255) {
@@ -52,9 +92,37 @@ public class Particle {
         return new Color(color, 0, 0);
     }
 
+    public boolean isInRadius(Particle otherParticle, double interactionRadius) {
+        double xDiff = Math.abs(getX() - otherParticle.getX());
+        double yDiff = Math.abs(getY() - otherParticle.getY());
+        double totalDiff = Math.sqrt(xDiff * xDiff + yDiff * yDiff);
+        totalDiff -= radius;
+        totalDiff -= otherParticle.radius;
+        return totalDiff <= interactionRadius;
+    }
+
+    public Particle withPositions(int id, double x, double y, double radius) {
+        return new Particle(parameters, id, radius, new Vector(x, y), speed, acceleration, position, force);
+    }
+
+    public Particle withNewData(Vector newPosition, Vector newSpeed) {
+        return new Particle(parameters, id, radius, newPosition, newSpeed, acceleration, position, force);
+    }
+
+    public Particle withForce(double force) {
+        return new Particle(parameters, id, radius, position, speed, acceleration, oldPosition, force);
+    }
+
+    public Particle calculatingOldPosition(double deltaTime) {
+        Vector calculatedOldPosition = position
+                .sum(speed.scale(-deltaTime))
+                .sum(acceleration.scale(deltaTime * deltaTime / 2 * mass));
+        return new Particle(parameters, id, radius, position, speed, acceleration, calculatedOldPosition, force);
+    }
+
     @Override
     public Particle clone() {
-        return new Particle(parameters, id, radius, position, speed, acceleration);
+        return new Particle(parameters, id, radius, position, speed, acceleration, oldPosition, force);
     }
 
     @Override

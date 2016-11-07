@@ -4,11 +4,13 @@ class Parameters(val particleCount: Int, val desiredSpeed: Double, val deltaTime
     val l = 20
     val w = 20
     val d = 1.2
-    val minParticleRadius = 0.5
-    val maxParticleRadius = 0.58
+    val minParticleRadius = 0.5 / 2
+    val maxParticleRadius = 0.58 / 2
     val mass = 75
     val a = 2000.0
     val b = 0.08
     val kn = 1.2e5
     val kt = 2.4e5
+    val targetSpeed = 1
+    val tao = -.5
 }
