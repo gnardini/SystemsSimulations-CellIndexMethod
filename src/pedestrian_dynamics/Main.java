@@ -9,9 +9,15 @@ import pedestrian_dynamics.ui.ParticlesLeftPrinter;
 import pedestrian_dynamics.ui.Printer;
 import pedestrian_dynamics.ui.UiPrinter;
 
+import java.io.IOException;
+import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public class Main {
@@ -43,7 +49,7 @@ public class Main {
         }
     }
 
-    private static void run(State initialState, Printer printer) {
+    private static Stats run(State initialState, Printer printer) {
         Stats stats = new Stats(PARAMETERS);
         double time = 0;
         int steps = 0;
@@ -69,6 +75,7 @@ public class Main {
         }
         System.out.println(stats.getTimesToLeave());
 //        System.out.println(String.format("Total time: %s", stats.getTotalTime()));
+        return stats;
     }
 
     private static void runMultiple() {
@@ -100,7 +107,8 @@ public class Main {
         IntStream.rangeClosed(1, 10).forEach(t -> {
             executors.submit(() -> {
                 State initialState = new State(PARAMETERS, ParticleGenerator.generateParticles(PARAMETERS), PARAMETERS.getD());
-                run(initialState, printer);
+                Stats stats = run(initialState, printer);
+                write(DESIRED_SPEED, t, stats.getTimesToLeave());
                 System.out.println(String.format("Run number %d: ", t));
             });
         });
@@ -112,4 +120,21 @@ public class Main {
         // How many steps we need to get the desired fps with the delta time given
         return (int) (1 / DELTA_TIME) / FRAMES_PER_SECOND;
     }
+
+    private static void write(double velocity, int sample, List<Double> particlesTime) {
+
+        List<String> lines = particlesTime.stream().map(String::valueOf).collect(Collectors.toList());
+        writeTo(OUTPUT_PATH + velocity + "_" + sample + ".txt", lines);
+    }
+
+    private static void writeTo(String fileName, List<String> lines) {
+        Path path = Paths.get(fileName);
+        try {
+            Files.write(path, lines, Charset.forName("UTF-8"));
+        } catch (IOException ioException) {
+            ioException.printStackTrace();
+        }
+    }
+
+    private static final String OUTPUT_PATH = "octave/TP6/files/";
 }
