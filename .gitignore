@@ -245,5 +245,7 @@ octave/TP4/files/*
 !octave/TP4/files/*.m
 octave/TP5/files/*
 !octave/TP5/files/*.m
+octave/TP6/files/*
+!octave/TP6/files/*.m
 
 octave-workspace
