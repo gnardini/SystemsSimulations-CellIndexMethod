@@ -85,7 +85,7 @@ public class Particle {
     }
 
     public Color getColor() {
-        int color = (int) (speed.norm() * 255 / parameters.getDesiredSpeed());
+        int color = (int) (speed.norm() * 255 / parameters.getTargetSpeed());
         if (color > 255) {
             color = 255;
         }
