@@ -10,6 +10,8 @@ import pedestrian_dynamics.ui.Printer;
 import pedestrian_dynamics.ui.UiPrinter;
 
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.stream.IntStream;
 
 public class Main {
@@ -25,7 +27,8 @@ public class Main {
 
     public static void main(String[] args) {
         if (MULTIPLE) {
-            runMultiple();
+//            runMultiple();
+            runMultiThread(2.6);
         } else {
             List<Particle> particles = ParticleGenerator.generateParticles(PARAMETERS);
             State initialState = new State(PARAMETERS, particles, PARAMETERS.getD());
@@ -80,13 +83,29 @@ public class Main {
 
         while (currentVelocity < finalVelocity) {
             System.out.println(String.format("---------- Calculating for desired speed: %s ----------", currentVelocity));
-            IntStream.range(1, timesPerVelocity).forEach(t -> {
+            IntStream.rangeClosed(1, timesPerVelocity).forEach(t -> {
                 System.out.println(String.format("Run number %d: ", t));
                 State initialState = new State(PARAMETERS, ParticleGenerator.generateParticles(PARAMETERS), PARAMETERS.getD());
                 run(initialState, printer);
             });
             currentVelocity += deltaVelocity;
         }
+    }
+
+    private static void runMultiThread(double time) {
+        System.out.println(String.format("---------- Calculating for desired speed: %s ----------", time));
+        ExecutorService executors = Executors.newFixedThreadPool(10);
+        Printer printer = new NullPrinter();
+
+        IntStream.rangeClosed(1, 10).forEach(t -> {
+            executors.submit(() -> {
+                State initialState = new State(PARAMETERS, ParticleGenerator.generateParticles(PARAMETERS), PARAMETERS.getD());
+                run(initialState, printer);
+                System.out.println(String.format("Run number %d: ", t));
+            });
+        });
+
+        executors.shutdown();
     }
 
     private static int stepsToPrint() {
