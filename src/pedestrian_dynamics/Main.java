@@ -34,7 +34,9 @@ public class Main {
     public static void main(String[] args) {
         try {
             if (MULTIPLE) {
-                runMultiple();
+                runMultiple(5);
+//                for (int i = 1; i <= 5; i++)
+//                    runAll(0.8, 6.1, 0.2, i);
             } else {
                 Parameters parameters = new Parameters(PARTICLE_COUNT, DESIRED_SPEED, DELTA_TIME);
                 List<Particle> particles = ParticleGenerator.generateParticles(parameters);
@@ -53,6 +55,7 @@ public class Main {
         }
     }
 
+    // A single run
     private static Stats run(State initialState, Printer printer, Parameters parameters) {
         Stats stats = new Stats(parameters);
         double time = 0;
@@ -81,9 +84,9 @@ public class Main {
         return stats;
     }
 
-    private static void runMultiple() throws InterruptedException {
-        int timesPerVelocity = 5;
-
+    // It will run all the velocities of the simulation, each one a timesPerVelocity times
+    // Every run of the same velocity will be in multiple threads but wait until they finish for next
+    private static void runMultiple(int timesPerVelocity) throws InterruptedException {
         double startingVelocity = 0.8;
         double finalVelocity = 6.1;
         double deltaVelocity = 0.2;
@@ -96,6 +99,7 @@ public class Main {
         }
     }
 
+    // Run N (times param) threads of the simulation with given speed at the same time
     private static void runMultiThread(double speed, int times) throws InterruptedException {
         System.out.println(String.format("---------- Calculating for desired speed: %s ----------", speed));
         ExecutorService executors = Executors.newFixedThreadPool(times);
@@ -111,6 +115,29 @@ public class Main {
             });
         });
 
+        executors.shutdown();
+        executors.awaitTermination(Long.MAX_VALUE, TimeUnit.SECONDS);
+    }
+
+    // Run a thread for every single simulation at the same time, one run each
+    private static void runAll(double speedStart, double speedEnd, double step, int label) throws InterruptedException {
+        double currentVelocity = speedStart;
+        int threads = (int) (((speedEnd - speedStart) / step) + 2);
+        ExecutorService executors = Executors.newFixedThreadPool(threads);
+        while (currentVelocity < speedEnd) {
+            Printer printer = new NullPrinter();
+            Parameters parameters = new Parameters(PARTICLE_COUNT, currentVelocity, DELTA_TIME);
+
+            final double cur = currentVelocity;
+            executors.submit(() -> {
+                State initialState = new State(parameters, ParticleGenerator.generateParticles(parameters), parameters.getD());
+                Stats stats = run(initialState, printer, parameters);
+                write(cur, label, stats.getTimesToLeave());
+                System.out.println(String.format("^ Run for %.2f", cur));
+            });
+
+            currentVelocity += step;
+        }
         executors.shutdown();
         executors.awaitTermination(Long.MAX_VALUE, TimeUnit.SECONDS);
     }
