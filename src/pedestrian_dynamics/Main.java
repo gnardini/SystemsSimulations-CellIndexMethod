@@ -82,7 +82,7 @@ public class Main {
     }
 
     private static void runMultiple() throws InterruptedException {
-        int timesPerVelocity = 3;
+        int timesPerVelocity = 5;
 
         double startingVelocity = 0.8;
         double finalVelocity = 6.1;
@@ -123,7 +123,7 @@ public class Main {
     private static void write(double velocity, int sample, List<Double> particlesTime) {
 
         List<String> lines = particlesTime.stream().map(String::valueOf).collect(Collectors.toList());
-        writeTo(OUTPUT_PATH + velocity + "_" + sample + ".txt", lines);
+        writeTo(OUTPUT_PATH + String.format("%.2f", velocity) + "_" + sample + ".txt", lines);
     }
 
     private static void writeTo(String fileName, List<String> lines) {
