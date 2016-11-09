@@ -28,8 +28,8 @@ public class Main {
     private static final int FRAMES_PER_SECOND = 60;
     private static final double DELTA_TIME = 1e-4;
 
-    private static final boolean VISUAL = false;
-    private static final boolean MULTIPLE = true;
+    private static final boolean VISUAL = true;
+    private static final boolean MULTIPLE = false;
 
     public static void main(String[] args) {
         try {

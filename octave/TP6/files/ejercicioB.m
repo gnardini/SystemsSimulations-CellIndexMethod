@@ -1,6 +1,6 @@
-samples = 10;
+samples = 5;
 
-h = getData(24, samples);
+h = getData(2.2, samples);
 
 for i = 1 : 200
   row = h(i,:);
@@ -8,10 +8,10 @@ for i = 1 : 200
   y(i) = mean(row);
 endfor
 
-# x = 1:1:200;
-errorbar(y,errors)
+errorbar(y,errors, "~.k");
 
-#semilogyerr(y, errors)
+ylabel ("Tiempo de salida [s]");
+xlabel ("Peaton");
 
 axis([0 200])
 
