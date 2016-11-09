@@ -17,6 +17,7 @@ import java.nio.file.Paths;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -27,93 +28,91 @@ public class Main {
     private static final int FRAMES_PER_SECOND = 60;
     private static final double DELTA_TIME = 1e-4;
 
-    private static final Parameters PARAMETERS = new Parameters(PARTICLE_COUNT, DESIRED_SPEED, DELTA_TIME);
     private static final boolean VISUAL = false;
     private static final boolean MULTIPLE = true;
 
     public static void main(String[] args) {
-        if (MULTIPLE) {
-//            runMultiple();
-            runMultiThread(2.6);
-        } else {
-            List<Particle> particles = ParticleGenerator.generateParticles(PARAMETERS);
-            State initialState = new State(PARAMETERS, particles, PARAMETERS.getD());
-
-            if (VISUAL) {
-                Printer printer = new UiPrinter();
-                run(initialState, printer);
+        try {
+            if (MULTIPLE) {
+                runMultiple();
             } else {
-                Printer printer = new ParticlesLeftPrinter();
-                run(initialState, printer);
+                Parameters parameters = new Parameters(PARTICLE_COUNT, DESIRED_SPEED, DELTA_TIME);
+                List<Particle> particles = ParticleGenerator.generateParticles(parameters);
+                State initialState = new State(parameters, particles, parameters.getD());
+
+                if (VISUAL) {
+                    Printer printer = new UiPrinter();
+                    run(initialState, printer, parameters);
+                } else {
+                    Printer printer = new ParticlesLeftPrinter();
+                    run(initialState, printer, parameters);
+                }
             }
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
     }
 
-    private static Stats run(State initialState, Printer printer) {
-        Stats stats = new Stats(PARAMETERS);
+    private static Stats run(State initialState, Printer printer, Parameters parameters) {
+        Stats stats = new Stats(parameters);
         double time = 0;
         int steps = 0;
         int printStep = stepsToPrint();
         State currentState = initialState;
 
         while (currentState.getParticleCount() > 0) {
-            currentState = Simulation.updateState(currentState, PARAMETERS);
+            currentState = Simulation.updateState(currentState, parameters);
 
             stats.update(currentState, time);
 
-//            if (steps % printStep == 0) {
-//                printer.updateState(currentState);
+            if (steps % printStep == 0) {
+                printer.updateState(currentState);
 //                for (Double aDouble : stats.getTimesToLeave()) {
 //                    System.out.print(aDouble + " ");
 //                }
 //                System.out.println();
 //                System.out.println(stats.getTotalTime());
-//            }
+            }
 
             steps++;
-            time += PARAMETERS.getDeltaTime();
+            time += parameters.getDeltaTime();
         }
         System.out.println(stats.getTimesToLeave());
-//        System.out.println(String.format("Total time: %s", stats.getTotalTime()));
         return stats;
     }
 
-    private static void runMultiple() {
-        int timesPerVelocity = 10;
+    private static void runMultiple() throws InterruptedException {
+        int timesPerVelocity = 3;
 
         double startingVelocity = 0.8;
         double finalVelocity = 6.1;
         double deltaVelocity = 0.2;
 
         double currentVelocity = startingVelocity;
-        Printer printer = new NullPrinter();
 
         while (currentVelocity < finalVelocity) {
-            System.out.println(String.format("---------- Calculating for desired speed: %s ----------", currentVelocity));
-            IntStream.rangeClosed(1, timesPerVelocity).forEach(t -> {
-                System.out.println(String.format("Run number %d: ", t));
-                State initialState = new State(PARAMETERS, ParticleGenerator.generateParticles(PARAMETERS), PARAMETERS.getD());
-                run(initialState, printer);
-            });
+            runMultiThread(currentVelocity, timesPerVelocity);
             currentVelocity += deltaVelocity;
         }
     }
 
-    private static void runMultiThread(double time) {
-        System.out.println(String.format("---------- Calculating for desired speed: %s ----------", time));
-        ExecutorService executors = Executors.newFixedThreadPool(10);
+    private static void runMultiThread(double speed, int times) throws InterruptedException {
+        System.out.println(String.format("---------- Calculating for desired speed: %s ----------", speed));
+        ExecutorService executors = Executors.newFixedThreadPool(times);
         Printer printer = new NullPrinter();
+        Parameters parameters = new Parameters(PARTICLE_COUNT, speed, DELTA_TIME);
 
-        IntStream.rangeClosed(1, 10).forEach(t -> {
+        IntStream.rangeClosed(1, times).forEach(t -> {
             executors.submit(() -> {
-                State initialState = new State(PARAMETERS, ParticleGenerator.generateParticles(PARAMETERS), PARAMETERS.getD());
-                Stats stats = run(initialState, printer);
-                write(DESIRED_SPEED, t, stats.getTimesToLeave());
+                State initialState = new State(parameters, ParticleGenerator.generateParticles(parameters), parameters.getD());
+                Stats stats = run(initialState, printer, parameters);
+                write(speed, t, stats.getTimesToLeave());
                 System.out.println(String.format("Run number %d: ", t));
             });
         });
 
         executors.shutdown();
+        executors.awaitTermination(Long.MAX_VALUE, TimeUnit.SECONDS);
     }
 
     private static int stepsToPrint() {
