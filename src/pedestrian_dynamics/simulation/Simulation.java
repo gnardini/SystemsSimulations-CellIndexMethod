@@ -58,7 +58,7 @@ public class Simulation {
         return new Pair<>(totalForce, totalForceModule);
     }
 
-    private static Vector socialForce(Parameters parameters, Vector normalVersor, double overlap) {
+    public static Vector socialForce(Parameters parameters, Vector normalVersor, double overlap) {
         Vector socialForce = normalVersor.scale(parameters.getA() * Math.exp(overlap / parameters.getB()));
         return socialForce.scale(-1);
     }

@@ -20,7 +20,7 @@ public enum Wall {
     public Vector getForce(Parameters parameters, Particle particle, double kn, double kt) {
         double overlap = overlapCalculator.calculateOverlap(parameters, particle);
         if (overlap < 0) {
-            return Vector.ZERO;
+            return Simulation.socialForce(parameters, normalVector, overlap);
         }
         return Simulation.getForce(
                 normalVector,
