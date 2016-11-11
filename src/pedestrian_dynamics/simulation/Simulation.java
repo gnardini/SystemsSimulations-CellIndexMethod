@@ -21,10 +21,19 @@ public class Simulation {
         for (Particle particle : state.getParticles()) {
             Pair<Vector, Double> forces = getForces(parameters, particle, parameters.getKn(), parameters.getKt());
             Vector force = forces.fst;
-            Vector newPosition = particle.getPosition().scale(2.0)
-                    .sub(particle.getOldPosition())
-                    .sum(force.scale(deltaTime * deltaTime / particle.getMass()));
-            Vector newSpeed = particle.getPosition().sub(particle.getOldPosition()).scale(1.0 / (2.0 * deltaTime));
+
+            Vector currentAcceleration = force.scale(1/particle.getMass());
+            Vector newPosition = particle.getPosition().sum(particle.getSpeed().scale(deltaTime))
+                    .sum(currentAcceleration.scale(2/3.0).scale(Math.pow(deltaTime, 2)))
+                    .sub(particle.getAcceleration().scale(1/6.0).scale(Math.pow(deltaTime, 2)));
+            Vector newSpeed = particle.getSpeed().sum(currentAcceleration.scale(deltaTime).scale(5/6.0))
+                    .sub(particle.getAcceleration().scale(deltaTime).scale(1/6.0));
+
+//            Vector newPosition = particle.getPosition().scale(2.0)
+//                    .sub(particle.getOldPosition())
+//                    .sum(force.scale(deltaTime * deltaTime / particle.getMass()));
+//            Vector newSpeed = particle.getPosition().sub(particle.getOldPosition()).scale(1.0 / (2.0 * deltaTime));
+
             Particle newParticle = particle.withNewData(newPosition, newSpeed).withForce(forces.snd);
             if (newParticle.getY() > -1) {
                 newParticles.add(newParticle);

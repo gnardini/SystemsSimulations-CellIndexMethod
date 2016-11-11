@@ -26,7 +26,7 @@ public class Main {
     private static final double DESIRED_SPEED = 1.2;
 
     private static final int FRAMES_PER_SECOND = 60;
-    private static final double DELTA_TIME = 1e-4;
+    private static final double DELTA_TIME = 1e-3;
 
     private static final boolean VISUAL = false;
     private static final boolean MULTIPLE = true;
@@ -111,7 +111,7 @@ public class Main {
                 State initialState = new State(parameters, ParticleGenerator.generateParticles(parameters), parameters.getD());
                 Stats stats = run(initialState, printer, parameters);
                 write(speed, t, stats.getTimesToLeave());
-                System.out.println(String.format("Run number %d: ", t));
+                System.out.println(String.format("^ Run number %d", t));
             });
         });
 
@@ -150,7 +150,7 @@ public class Main {
     private static void write(double velocity, int sample, List<Double> particlesTime) {
 
         List<String> lines = particlesTime.stream().map(String::valueOf).collect(Collectors.toList());
-        writeTo(OUTPUT_PATH + String.format("%.2f", velocity) + "_" + sample + ".txt", lines);
+        writeTo(OUTPUT_PATH + String.format("%.1f", velocity) + "_" + sample + ".txt", lines);
     }
 
     private static void writeTo(String fileName, List<String> lines) {
