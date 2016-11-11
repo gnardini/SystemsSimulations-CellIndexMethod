@@ -1,4 +1,4 @@
-samples = 5;
+samples = 4;
 
 h = getData(2.4, samples);
 axis([0 200])
@@ -10,7 +10,7 @@ xlabel ("Peaton");
 
 hold all;
 
-for i = 1:5
+for i = 1:samples
   plot(h(:,i))
   plot(h(:,i))
 endfor

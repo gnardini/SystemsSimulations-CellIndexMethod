@@ -1,8 +1,8 @@
-function result = getAverageTime(velocity)
+function [result, error] = getAverageTime(velocity, samples)
 
-  h = getData(velocity, 5);
-  average = mean(h,2);
-
-  result = average(end);
+  h = getData(velocity, samples);
+  row = h(end,:);
+  error = std(row);
+  result = mean(row);
 
 endfunction

@@ -1,4 +1,4 @@
-samples = 5;
+samples = 4;
 
 h = getData(2.2, samples);
 
