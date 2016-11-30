@@ -22,7 +22,7 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public class Main {
-    private static final int PARTICLE_COUNT = 200;
+    private static final int PARTICLE_COUNT = 50;
     private static final double DESIRED_SPEED = 1.2;
 
     private static final int FRAMES_PER_SECOND = 60;

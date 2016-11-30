@@ -72,16 +72,9 @@ public class UiPrinter extends JFrame implements Printer {
             // Bottom border
             double gapCenter = state.getParameters().getW() / 2;
             double gapRadius = state.getParameters().getD() / 2;
-            g.drawLine(
-                    LEFT_MARGIN,
-                    SCREEN_SIZE - BOTTOM_MARGIN,
-                    LEFT_MARGIN + (int) ((gapCenter - gapRadius) * multiplier),
-                    SCREEN_SIZE - BOTTOM_MARGIN);
-            g.drawLine(
-                    SCREEN_SIZE - RIGHT_MARGIN,
-                    SCREEN_SIZE - BOTTOM_MARGIN,
-                    LEFT_MARGIN + (int) ((gapCenter + gapRadius) * multiplier),
-                    SCREEN_SIZE - BOTTOM_MARGIN);
+            drawLine(g, 0, gapCenter, gapRadius, multiplier);
+            drawLine(g, 3, gapCenter, gapRadius, multiplier);
+            drawLine(g, 6, gapCenter, gapRadius, multiplier);
             // Top border
             g.drawLine(
                     LEFT_MARGIN,
@@ -93,6 +86,20 @@ public class UiPrinter extends JFrame implements Printer {
 
             g.setColor(Color.blue);
             g.drawString("Particles: " + state.getParticles().size(), MARGIN, SCREEN_SIZE + MARGIN * 2);
+        }
+
+        private void drawLine(Graphics g, int y, double center, double opening, double multiplier) {
+            int yPosition = (int) (SCREEN_SIZE - y * multiplier - BOTTOM_MARGIN);
+            g.drawLine(
+                    LEFT_MARGIN,
+                    yPosition,
+                    LEFT_MARGIN + (int) ((center - opening) * multiplier),
+                    yPosition);
+            g.drawLine(
+                    SCREEN_SIZE - RIGHT_MARGIN,
+                    yPosition,
+                    LEFT_MARGIN + (int) ((center + opening) * multiplier),
+                    yPosition);
         }
 
         private void printParticles(Graphics g, State state, double multiplier) {

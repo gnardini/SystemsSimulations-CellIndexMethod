@@ -17,10 +17,20 @@ public class ParticleGenerator {
             double radius = randomRadius(parameters);
             Vector particlePosition = generateValidPosition(particles, parameters.getW(), parameters.getL(), radius);
             particles.add(
-                    new Particle(parameters, id, radius, particlePosition, Vector.ZERO, Vector.ZERO, Vector.ZERO, 0)
+                    new Particle(parameters, id, radius, particlePosition, Vector.ZERO, Vector.ZERO, Vector.ZERO, 0, false)
                             .calculatingOldPosition(parameters.getDeltaTime())
             );
             id++;
+        }
+        double startingPosition = parameters.getW() / 2 - parameters.getD() / 2 + 1;
+        double radius = parameters.getMaxParticleRadius();
+        for (double xValue = startingPosition; xValue < startingPosition + 3; xValue += 1) {
+            particles.add(
+                new Particle(parameters, id++, radius, new Vector(xValue, 3), Vector.ZERO, Vector.ZERO, Vector.ZERO, 0, true)
+                        .calculatingOldPosition(parameters.getDeltaTime()));
+            particles.add(
+                new Particle(parameters, id++, radius, new Vector(xValue, 6), Vector.ZERO, Vector.ZERO, Vector.ZERO, 0, true)
+                        .calculatingOldPosition(parameters.getDeltaTime()));
         }
         return particles;
     }
@@ -32,7 +42,7 @@ public class ParticleGenerator {
     private static Vector generateValidPosition(List<Particle> particles, double W, double L, double radius) {
         while (true) {
             double x = radius + Math.random() * (W - 2 * radius);
-            double y = radius + Math.random() * (L - 2 * radius);
+            double y = radius + Math.random() * (L - 2 * radius - 6) + 6;
 
             if (particles.size() == 0 || isValidPosition(particles, x, y, radius)) {
                 return new Vector(x, y);

@@ -19,15 +19,19 @@ public class Simulation {
         List<Particle> newParticles = new LinkedList<>();
         double deltaTime = parameters.getDeltaTime();
         for (Particle particle : state.getParticles()) {
-            Pair<Vector, Double> forces = getForces(parameters, particle, parameters.getKn(), parameters.getKt());
-            Vector force = forces.fst;
-            Vector newPosition = particle.getPosition().scale(2.0)
-                    .sub(particle.getOldPosition())
-                    .sum(force.scale(deltaTime * deltaTime / particle.getMass()));
-            Vector newSpeed = particle.getPosition().sub(particle.getOldPosition()).scale(1.0 / (2.0 * deltaTime));
-            Particle newParticle = particle.withNewData(newPosition, newSpeed).withForce(forces.snd);
-            if (newParticle.getY() > -1) {
-                newParticles.add(newParticle);
+            if (!particle.isStatic()) {
+                Pair<Vector, Double> forces = getForces(parameters, particle, parameters.getKn(), parameters.getKt());
+                Vector force = forces.fst;
+                Vector newPosition = particle.getPosition().scale(2.0)
+                        .sub(particle.getOldPosition())
+                        .sum(force.scale(deltaTime * deltaTime / particle.getMass()));
+                Vector newSpeed = particle.getPosition().sub(particle.getOldPosition()).scale(1.0 / (2.0 * deltaTime));
+                Particle newParticle = particle.withNewData(newPosition, newSpeed).withForce(forces.snd);
+                if (newParticle.getY() > -1) {
+                    newParticles.add(newParticle);
+                }
+            } else {
+                newParticles.add(particle.clone());
             }
         }
         return state.withNewParticles(newParticles);

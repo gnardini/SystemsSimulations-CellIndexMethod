@@ -18,16 +18,17 @@ public class Particle {
     private final Vector oldPosition;
     private final double force;
     private final Set<Particle> neighbours;
+    private final boolean isStatic;
 
     private Parameters parameters;
 
     public Particle(Parameters parameters, int id, double radius, Vector position, Vector speed, Vector acceleration,
-                    Vector oldPosition, double force) {
-        this(parameters, id, radius, position, speed, acceleration, oldPosition, force, new HashSet<>());
+                    Vector oldPosition, double force, boolean isStatic) {
+        this(parameters, id, radius, position, speed, acceleration, oldPosition, force, new HashSet<>(), isStatic);
     }
 
     public Particle(Parameters parameters, int id, double radius, Vector position, Vector speed, Vector acceleration,
-                    Vector oldPosition, double force, Set<Particle> neighbours) {
+                    Vector oldPosition, double force, Set<Particle> neighbours, boolean isStatic) {
         this.parameters = parameters;
         this.id = id;
         this.radius = radius;
@@ -38,6 +39,7 @@ public class Particle {
         this.oldPosition = oldPosition;
         this.force = force;
         this.neighbours = neighbours;
+        this.isStatic = isStatic;
     }
 
     public int getId() {
@@ -80,6 +82,10 @@ public class Particle {
         return oldPosition;
     }
 
+    public boolean isStatic() {
+        return isStatic;
+    }
+
     public void addNeighbour(Particle particle) {
         neighbours.add(particle);
     }
@@ -102,27 +108,27 @@ public class Particle {
     }
 
     public Particle withPositions(int id, double x, double y, double radius) {
-        return new Particle(parameters, id, radius, new Vector(x, y), speed, acceleration, position, force);
+        return new Particle(parameters, id, radius, new Vector(x, y), speed, acceleration, position, force, isStatic);
     }
 
     public Particle withNewData(Vector newPosition, Vector newSpeed) {
-        return new Particle(parameters, id, radius, newPosition, newSpeed, acceleration, position, force);
+        return new Particle(parameters, id, radius, newPosition, newSpeed, acceleration, position, force, isStatic);
     }
 
     public Particle withForce(double force) {
-        return new Particle(parameters, id, radius, position, speed, acceleration, oldPosition, force);
+        return new Particle(parameters, id, radius, position, speed, acceleration, oldPosition, force, isStatic);
     }
 
     public Particle calculatingOldPosition(double deltaTime) {
         Vector calculatedOldPosition = position
                 .sum(speed.scale(-deltaTime))
                 .sum(acceleration.scale(deltaTime * deltaTime / 2 * mass));
-        return new Particle(parameters, id, radius, position, speed, acceleration, calculatedOldPosition, force);
+        return new Particle(parameters, id, radius, position, speed, acceleration, calculatedOldPosition, force, isStatic);
     }
 
     @Override
     public Particle clone() {
-        return new Particle(parameters, id, radius, position, speed, acceleration, oldPosition, force);
+        return new Particle(parameters, id, radius, position, speed, acceleration, oldPosition, force, isStatic);
     }
 
     @Override
