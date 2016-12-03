@@ -83,7 +83,8 @@ public class Main {
             time += parameters.getDeltaTime();
 
             if (time > nextSwitch) {
-                nextSwitch ++;
+                nextSwitch += 2;
+                currentState = currentState.updatingStaticParticlesRadius();
             }
         }
         System.out.println(stats.getTimesToLeave());

@@ -102,7 +102,7 @@ public class State {
     }
 
     public State updatingStaticParticlesRadius() {
-        double newRadius = staticParticles.get(0).getRadius() > parameters.getMaxParticleRadius() - .1
+        double newRadius = staticParticles.get(0).getRadius() > parameters.getMaxParticleRadius() - .01
                 ? parameters.getMinParticleRadius() : parameters.getMaxParticleRadius();
         List<Particle> newStaticParticles = new LinkedList<>();
         for (Particle staticParticle : staticParticles) {
