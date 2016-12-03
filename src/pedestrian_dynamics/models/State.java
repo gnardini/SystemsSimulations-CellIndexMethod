@@ -2,35 +2,39 @@ package pedestrian_dynamics.models;
 
 import pedestrian_dynamics.Parameters;
 
+import java.util.LinkedList;
 import java.util.List;
 
 public class State {
 
     private Board board;
+    private final List<Particle> staticParticles;
     private final Parameters parameters;
     private double interactionRadius;
     public int particleCount;
     private double currentTime = 0.0;
 
-    public State(Board board, Parameters parameters, double interactionRadius) {
+    public State(Board board, Parameters parameters, List<Particle> staticParticles, double interactionRadius) {
         this.parameters = parameters;
         if (Double.valueOf(board.getL()) / board.getM() <= interactionRadius) {
             throw new IllegalArgumentException("Invalid M");
         }
         this.board = board;
+        this.staticParticles = staticParticles;
         this.particleCount = board.getParticles().size();
         this.interactionRadius = interactionRadius;
     }
 
-    public State(Board board, Parameters parameters, double interactionRadius, double time) {
-        this(board, parameters, interactionRadius);
+    public State(Board board, Parameters parameters, List<Particle> staticParticles, double interactionRadius, double time) {
+        this(board, parameters, staticParticles, interactionRadius);
         this.currentTime = time;
     }
 
-    public State(Parameters parameters, List<Particle> particles, double interactionRadius) {
+    public State(Parameters parameters, List<Particle> particles, List<Particle> staticParticles, double interactionRadius) {
         this(
                 new Board((int) (parameters.getL() / interactionRadius), parameters.getL() + 1, particles),
                 parameters,
+                staticParticles,
                 interactionRadius);
     }
 
@@ -39,6 +43,10 @@ public class State {
                 .mapToDouble(particle -> .5 * particle.getMass() * Math.pow(particle.getSpeed().norm(), 2))
                 .sum()
                 / getParticles().size();
+    }
+
+    public List<Particle> getStaticParticles() {
+        return staticParticles;
     }
 
     public int getM() {
@@ -78,11 +86,11 @@ public class State {
     }
 
     public State copy() {
-        return new State(board.copy(), parameters, interactionRadius);
+        return new State(board.copy(), parameters, staticParticles, interactionRadius);
     }
 
     public State withNewParticles(List<Particle> particles) {
-        return new State(board.withNewParticles(particles), parameters, interactionRadius, currentTime + parameters.getDeltaTime());
+        return new State(board.withNewParticles(particles), parameters, staticParticles, interactionRadius, currentTime + parameters.getDeltaTime());
     }
 
     public double getDensity() {
@@ -91,6 +99,16 @@ public class State {
 
     public double getCurrentTime() {
         return currentTime;
+    }
+
+    public State updatingStaticParticlesRadius() {
+        double newRadius = staticParticles.get(0).getRadius() > parameters.getMaxParticleRadius() - .1
+                ? parameters.getMinParticleRadius() : parameters.getMaxParticleRadius();
+        List<Particle> newStaticParticles = new LinkedList<>();
+        for (Particle staticParticle : staticParticles) {
+            newStaticParticles.add(staticParticle.withNewRadius(newRadius));
+        }
+        return new State(board, parameters, newStaticParticles, interactionRadius, currentTime + parameters.getDeltaTime());
     }
 
 }

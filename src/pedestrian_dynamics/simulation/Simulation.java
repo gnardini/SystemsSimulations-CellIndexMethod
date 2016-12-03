@@ -19,29 +19,30 @@ public class Simulation {
         List<Particle> newParticles = new LinkedList<>();
         double deltaTime = parameters.getDeltaTime();
         for (Particle particle : state.getParticles()) {
-            if (!particle.isStatic()) {
-                Pair<Vector, Double> forces = getForces(parameters, particle, parameters.getKn(), parameters.getKt());
-                Vector force = forces.fst;
-                Vector newPosition = particle.getPosition().scale(2.0)
-                        .sub(particle.getOldPosition())
-                        .sum(force.scale(deltaTime * deltaTime / particle.getMass()));
-                Vector newSpeed = particle.getPosition().sub(particle.getOldPosition()).scale(1.0 / (2.0 * deltaTime));
-                Particle newParticle = particle.withNewData(newPosition, newSpeed).withForce(forces.snd);
-                if (newParticle.getY() > -1) {
-                    newParticles.add(newParticle);
-                }
-            } else {
-                newParticles.add(particle.clone());
+            Pair<Vector, Double> forces =
+                    getForces(parameters, particle, parameters.getKn(), parameters.getKt(), state.getStaticParticles());
+            Vector force = forces.fst;
+            Vector newPosition = particle.getPosition().scale(2.0)
+                    .sub(particle.getOldPosition())
+                    .sum(force.scale(deltaTime * deltaTime / particle.getMass()));
+            Vector newSpeed = particle.getPosition().sub(particle.getOldPosition()).scale(1.0 / (2.0 * deltaTime));
+            Particle newParticle = particle.withNewData(newPosition, newSpeed).withForce(forces.snd);
+            if (newParticle.getY() > -1) {
+                newParticles.add(newParticle);
             }
         }
         return state.withNewParticles(newParticles);
     }
 
-    private static Pair<Vector, Double> getForces(Parameters parameters, Particle particle, double kn, double kt) {
+    private static Pair<Vector, Double> getForces(Parameters parameters, Particle particle, double kn, double kt,
+                                                  List<Particle> staticParticles) {
         Vector totalForce = getTargetForce(particle, parameters);
         // System.out.println(totalForce);
         double totalForceModule = 0;
-        for (Particle neighbor : particle.getNeighbours()) {
+        List<Particle> allParticles = new LinkedList<>();
+        allParticles.addAll(staticParticles);
+        allParticles.addAll(particle.getNeighbours());
+        for (Particle neighbor : allParticles) {
             double overlap = getOverlap(particle, neighbor);
             Vector normalVersor = getNormalVersor(particle, neighbor);
             if (overlap > 0) {
@@ -52,7 +53,7 @@ public class Simulation {
                 Vector force = getForce(normalVersor, tangencialVersor, relativeSpeed, overlap, kn, kt);
                 totalForce = totalForce.sum(force);
                 totalForceModule += force.norm();
-            } else {
+            } else if (!neighbor.isStatic()) {
                 totalForce = totalForce.sum(socialForce(parameters, normalVersor, overlap));
             }
         }
@@ -96,7 +97,14 @@ public class Simulation {
     }
 
     private static double getDestinationY(Particle particle) {
-        return particle.getY() <= 0 ? -1 : 0;
+        if (particle.getY() > 6) {
+            return 6;
+        } else if (particle.getY() > 3) {
+            return 3;
+        } else if (particle.getY() > 0) {
+            return 0;
+        }
+        return -1;
     }
 
     private static Vector getNormalVersor(Particle particle, Particle neighbour) {

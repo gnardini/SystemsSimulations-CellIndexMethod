@@ -3,7 +3,7 @@ package pedestrian_dynamics
 class Parameters(val particleCount: Int, val targetSpeed: Double, val deltaTime: Double) {
     val l = 20
     val w = 20
-    val d = 4
+    val d = 4.4
     val minParticleRadius = 0.5 / 2
     val maxParticleRadius = 0.58 / 2
     val mass = 75

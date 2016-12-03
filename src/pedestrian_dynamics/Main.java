@@ -22,11 +22,11 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public class Main {
-    private static final int PARTICLE_COUNT = 50;
+    private static final int PARTICLE_COUNT = 200;
     private static final double DESIRED_SPEED = 1.2;
 
     private static final int FRAMES_PER_SECOND = 60;
-    private static final double DELTA_TIME = 1e-4;
+    private static final double DELTA_TIME = 1e-3;
 
     private static final boolean VISUAL = true;
     private static final boolean MULTIPLE = false;
@@ -40,7 +40,8 @@ public class Main {
             } else {
                 Parameters parameters = new Parameters(PARTICLE_COUNT, DESIRED_SPEED, DELTA_TIME);
                 List<Particle> particles = ParticleGenerator.generateParticles(parameters);
-                State initialState = new State(parameters, particles, parameters.getD());
+                List<Particle> staticParticles = ParticleGenerator.generateStaticParticles(parameters);
+                State initialState = new State(parameters, particles, staticParticles, parameters.getD());
 
                 if (VISUAL) {
                     Printer printer = new UiPrinter();
@@ -63,6 +64,7 @@ public class Main {
         int printStep = stepsToPrint();
         State currentState = initialState;
 
+        double nextSwitch = 1;
         while (currentState.getParticleCount() > 0) {
             currentState = Simulation.updateState(currentState, parameters);
 
@@ -79,6 +81,10 @@ public class Main {
 
             steps++;
             time += parameters.getDeltaTime();
+
+            if (time > nextSwitch) {
+                nextSwitch ++;
+            }
         }
         System.out.println(stats.getTimesToLeave());
         return stats;
@@ -108,7 +114,11 @@ public class Main {
 
         IntStream.rangeClosed(1, times).forEach(t -> {
             executors.submit(() -> {
-                State initialState = new State(parameters, ParticleGenerator.generateParticles(parameters), parameters.getD());
+                State initialState = new State(
+                        parameters,
+                        ParticleGenerator.generateParticles(parameters),
+                        ParticleGenerator.generateStaticParticles(parameters),
+                        parameters.getD());
                 Stats stats = run(initialState, printer, parameters);
                 write(speed, t, stats.getTimesToLeave());
                 System.out.println(String.format("Run number %d: ", t));
@@ -130,7 +140,11 @@ public class Main {
 
             final double cur = currentVelocity;
             executors.submit(() -> {
-                State initialState = new State(parameters, ParticleGenerator.generateParticles(parameters), parameters.getD());
+                State initialState = new State(
+                        parameters,
+                        ParticleGenerator.generateParticles(parameters),
+                        ParticleGenerator.generateStaticParticles(parameters),
+                        parameters.getD());
                 Stats stats = run(initialState, printer, parameters);
                 write(cur, label, stats.getTimesToLeave());
                 System.out.println(String.format("^ Run for %.2f", cur));

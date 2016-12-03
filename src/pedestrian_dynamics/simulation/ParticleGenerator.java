@@ -22,15 +22,25 @@ public class ParticleGenerator {
             );
             id++;
         }
-        double startingPosition = parameters.getW() / 2 - parameters.getD() / 2 + 1;
+        return particles;
+    }
+
+    public static List<Particle> generateStaticParticles(Parameters parameters) {
+        int id = parameters.getParticleCount();
+        List<Particle> particles = new ArrayList<>();
+
+        double startingPosition = parameters.getW() / 2 - parameters.getD() / 2 + .9;
         double radius = parameters.getMaxParticleRadius();
-        for (double xValue = startingPosition; xValue < startingPosition + 3; xValue += 1) {
+        for (double xValue = startingPosition; xValue < startingPosition + 3; xValue += 1.3) {
             particles.add(
-                new Particle(parameters, id++, radius, new Vector(xValue, 3), Vector.ZERO, Vector.ZERO, Vector.ZERO, 0, true)
-                        .calculatingOldPosition(parameters.getDeltaTime()));
+                    new Particle(parameters, id++, radius, new Vector(xValue, 0), Vector.ZERO, Vector.ZERO, Vector.ZERO, 0, true)
+                            .calculatingOldPosition(parameters.getDeltaTime()));
             particles.add(
-                new Particle(parameters, id++, radius, new Vector(xValue, 6), Vector.ZERO, Vector.ZERO, Vector.ZERO, 0, true)
-                        .calculatingOldPosition(parameters.getDeltaTime()));
+                    new Particle(parameters, id++, radius, new Vector(xValue, 3), Vector.ZERO, Vector.ZERO, Vector.ZERO, 0, true)
+                            .calculatingOldPosition(parameters.getDeltaTime()));
+            particles.add(
+                    new Particle(parameters, id++, radius, new Vector(xValue, 6), Vector.ZERO, Vector.ZERO, Vector.ZERO, 0, true)
+                            .calculatingOldPosition(parameters.getDeltaTime()));
         }
         return particles;
     }

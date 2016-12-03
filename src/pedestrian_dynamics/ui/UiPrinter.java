@@ -1,10 +1,12 @@
 package pedestrian_dynamics.ui;
 
-import pedestrian_dynamics.models.State;
 import pedestrian_dynamics.models.Particle;
+import pedestrian_dynamics.models.State;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.LinkedList;
+import java.util.List;
 
 public class UiPrinter extends JFrame implements Printer {
 
@@ -103,7 +105,10 @@ public class UiPrinter extends JFrame implements Printer {
         }
 
         private void printParticles(Graphics g, State state, double multiplier) {
-            for (Particle particle : state.getParticles()) {
+            List<Particle> allParticles = new LinkedList<>();
+            allParticles.addAll(state.getParticles());
+            allParticles.addAll(state.getStaticParticles());
+            for (Particle particle : allParticles) {
                 g.setColor(particle.getColor());
                 double radius = particle.getRadius();
                 double x = particle.getPosition().getX() - radius;

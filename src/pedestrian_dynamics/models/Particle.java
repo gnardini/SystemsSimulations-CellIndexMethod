@@ -119,6 +119,10 @@ public class Particle {
         return new Particle(parameters, id, radius, position, speed, acceleration, oldPosition, force, isStatic);
     }
 
+    public Particle withNewRadius(double newRadius) {
+        return new Particle(parameters, id, newRadius, position, speed, acceleration, oldPosition, force, isStatic);
+    }
+
     public Particle calculatingOldPosition(double deltaTime) {
         Vector calculatedOldPosition = position
                 .sum(speed.scale(-deltaTime))
@@ -139,4 +143,5 @@ public class Particle {
                 ", radius=" + radius +
                 '}';
     }
+
 }
