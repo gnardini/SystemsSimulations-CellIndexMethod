@@ -1,11 +1,13 @@
 package pedestrian_dynamics.simulation;
 
+import granular_medium.simulation.PoliceStop;
 import pedestrian_dynamics.Parameters;
 import pedestrian_dynamics.models.HorizontalWall;
 import pedestrian_dynamics.models.Particle;
 import pedestrian_dynamics.models.Vector;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 public class ParticleGenerator {
@@ -21,9 +23,13 @@ public class ParticleGenerator {
         while (id < parameters.getParticleCount()) {
             double radius = randomRadius(parameters);
 
-            Vector particlePosition = generateValidPosition(particles, parameters.getW(), parameters.getL() - 2 * distancePerControl, parameters.getL(), radius);
+            Vector particlePosition = generateValidPosition(
+                    particles, parameters.getW(), parameters.getL() - 2 * distancePerControl, parameters.getL(), radius);
+            List<PoliceStop> policeStops =
+                    createPoliceStops(parameters, distancePerControl);
             particles.add(
-                    new Particle(parameters, id, radius, particlePosition, Vector.ZERO, Vector.ZERO, Vector.ZERO, 0, false)
+                    new Particle(parameters, id, radius, particlePosition,
+                            Vector.ZERO, Vector.ZERO, Vector.ZERO, 0, false, policeStops)
                             .calculatingOldPosition(parameters.getDeltaTime())
             );
             id++;
@@ -76,10 +82,22 @@ public class ParticleGenerator {
 
         for (double x = distancePerParticle; x < parameters.getD(); x += distancePerParticle) {
             particles.add(
-                    new Particle(parameters, id++, radius, new Vector(startingAt + x, y), Vector.ZERO, Vector.ZERO, Vector.ZERO, 0, true)
+                    new Particle(
+                            parameters, id++, radius, new Vector(startingAt + x, y), Vector.ZERO, Vector.ZERO,
+                            Vector.ZERO, 0, true, new ArrayList<>())
                             .calculatingOldPosition(parameters.getDeltaTime()));
         }
 
+    }
+
+    private static List<PoliceStop> createPoliceStops(Parameters parameters, double distanceBetweenControls) {
+        int controlCount = parameters.getStaticParticlesPerControl().length;
+        List<PoliceStop> policeStops = new LinkedList<>();
+        for (int i = 0; i < controlCount; i++) {
+            int delay = parameters.getDelayPerControl()[controlCount - 1 - i];
+            policeStops.add(new PoliceStop(i * distanceBetweenControls, delay));
+        }
+        return policeStops;
     }
 
     private static double randomRadius(Parameters parameters) {

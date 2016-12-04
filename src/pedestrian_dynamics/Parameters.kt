@@ -1,6 +1,11 @@
 package pedestrian_dynamics
 
-class Parameters(val particleCount: Int, val targetSpeed: Double, val deltaTime: Double, val staticParticlesPerControl: IntArray) {
+class Parameters(
+        val particleCount: Int,
+        val targetSpeed: Double,
+        val deltaTime: Double,
+        val staticParticlesPerControl: IntArray,
+        val delayPerControl: IntArray) {
     val l = 30
     val w = 20
     val d = 5.8
