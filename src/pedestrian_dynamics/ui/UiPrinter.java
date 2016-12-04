@@ -59,32 +59,24 @@ public class UiPrinter extends JFrame implements Printer {
             double multiplier = ANIMATION_SIZE / state.getParameters().getL();
 
             g.setColor(Color.black);
+
             // Left border
             g.drawLine(
-                    LEFT_MARGIN,
-                    TOP_MARGIN,
-                    LEFT_MARGIN,
-                    SCREEN_SIZE - BOTTOM_MARGIN);
+                    MARGIN,
+                    (int) (SCREEN_SIZE - state.getL() * multiplier),
+                    MARGIN,
+                    SCREEN_SIZE);
             // Right border
             g.drawLine(
-                    SCREEN_SIZE - RIGHT_MARGIN,
-                    TOP_MARGIN,
-                    SCREEN_SIZE - RIGHT_MARGIN,
-                    SCREEN_SIZE - BOTTOM_MARGIN);
-            // Bottom border
-            double gapCenter = state.getParameters().getW() / 2;
-            double gapRadius = state.getParameters().getD() / 2;
-
+                    (int) (MARGIN + state.getW() * multiplier),
+                    (int) (SCREEN_SIZE - state.getL() * multiplier),
+                    (int) (MARGIN + state.getW() * multiplier),
+                    SCREEN_SIZE);
+            double gapCenter = state.getW() / 2;
+            double gapRadius = state.getD() / 2;
             state.getBoard().getHorizontalWalls().forEach(wall ->
                     drawLine(g, wall.getPosition(), gapCenter, gapRadius, multiplier)
             );
-
-            // Top border
-            g.drawLine(
-                    LEFT_MARGIN,
-                    TOP_MARGIN,
-                    SCREEN_SIZE - RIGHT_MARGIN,
-                    TOP_MARGIN);
 
             printParticles(g, state, multiplier);
 
@@ -100,7 +92,7 @@ public class UiPrinter extends JFrame implements Printer {
                     LEFT_MARGIN + (int) ((center - opening) * multiplier),
                     yPosition);
             g.drawLine(
-                    SCREEN_SIZE - RIGHT_MARGIN,
+                    MARGIN + (int) (state.getW() * multiplier),
                     yPosition,
                     LEFT_MARGIN + (int) ((center + opening) * multiplier),
                     yPosition);
