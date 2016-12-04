@@ -1,6 +1,7 @@
 package pedestrian_dynamics.simulation;
 
 import pedestrian_dynamics.Parameters;
+import pedestrian_dynamics.models.HorizontalWall;
 import pedestrian_dynamics.models.Particle;
 import pedestrian_dynamics.models.Vector;
 
@@ -13,9 +14,14 @@ public class ParticleGenerator {
         List<Particle> particles = new ArrayList<>();
         int id = 0;
 
+        int numberOfControls = parameters.getStaticParticlesPerControl().length;
+
+        double distancePerControl = parameters.getL() / (numberOfControls + 1);
+
         while (id < parameters.getParticleCount()) {
             double radius = randomRadius(parameters);
-            Vector particlePosition = generateValidPosition(particles, parameters.getW(), parameters.getL(), radius);
+
+            Vector particlePosition = generateValidPosition(particles, parameters.getW(), parameters.getL() - distancePerControl, parameters.getL(), radius);
             particles.add(
                     new Particle(parameters, id, radius, particlePosition, Vector.ZERO, Vector.ZERO, Vector.ZERO, 0, false)
                             .calculatingOldPosition(parameters.getDeltaTime())
@@ -26,33 +32,64 @@ public class ParticleGenerator {
     }
 
     public static List<Particle> generateStaticParticles(Parameters parameters) {
+        int numberOfControls = parameters.getStaticParticlesPerControl().length;
+        double distancePerControl = parameters.getL() / Double.valueOf((numberOfControls + 1));
+
         int id = parameters.getParticleCount();
         List<Particle> particles = new ArrayList<>();
 
-        double startingPosition = parameters.getW() / 2 - parameters.getD() / 2 + .9;
+        for (int control = 0; control < numberOfControls; control++) {
+            int numberOfParticlesForControl = parameters.getStaticParticlesPerControl()[control];
+            fillControl(numberOfParticlesForControl, control * distancePerControl, parameters, particles, id);
+            id += numberOfParticlesForControl;
+        }
+
+        return particles;
+    }
+
+    public static List<HorizontalWall> generateHorizontalWalls(Parameters parameters) {
+        int numberOfControls = parameters.getStaticParticlesPerControl().length;
+        double distancePerControl = parameters.getL() / Double.valueOf((numberOfControls + 1));
+
+        List<HorizontalWall> horizontalWalls = new ArrayList<>(numberOfControls);
+
+        for (int control = 0; control < numberOfControls; control++) {
+            horizontalWalls.add(new HorizontalWall(control * distancePerControl));
+        }
+
+        return horizontalWalls;
+    }
+
+
+    private static void fillControl(int numberOfParticles, double y, Parameters parameters, List<Particle> particles, int id) {
         double radius = parameters.getMaxParticleRadius();
-        for (double xValue = startingPosition; xValue < startingPosition + 3; xValue += 1.3) {
+        double particleDiameter = 2 * radius;
+
+        int maxPossibleStaticParticleCount = (int) Math.floor(parameters.getD() / particleDiameter);
+
+        if (numberOfParticles > maxPossibleStaticParticleCount) {
+            throw new RuntimeException("Error! Static particle count has to be less than or equal to " + maxPossibleStaticParticleCount);
+        }
+
+        double startingAt = parameters.getW() / 2 - parameters.getD() / 2;
+        double distancePerParticle = parameters.getD() / (numberOfParticles + 1);
+
+        for (double x = distancePerParticle; x < parameters.getD(); x += distancePerParticle) {
             particles.add(
-                    new Particle(parameters, id++, radius, new Vector(xValue, 0), Vector.ZERO, Vector.ZERO, Vector.ZERO, 0, true)
-                            .calculatingOldPosition(parameters.getDeltaTime()));
-            particles.add(
-                    new Particle(parameters, id++, radius, new Vector(xValue, 3), Vector.ZERO, Vector.ZERO, Vector.ZERO, 0, true)
-                            .calculatingOldPosition(parameters.getDeltaTime()));
-            particles.add(
-                    new Particle(parameters, id++, radius, new Vector(xValue, 6), Vector.ZERO, Vector.ZERO, Vector.ZERO, 0, true)
+                    new Particle(parameters, id++, radius, new Vector(startingAt + x, y), Vector.ZERO, Vector.ZERO, Vector.ZERO, 0, true)
                             .calculatingOldPosition(parameters.getDeltaTime()));
         }
-        return particles;
+
     }
 
     private static double randomRadius(Parameters parameters) {
         return parameters.getMinParticleRadius() + Math.random() * (parameters.getMaxParticleRadius() - parameters.getMinParticleRadius());
     }
 
-    private static Vector generateValidPosition(List<Particle> particles, double W, double L, double radius) {
+    private static Vector generateValidPosition(List<Particle> particles, double W, double fromY, double toY, double radius) {
         while (true) {
             double x = radius + Math.random() * (W - 2 * radius);
-            double y = radius + Math.random() * (L - 2 * radius - 6) + 6;
+            double y = fromY + radius + Math.random() * (toY - fromY - 2 * radius);
 
             if (particles.size() == 0 || isValidPosition(particles, x, y, radius)) {
                 return new Vector(x, y);

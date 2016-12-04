@@ -22,11 +22,13 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public class Main {
-    private static final int PARTICLE_COUNT = 200;
+    private static final int PARTICLE_COUNT = 100;
     private static final double DESIRED_SPEED = 1.2;
 
     private static final int FRAMES_PER_SECOND = 60;
     private static final double DELTA_TIME = 1e-3;
+
+    private static final int[] CONTROLS = new int[]{3, 2, 3, 4};
 
     private static final boolean VISUAL = true;
     private static final boolean MULTIPLE = false;
@@ -38,10 +40,10 @@ public class Main {
 //                for (int i = 1; i <= 5; i++)
 //                    runAll(0.8, 6.1, 0.2, i);
             } else {
-                Parameters parameters = new Parameters(PARTICLE_COUNT, DESIRED_SPEED, DELTA_TIME);
+                Parameters parameters = new Parameters(PARTICLE_COUNT, DESIRED_SPEED, DELTA_TIME, CONTROLS);
                 List<Particle> particles = ParticleGenerator.generateParticles(parameters);
                 List<Particle> staticParticles = ParticleGenerator.generateStaticParticles(parameters);
-                State initialState = new State(parameters, particles, staticParticles, parameters.getD());
+                State initialState = new State(parameters, ParticleGenerator.generateHorizontalWalls(parameters), particles, staticParticles, parameters.getD());
 
                 if (VISUAL) {
                     Printer printer = new UiPrinter();
@@ -111,12 +113,13 @@ public class Main {
         System.out.println(String.format("---------- Calculating for desired speed: %s ----------", speed));
         ExecutorService executors = Executors.newFixedThreadPool(times);
         Printer printer = new NullPrinter();
-        Parameters parameters = new Parameters(PARTICLE_COUNT, speed, DELTA_TIME);
+        Parameters parameters = new Parameters(PARTICLE_COUNT, speed, DELTA_TIME, CONTROLS);
 
         IntStream.rangeClosed(1, times).forEach(t -> {
             executors.submit(() -> {
                 State initialState = new State(
                         parameters,
+                        ParticleGenerator.generateHorizontalWalls(parameters),
                         ParticleGenerator.generateParticles(parameters),
                         ParticleGenerator.generateStaticParticles(parameters),
                         parameters.getD());
@@ -137,12 +140,13 @@ public class Main {
         ExecutorService executors = Executors.newFixedThreadPool(threads);
         while (currentVelocity < speedEnd) {
             Printer printer = new NullPrinter();
-            Parameters parameters = new Parameters(PARTICLE_COUNT, currentVelocity, DELTA_TIME);
+            Parameters parameters = new Parameters(PARTICLE_COUNT, currentVelocity, DELTA_TIME, CONTROLS);
 
             final double cur = currentVelocity;
             executors.submit(() -> {
                 State initialState = new State(
                         parameters,
+                        ParticleGenerator.generateHorizontalWalls(parameters),
                         ParticleGenerator.generateParticles(parameters),
                         ParticleGenerator.generateStaticParticles(parameters),
                         parameters.getD());

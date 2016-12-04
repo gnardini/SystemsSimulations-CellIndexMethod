@@ -2,10 +2,7 @@ package pedestrian_dynamics.simulation;
 
 import com.sun.tools.javac.util.Pair;
 import pedestrian_dynamics.Parameters;
-import pedestrian_dynamics.models.Particle;
-import pedestrian_dynamics.models.State;
-import pedestrian_dynamics.models.Vector;
-import pedestrian_dynamics.models.Wall;
+import pedestrian_dynamics.models.*;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -20,7 +17,7 @@ public class Simulation {
         double deltaTime = parameters.getDeltaTime();
         for (Particle particle : state.getParticles()) {
             Pair<Vector, Double> forces =
-                    getForces(parameters, particle, parameters.getKn(), parameters.getKt(), state.getStaticParticles());
+                    getForces(parameters, state.getBoard().getHorizontalWalls(), particle, parameters.getKn(), parameters.getKt(), state.getStaticParticles());
             Vector force = forces.fst;
             Vector newPosition = particle.getPosition().scale(2.0)
                     .sub(particle.getOldPosition())
@@ -34,7 +31,7 @@ public class Simulation {
         return state.withNewParticles(newParticles);
     }
 
-    private static Pair<Vector, Double> getForces(Parameters parameters, Particle particle, double kn, double kt,
+    private static Pair<Vector, Double> getForces(Parameters parameters, List<HorizontalWall> horizontalWalls, Particle particle, double kn, double kt,
                                                   List<Particle> staticParticles) {
         Vector totalForce = getTargetForce(particle, parameters);
         // System.out.println(totalForce);
@@ -57,7 +54,7 @@ public class Simulation {
                 totalForce = totalForce.sum(socialForce(parameters, normalVersor, overlap));
             }
         }
-        Vector wallForce = wallCollision(parameters, particle, kn, kt);
+        Vector wallForce = wallCollision(parameters, horizontalWalls, particle, kn, kt);
         totalForce = totalForce.sum(wallForce);
         totalForceModule += wallForce.norm();
         return new Pair<>(totalForce, totalForceModule);
@@ -120,9 +117,15 @@ public class Simulation {
         return normalForce.sum(tangencialForce);
     }
 
-    private static Vector wallCollision(Parameters parameters, Particle particle, double kn, double kt) {
-        return Stream.of(Wall.values())
-                .map(wall -> wall.getForce(parameters, particle, kn, kt))
+    private static Vector wallCollision(Parameters parameters, List<HorizontalWall> horizontalWalls, Particle particle, double kn, double kt) {
+        Stream<Vector> fixedWallsStream = Stream.of(Wall.values())
+                .map(wall -> wall.getForce(parameters, particle, kn, kt));
+
+        Stream<Vector> horizontalWallsStream = horizontalWalls.stream()
+                                            .map(wall -> wall.getForce(parameters, particle, kn, kt));
+
+        return Stream
+                .concat(fixedWallsStream, horizontalWallsStream)
                 .reduce(Vector.ZERO, Vector::sum);
     }
 

@@ -7,9 +7,7 @@ public enum Wall {
     TOP(new Vector(0, 1), Wall::topWallOverlap),
     BOTTOM(new Vector(0, -1), Wall::bottomWallOverlap),
     LEFT(new Vector(-1, 0), (parameters, particle) -> particle.getRadius() - particle.getX()),
-    RIGHT(new Vector(1, 0), (parameters, particle) -> particle.getX() - parameters.getW() + particle.getRadius()),
-    FIRST_STOP(new Vector(0, -1), ((parameters, particle) -> horizontalWall(parameters, particle, 3))),
-    SECOND_STOP(new Vector(0, -1), ((parameters, particle) -> horizontalWall(parameters, particle, 6)));
+    RIGHT(new Vector(1, 0), (parameters, particle) -> particle.getX() - parameters.getW() + particle.getRadius());
 
     private final Vector normalVector;
     private final OverlapCalculator overlapCalculator;
@@ -33,7 +31,7 @@ public enum Wall {
                 kt);
     }
 
-    interface OverlapCalculator {
+    public interface OverlapCalculator {
         double calculateOverlap(Parameters parameters, Particle particle);
     }
 
@@ -49,15 +47,6 @@ public enum Wall {
     private static double topWallOverlap(Parameters parameters, Particle particle) {
         // TODO: fill
         return 0;
-    }
-
-    private static double horizontalWall(Parameters parameters, Particle particle, int yPosition) {
-        double x = particle.getX();
-        if (isInRange(x, parameters.getW() / 2, parameters.getD() / 2)
-                || particle.getY() < yPosition) {
-            return 0;
-        }
-        return -(particle.getPosition().getY() - yPosition) + particle.getRadius();
     }
 
     private static boolean isInRange(double value, double center, double difference) {

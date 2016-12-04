@@ -30,9 +30,9 @@ public class State {
         this.currentTime = time;
     }
 
-    public State(Parameters parameters, List<Particle> particles, List<Particle> staticParticles, double interactionRadius) {
+    public State(Parameters parameters, List<HorizontalWall> horizontalWalls, List<Particle> particles, List<Particle> staticParticles, double interactionRadius) {
         this(
-                new Board((int) (parameters.getL() / interactionRadius), parameters.getL() + 1, particles),
+                new Board(horizontalWalls, (int) (parameters.getL() / interactionRadius), parameters.getL() + 1, particles),
                 parameters,
                 staticParticles,
                 interactionRadius);

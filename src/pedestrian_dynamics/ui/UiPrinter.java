@@ -74,9 +74,11 @@ public class UiPrinter extends JFrame implements Printer {
             // Bottom border
             double gapCenter = state.getParameters().getW() / 2;
             double gapRadius = state.getParameters().getD() / 2;
-            drawLine(g, 0, gapCenter, gapRadius, multiplier);
-            drawLine(g, 3, gapCenter, gapRadius, multiplier);
-            drawLine(g, 6, gapCenter, gapRadius, multiplier);
+
+            state.getBoard().getHorizontalWalls().forEach(wall ->
+                    drawLine(g, wall.getPosition(), gapCenter, gapRadius, multiplier)
+            );
+
             // Top border
             g.drawLine(
                     LEFT_MARGIN,
@@ -90,7 +92,7 @@ public class UiPrinter extends JFrame implements Printer {
             g.drawString("Particles: " + state.getParticles().size(), MARGIN, SCREEN_SIZE + MARGIN * 2);
         }
 
-        private void drawLine(Graphics g, int y, double center, double opening, double multiplier) {
+        private void drawLine(Graphics g, double y, double center, double opening, double multiplier) {
             int yPosition = (int) (SCREEN_SIZE - y * multiplier - BOTTOM_MARGIN);
             g.drawLine(
                     LEFT_MARGIN,

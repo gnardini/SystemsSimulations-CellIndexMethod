@@ -7,7 +7,10 @@ import java.util.List;
 public class Board {
     private int M;
     private double L;
+
     private Cell[][] cells;
+
+    private List<HorizontalWall> horizontalWalls;
 
     public Board(int M, double L) {
         this.M = M;
@@ -21,8 +24,9 @@ public class Board {
         }
     }
 
-    public Board(int M, double L, List<Particle> particles) {
+    public Board(List<HorizontalWall> horizontalWalls, int M, double L, List<Particle> particles) {
         this(M, L);
+        this.horizontalWalls = horizontalWalls;
         particles.forEach(this::addParticle);
     }
 
@@ -67,10 +71,15 @@ public class Board {
     public Board copy() {
         List<Particle> particles = new LinkedList<>();
         getParticles().forEach(particle -> particles.add(particle.clone()));
-        return new Board(M, L, particles);
+        return new Board(this.horizontalWalls, M, L, particles);
     }
 
     public Board withNewParticles(List<Particle> newParticles) {
-        return new Board(M, L, newParticles);
+        return new Board(this.horizontalWalls, M, L, newParticles);
     }
+
+    public List<HorizontalWall> getHorizontalWalls() {
+        return horizontalWalls;
+    }
+
 }
