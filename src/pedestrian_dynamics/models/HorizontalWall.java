@@ -20,7 +20,6 @@ public class HorizontalWall {
         _position = position;
     }
 
-
     public Vector getForce(Parameters parameters, Particle particle, double kn, double kt) {
         double overlap = horizontalWall(parameters, particle);
         if (overlap < 0) {

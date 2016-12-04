@@ -33,7 +33,7 @@ public class Simulation {
 
     private static Pair<Vector, Double> getForces(Parameters parameters, List<HorizontalWall> horizontalWalls, Particle particle, double kn, double kt,
                                                   List<Particle> staticParticles) {
-        Vector totalForce = getTargetForce(particle, parameters);
+        Vector totalForce = getTargetForce(particle, parameters, horizontalWalls);
         // System.out.println(totalForce);
         double totalForceModule = 0;
         List<Particle> allParticles = new LinkedList<>();
@@ -65,8 +65,8 @@ public class Simulation {
         return socialForce.scale(-1);
     }
 
-    private static Vector getTargetForce(Particle particle, Parameters parameters) {
-        Vector target = new Vector(getDestinationX(particle, parameters), getDestinationY(particle));
+    private static Vector getTargetForce(Particle particle, Parameters parameters, List<HorizontalWall> horizontalWalls) {
+        Vector target = new Vector(getDestinationX(particle, parameters), getDestinationY(particle, horizontalWalls));
 
         Vector targetVersor = target.sub(particle.getPosition()).normalize();
         Vector targetForce = targetVersor.scale(parameters.getTargetSpeed()).sub(particle.getSpeed())
@@ -93,13 +93,13 @@ public class Simulation {
         }
     }
 
-    private static double getDestinationY(Particle particle) {
-        if (particle.getY() > 6) {
-            return 6;
-        } else if (particle.getY() > 3) {
-            return 3;
-        } else if (particle.getY() > 0) {
-            return 0;
+    private static double getDestinationY(Particle particle, List<HorizontalWall> horizontalWalls) {
+        // Order matters!
+        for (int i = horizontalWalls.size() - 1; i > 0; i --) {
+            double wallPosition = horizontalWalls.get(i).getPosition();
+            if (particle.getY() > wallPosition) {
+                return wallPosition;
+            }
         }
         return -1;
     }

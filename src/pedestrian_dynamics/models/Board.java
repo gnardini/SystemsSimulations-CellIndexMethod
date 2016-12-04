@@ -12,7 +12,7 @@ public class Board {
 
     private List<HorizontalWall> horizontalWalls;
 
-    public Board(int M, double L) {
+    private Board(int M, double L) {
         this.M = M;
         this.L = L;
         cells = new Cell[M][M];
