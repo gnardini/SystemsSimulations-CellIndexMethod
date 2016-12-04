@@ -1,6 +1,6 @@
 package pedestrian_dynamics.simulation;
 
-import granular_medium.simulation.PoliceStop;
+import pedestrian_dynamics.ExponentialGenerator;
 import pedestrian_dynamics.Parameters;
 import pedestrian_dynamics.models.HorizontalWall;
 import pedestrian_dynamics.models.Particle;
@@ -27,6 +27,7 @@ public class ParticleGenerator {
                     particles, parameters.getW(), parameters.getL() - 2 * distancePerControl, parameters.getL(), radius);
             List<PoliceStop> policeStops =
                     createPoliceStops(parameters, distancePerControl);
+
             particles.add(
                     new Particle(parameters, id, radius, particlePosition,
                             Vector.ZERO, Vector.ZERO, Vector.ZERO, 0, false, policeStops)
@@ -45,7 +46,7 @@ public class ParticleGenerator {
         List<Particle> particles = new ArrayList<>();
 
         for (int control = 0; control < numberOfControls; control++) {
-            int numberOfParticlesForControl = parameters.getStaticParticlesPerControl()[control];
+            int numberOfParticlesForControl = parameters.getStaticParticlesPerControl()[numberOfControls - 1 - control];
             fillControl(numberOfParticlesForControl, control * distancePerControl, parameters, particles, id);
             id += numberOfParticlesForControl;
         }
@@ -95,8 +96,11 @@ public class ParticleGenerator {
         List<PoliceStop> policeStops = new LinkedList<>();
         for (int i = 0; i < controlCount; i++) {
             int delay = parameters.getDelayPerControl()[controlCount - 1 - i];
-            policeStops.add(new PoliceStop(i * distanceBetweenControls, delay));
+            double rate = 1 / (double)delay;
+            double exponencialDelay = ExponentialGenerator.next(rate);
+            policeStops.add(new PoliceStop(i * distanceBetweenControls, exponencialDelay));
         }
+
         return policeStops;
     }
 

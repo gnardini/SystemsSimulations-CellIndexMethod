@@ -1,6 +1,6 @@
 package pedestrian_dynamics.models;
 
-import granular_medium.simulation.PoliceStop;
+import pedestrian_dynamics.simulation.PoliceStop;
 import pedestrian_dynamics.Parameters;
 
 import java.awt.*;

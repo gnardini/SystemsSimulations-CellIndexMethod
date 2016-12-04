@@ -1,4 +1,4 @@
-package granular_medium.simulation;
+package pedestrian_dynamics.simulation;
 
 import pedestrian_dynamics.models.Vector;
 

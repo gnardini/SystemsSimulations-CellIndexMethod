@@ -82,6 +82,8 @@ public class UiPrinter extends JFrame implements Printer {
 
             g.setColor(Color.blue);
             g.drawString("Particles: " + state.getParticles().size(), MARGIN, SCREEN_SIZE + MARGIN * 2);
+
+            g.drawString(String.format("Time: %.2f s", state.getCurrentTime()), SCREEN_SIZE / 2, SCREEN_SIZE + MARGIN * 2);
         }
 
         private void drawLine(Graphics g, double y, double center, double opening, double multiplier) {
