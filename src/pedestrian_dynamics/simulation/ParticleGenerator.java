@@ -18,7 +18,7 @@ public class ParticleGenerator {
 
         int numberOfControls = parameters.getStaticParticlesPerControl().length;
 
-        double distancePerControl = parameters.getL() / (numberOfControls + 2);
+        double distancePerControl = parameters.getL() / Double.valueOf(numberOfControls + 2);
 
         while (id < parameters.getParticleCount()) {
             double radius = randomRadius(parameters);
@@ -40,13 +40,14 @@ public class ParticleGenerator {
 
     public static List<Particle> generateStaticParticles(Parameters parameters) {
         int numberOfControls = parameters.getStaticParticlesPerControl().length;
-        double distancePerControl = parameters.getL() / Double.valueOf((numberOfControls + 2));
+        double distancePerControl = parameters.getL() / Double.valueOf(numberOfControls + 2);
 
         int id = parameters.getParticleCount();
         List<Particle> particles = new ArrayList<>();
 
         for (int control = 0; control < numberOfControls; control++) {
             int numberOfParticlesForControl = parameters.getStaticParticlesPerControl()[numberOfControls - 1 - control];
+
             fillControl(numberOfParticlesForControl, control * distancePerControl, parameters, particles, id);
             id += numberOfParticlesForControl;
         }
@@ -56,7 +57,7 @@ public class ParticleGenerator {
 
     public static List<HorizontalWall> generateHorizontalWalls(Parameters parameters) {
         int numberOfControls = parameters.getStaticParticlesPerControl().length;
-        double distancePerControl = parameters.getL() / Double.valueOf((numberOfControls + 2));
+        double distancePerControl = parameters.getL() / Double.valueOf(numberOfControls + 2);
 
         List<HorizontalWall> horizontalWalls = new ArrayList<>(numberOfControls);
 
