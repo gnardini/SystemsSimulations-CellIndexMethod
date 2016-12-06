@@ -29,10 +29,10 @@ public class Main {
     private static final double DELTA_TIME = 1e-3;
 
     private static final int[] CONTROLS = new int[]{3, 2, 3, 4};
-    private static final int[] CONTROLS_MAX_DELAY = new int[]{1, 1, 1, 2};
-    private static final int[] MAX_PEOPLE_PER_SECTION = new int[]{30, 30, 30, 30};
+    private static final int[] CONTROLS_MAX_DELAY = new int[]{1, 1, 1, 4};
+    private static final int[] MAX_PEOPLE_PER_SECTION = new int[]{200, 200, 200, 200};
 
-    private static final boolean VISUAL = true;
+    private static final boolean VISUAL = false;
     private static final boolean MULTIPLE = false;
 
     public static void main(String[] args) {
@@ -54,8 +54,7 @@ public class Main {
                     Printer printer = new UiPrinter();
                     run(initialState, printer, parameters);
                 } else {
-                    Printer printer = new ParticlesLeftPrinter();
-                    run(initialState, printer, parameters);
+                    makeMultipleRuns();
                 }
             }
         } catch (InterruptedException e) {
@@ -112,6 +111,43 @@ public class Main {
             runMultiThread(currentVelocity, timesPerVelocity);
             currentVelocity += deltaVelocity;
         }
+    }
+
+    private static void makeMultipleRuns() throws InterruptedException {
+        int runs = 3;
+        ExecutorService executors = Executors.newFixedThreadPool(runs);
+        IntStream.rangeClosed(1, runs).forEach(runCase -> executors.submit(() -> run(runCase)));
+        executors.shutdown();
+        executors.awaitTermination(Long.MAX_VALUE, TimeUnit.SECONDS);
+    }
+
+    private static void run(int runCase) {
+        System.out.println("Running case " + runCase);
+        Printer printer = new ParticlesLeftPrinter();
+        Parameters parameters;
+        int peopleInSection = 200;
+        switch (runCase) {
+            case 1:
+                parameters = new Parameters(PARTICLE_COUNT, DESIRED_SPEED, DELTA_TIME, new int[] {3, 2, 3, 4},
+                        new int[] {1, 1, 1, 4}, new int[] {peopleInSection, peopleInSection, peopleInSection, peopleInSection});
+                break;
+            case 2:
+                parameters = new Parameters(PARTICLE_COUNT, DESIRED_SPEED, DELTA_TIME, new int[] {3, 2, 3, 4},
+                        new int[] {1, 2, 3, 4}, new int[] {peopleInSection, peopleInSection, peopleInSection, peopleInSection});
+                break;
+            case 3:
+                parameters = new Parameters(PARTICLE_COUNT, DESIRED_SPEED, DELTA_TIME, new int[] {3, 2, 3, 4},
+                        new int[] {4, 3, 2, 1}, new int[] {peopleInSection, peopleInSection, peopleInSection, peopleInSection});
+                break;
+            default:
+                throw new IllegalStateException();
+        }
+        List<Particle> particles = ParticleGenerator.generateParticles(parameters);
+        List<Particle> staticParticles = ParticleGenerator.generateStaticParticles(parameters);
+        State initialState = new State(
+                parameters, ParticleGenerator.generateHorizontalWalls(parameters), particles, staticParticles,
+                parameters.getD());
+        run(initialState, printer, parameters);
     }
 
     // Run N (times param) threads of the simulation with given speed at the same time

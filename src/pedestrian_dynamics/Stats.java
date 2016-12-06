@@ -9,21 +9,26 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class Stats {
 
     private static final String OUTPUT_PATH = "files/TPF/";
+    private static final double DISTRIBUTION_CHECK_DELTA = 0.1;
 
     private final Parameters parameters;
     private final List<Double> timesToLeave;
     private final double[][] timePerSection;
+    private final List<int[]> distributionsOverTime;
+
+    private double nextDistributionCheck = DISTRIBUTION_CHECK_DELTA;
 
     public Stats(Parameters parameters) {
         this.parameters = parameters;
         timesToLeave = new ArrayList<>(parameters.getParticleCount());
         timePerSection = new double[parameters.getParticleCount()][parameters.getMaxPeoplePerSection().length];
+        distributionsOverTime = new LinkedList<>();
     }
 
     public void update(State state, double totalTime) {
@@ -48,6 +53,11 @@ public class Stats {
         state.getParticles().stream()
                 .filter(particle -> particle.getY() < -0.1 && particle.getOldPosition().getY() >= -0.1)
                 .forEach(particle -> timesToLeave.add(totalTime));
+
+        if (totalTime >= nextDistributionCheck) {
+            distributionsOverTime.add(state.getParticlesPerSection());
+            nextDistributionCheck += DISTRIBUTION_CHECK_DELTA;
+        }
     }
 
     public List<Double> getTimesToLeave() {
@@ -70,10 +80,28 @@ public class Stats {
             output.append('\n');
             System.out.println();
         }
-        writeTo(OUTPUT_PATH + "particle_escape_per_section.txt", Arrays.asList(output.toString().split("\n")));
 
-        List<String> timesToLeave = this.timesToLeave.stream().map(String::valueOf).collect(Collectors.toList());
-        writeTo(OUTPUT_PATH + "times_to_leave.txt", timesToLeave);
+        StringBuilder idBuilder = new StringBuilder();
+        for (int delay : parameters.getDelayPerControl()) {
+            idBuilder.append(delay + "_");
+        }
+        idBuilder.append(System.currentTimeMillis() + "_");
+        idBuilder.append(parameters.getMaxPeoplePerSection()[0] + "_");
+        String id = idBuilder.toString();
+
+        writeTo(OUTPUT_PATH + id + "particle_escape_per_section.txt", Arrays.asList(output.toString().split("\n")));
+
+        StringBuilder distributions = new StringBuilder();
+        for (int[] distribution : distributionsOverTime) {
+            for (int value : distribution) {
+                distributions.append(value + '\t');
+            }
+            distributions.append("\n");
+        }
+        writeTo(OUTPUT_PATH + id + "particle_distribution_over_time.txt", Arrays.asList(distributions.toString().split("\n")));
+
+//        List<String> timesToLeave = this.timesToLeave.stream().map(String::valueOf).collect(Collectors.toList());
+//        writeTo(OUTPUT_PATH + id + "times_to_leave.txt", timesToLeave);
     }
 
     private static void writeTo(String fileName, List<String> lines) {
