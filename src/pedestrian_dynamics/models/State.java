@@ -55,10 +55,10 @@ public class State {
             int stopIndex = (int) ((particle.getY() + 0.1) / distanceBetweenStops);
             particlesPerSection[stopIndex]++;
         });
-        for (int i = 0; i < particlesPerSection.length; i++) {
-            System.out.print(particlesPerSection[i] + ", ");
-        }
-        System.out.println();
+//        for (int i = 0; i < particlesPerSection.length; i++) {
+//            System.out.print(particlesPerSection[i] + ", ");
+//        }
+//        System.out.println();
     }
 
     public int[] getParticlesPerSection() {
