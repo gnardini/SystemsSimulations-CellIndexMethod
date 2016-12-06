@@ -119,9 +119,9 @@ public class Particle {
                 .reduce(false, (b1, b2) -> b1 || b2);
     }
 
-    public boolean checkPoliceControlFinished() {
+    public boolean checkPoliceControlFinished(int[] peopleInSections) {
         return policeStops.stream()
-                .map(policeStop -> policeStop.shouldContinue(parameters.getDeltaTime()))
+                .map(policeStop -> policeStop.shouldContinue(parameters, peopleInSections))
                 .reduce(false, (b1, b2) -> b1 || b2);
     }
 

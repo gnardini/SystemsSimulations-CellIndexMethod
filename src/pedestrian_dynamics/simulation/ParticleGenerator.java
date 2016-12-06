@@ -97,9 +97,9 @@ public class ParticleGenerator {
         List<PoliceStop> policeStops = new LinkedList<>();
         for (int i = 0; i < controlCount; i++) {
             int delay = parameters.getDelayPerControl()[controlCount - 1 - i];
-            double rate = 1 / (double)delay;
-            double exponencialDelay = ExponentialGenerator.next(rate);
-            policeStops.add(new PoliceStop(i * distanceBetweenControls, exponencialDelay));
+            double rate = 1.0 / (double)delay;
+            double exponentialDelay = ExponentialGenerator.next(rate);
+            policeStops.add(new PoliceStop(i * distanceBetweenControls, exponentialDelay, i));
         }
 
         return policeStops;

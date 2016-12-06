@@ -5,7 +5,8 @@ class Parameters(
         val targetSpeed: Double,
         val deltaTime: Double,
         val staticParticlesPerControl: IntArray,
-        val delayPerControl: IntArray) {
+        val delayPerControl: IntArray,
+        val maxPeoplePerSection: IntArray) {
     val l = 30
     val w = 20
     val d = 5.8

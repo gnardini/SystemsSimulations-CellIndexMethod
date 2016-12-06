@@ -30,6 +30,7 @@ public class Main {
 
     private static final int[] CONTROLS = new int[]{3, 2, 3, 4};
     private static final int[] CONTROLS_MAX_DELAY = new int[]{1, 1, 1, 2};
+    private static final int[] MAX_PEOPLE_PER_SECTION = new int[]{10, 10, 10, 10};
 
     private static final boolean VISUAL = true;
     private static final boolean MULTIPLE = false;
@@ -41,8 +42,8 @@ public class Main {
 //                for (int i = 1; i <= 5; i++)
 //                    runAll(0.8, 6.1, 0.2, i);
             } else {
-                Parameters parameters =
-                        new Parameters(PARTICLE_COUNT, DESIRED_SPEED, DELTA_TIME, CONTROLS, CONTROLS_MAX_DELAY);
+                Parameters parameters = new Parameters(PARTICLE_COUNT, DESIRED_SPEED, DELTA_TIME, CONTROLS,
+                        CONTROLS_MAX_DELAY, MAX_PEOPLE_PER_SECTION);
                 List<Particle> particles = ParticleGenerator.generateParticles(parameters);
                 List<Particle> staticParticles = ParticleGenerator.generateStaticParticles(parameters);
                 State initialState = new State(
@@ -90,7 +91,7 @@ public class Main {
 
             if (time > nextSwitch) {
                 nextSwitch += 2;
-                currentState = currentState.updatingStaticParticlesRadius();
+                //currentState = currentState.updatingStaticParticlesRadius();
             }
         }
         System.out.println(stats.getTimesToLeave());
@@ -117,7 +118,8 @@ public class Main {
         System.out.println(String.format("---------- Calculating for desired speed: %s ----------", speed));
         ExecutorService executors = Executors.newFixedThreadPool(times);
         Printer printer = new NullPrinter();
-        Parameters parameters = new Parameters(PARTICLE_COUNT, speed, DELTA_TIME, CONTROLS, CONTROLS_MAX_DELAY);
+        Parameters parameters = new Parameters(PARTICLE_COUNT, speed, DELTA_TIME, CONTROLS,
+                CONTROLS_MAX_DELAY, MAX_PEOPLE_PER_SECTION);
 
         IntStream.rangeClosed(1, times).forEach(t -> {
             executors.submit(() -> {
@@ -144,7 +146,8 @@ public class Main {
         ExecutorService executors = Executors.newFixedThreadPool(threads);
         while (currentVelocity < speedEnd) {
             Printer printer = new NullPrinter();
-            Parameters parameters = new Parameters(PARTICLE_COUNT, currentVelocity, DELTA_TIME, CONTROLS, CONTROLS_MAX_DELAY);
+            Parameters parameters = new Parameters(PARTICLE_COUNT, currentVelocity, DELTA_TIME, CONTROLS,
+                    CONTROLS_MAX_DELAY, MAX_PEOPLE_PER_SECTION);
 
             final double cur = currentVelocity;
             executors.submit(() -> {

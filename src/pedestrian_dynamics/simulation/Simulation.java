@@ -31,7 +31,7 @@ public class Simulation {
             }
             if (newParticle.checkPoliceControls()) {
                 newParticle = newParticle.beingStatic(true);
-            } else if (newParticle.checkPoliceControlFinished()) {
+            } else if (newParticle.checkPoliceControlFinished(state.getParticlesPerSection())) {
                 newParticle = newParticle.beingStatic(false);
             }
             if (newParticle.getY() > -1) {

@@ -10,6 +10,7 @@ public class State {
     private Board board;
     private final List<Particle> staticParticles;
     private final Parameters parameters;
+    private final int[] particlesPerSection;
     private double interactionRadius;
     public int particleCount;
     private double currentTime = 0.0;
@@ -23,6 +24,8 @@ public class State {
         this.staticParticles = staticParticles;
         this.particleCount = board.getParticles().size();
         this.interactionRadius = interactionRadius;
+        this.particlesPerSection = new int[parameters.getStaticParticlesPerControl().length + 3];
+        calculateParticlesPerSection();
     }
 
     public State(Board board, Parameters parameters, List<Particle> staticParticles, double interactionRadius, double time) {
@@ -43,6 +46,23 @@ public class State {
                 .mapToDouble(particle -> .5 * particle.getMass() * Math.pow(particle.getSpeed().norm(), 2))
                 .sum()
                 / getParticles().size();
+    }
+
+    private void calculateParticlesPerSection() {
+        double distanceBetweenStops =
+                parameters.getL() / Double.valueOf(parameters.getStaticParticlesPerControl().length + 2);
+        board.getParticles().forEach(particle -> {
+            int stopIndex = (int) ((particle.getY() + 0.1) / distanceBetweenStops);
+            particlesPerSection[stopIndex]++;
+        });
+        for (int i = 0; i < particlesPerSection.length; i++) {
+            System.out.print(particlesPerSection[i] + ", ");
+        }
+        System.out.println();
+    }
+
+    public int[] getParticlesPerSection() {
+        return particlesPerSection;
     }
 
     public List<Particle> getStaticParticles() {
