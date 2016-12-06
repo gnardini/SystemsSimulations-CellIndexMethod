@@ -22,7 +22,7 @@ public class Simulation {
             } else {
                 Pair<Vector, Double> forces =
                         getForces(parameters, state.getBoard().getHorizontalWalls(), particle, parameters.getKn(), parameters.getKt(), state.getStaticParticles());
-                Vector force = forces.fst;
+                Vector force = forces.fst.scale(3);
                 Vector newPosition = particle.getPosition().scale(2.0)
                         .sub(particle.getOldPosition())
                         .sum(force.scale(deltaTime * deltaTime / particle.getMass()));
@@ -46,10 +46,7 @@ public class Simulation {
         Vector totalForce = getTargetForce(particle, parameters, horizontalWalls);
         // System.out.println(totalForce);
         double totalForceModule = 0;
-        List<Particle> allParticles = new LinkedList<>();
-        allParticles.addAll(staticParticles);
-        allParticles.addAll(particle.getNeighbours());
-        for (Particle neighbor : allParticles) {
+        for (Particle neighbor : particle.getNeighbours()) {
             double overlap = getOverlap(particle, neighbor);
             Vector normalVersor = getNormalVersor(particle, neighbor);
             if (overlap > 0) {
@@ -62,6 +59,19 @@ public class Simulation {
                 totalForceModule += force.norm();
             } else {
                 totalForce = totalForce.sum(socialForce(parameters, normalVersor, overlap));
+            }
+        }
+        for (Particle neighbor : staticParticles) {
+            double overlap = getOverlap(particle, neighbor);
+            Vector normalVersor = getNormalVersor(particle, neighbor);
+            if (overlap > 0) {
+                Vector tangencialVersor = new Vector(-normalVersor.getY(), normalVersor.getX());
+
+                Vector relativeSpeed = particle.getSpeed().sub(neighbor.getSpeed());
+
+                Vector force = getForce(normalVersor, tangencialVersor, relativeSpeed, overlap, kn, kt);
+                totalForce = totalForce.sum(force);
+                totalForceModule += force.norm();
             }
         }
         Vector wallForce = wallCollision(parameters, horizontalWalls, particle, kn, kt);
@@ -105,7 +115,7 @@ public class Simulation {
 
     private static double getDestinationY(Particle particle, List<HorizontalWall> horizontalWalls) {
         // Order matters!
-        for (int i = horizontalWalls.size() - 1; i > 0; i --) {
+        for (int i = horizontalWalls.size() - 1; i >= 0; i --) {
             double wallPosition = horizontalWalls.get(i).getPosition();
             if (particle.getY() > wallPosition) {
                 return wallPosition;

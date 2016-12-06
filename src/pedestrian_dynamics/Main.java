@@ -30,7 +30,7 @@ public class Main {
 
     private static final int[] CONTROLS = new int[]{3, 2, 3, 4};
     private static final int[] CONTROLS_MAX_DELAY = new int[]{1, 1, 1, 2};
-    private static final int[] MAX_PEOPLE_PER_SECTION = new int[]{10, 10, 10, 10};
+    private static final int[] MAX_PEOPLE_PER_SECTION = new int[]{30, 30, 30, 30};
 
     private static final boolean VISUAL = true;
     private static final boolean MULTIPLE = false;
