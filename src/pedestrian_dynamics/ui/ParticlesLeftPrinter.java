@@ -10,7 +10,12 @@ public class ParticlesLeftPrinter implements Printer {
             if (state.getParticleCount() != lastPrinted) {
                 String out = String.format("%d particles left", state.getParticleCount());
                 String time = String.format("Time: %f", state.getCurrentTime());
-                System.out.println(out + ". " + time);
+                StringBuilder idBuilder = new StringBuilder();
+                for (int delay : state.getParameters().getDelayPerControl()) {
+                    idBuilder.append(delay + " ");
+                }
+                String id = idBuilder.toString();
+                System.out.println(out + ". " + time + ". " + id);
                 lastPrinted = state.getParticleCount();
             }
         }

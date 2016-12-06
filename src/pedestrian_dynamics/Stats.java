@@ -55,7 +55,13 @@ public class Stats {
                 .forEach(particle -> timesToLeave.add(totalTime));
 
         if (totalTime >= nextDistributionCheck) {
-            distributionsOverTime.add(state.getParticlesPerSection());
+            int[] recordedParticlesPerSection = state.getParticlesPerSection();
+            int[] particlesPerSection = new int[parameters.getDelayPerControl().length];
+            int i = 0;
+            for (; i < particlesPerSection.length; i++) particlesPerSection[i] = recordedParticlesPerSection[i];
+            for (; i < recordedParticlesPerSection.length; i++)
+                particlesPerSection[particlesPerSection.length - 1] += recordedParticlesPerSection[i];
+            distributionsOverTime.add(particlesPerSection);
             nextDistributionCheck += DISTRIBUTION_CHECK_DELTA;
         }
     }
@@ -94,7 +100,7 @@ public class Stats {
         StringBuilder distributions = new StringBuilder();
         for (int[] distribution : distributionsOverTime) {
             for (int value : distribution) {
-                distributions.append(value + '\t');
+                distributions.append(value).append('\t');
             }
             distributions.append("\n");
         }
