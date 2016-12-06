@@ -95,6 +95,7 @@ public class Main {
             }
         }
         System.out.println(stats.getTimesToLeave());
+        stats.print();
         return stats;
     }
 
