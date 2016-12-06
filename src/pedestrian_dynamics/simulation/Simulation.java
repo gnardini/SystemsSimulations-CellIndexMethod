@@ -60,7 +60,7 @@ public class Simulation {
                 Vector force = getForce(normalVersor, tangencialVersor, relativeSpeed, overlap, kn, kt);
                 totalForce = totalForce.sum(force);
                 totalForceModule += force.norm();
-            } else if (!neighbor.isStatic()) {
+            } else {
                 totalForce = totalForce.sum(socialForce(parameters, normalVersor, overlap));
             }
         }
