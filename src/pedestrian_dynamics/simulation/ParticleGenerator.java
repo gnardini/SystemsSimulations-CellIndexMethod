@@ -79,8 +79,8 @@ public class ParticleGenerator {
             throw new RuntimeException("Error! Static particle count has to be less than or equal to " + maxPossibleStaticParticleCount);
         }
 
-        double startingAt = parameters.getW() / 2 - parameters.getD() / 2;
-        double distancePerParticle = parameters.getD() / (numberOfParticles + 1);
+        double startingAt = parameters.getW() / 2.0 - parameters.getD() / 2.0;
+        double distancePerParticle = parameters.getD() / Double.valueOf(numberOfParticles + 1);
 
         for (double x = distancePerParticle; x < parameters.getD(); x += distancePerParticle) {
             particles.add(

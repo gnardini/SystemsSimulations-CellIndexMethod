@@ -7,9 +7,9 @@ class Parameters(
         val staticParticlesPerControl: IntArray,
         val delayPerControl: IntArray,
         val maxPeoplePerSection: IntArray) {
-    val l = 30
-    val w = 20
-    val d = 5.8
+    val l = 50
+    val w = 10
+    val d = 6
     val minParticleRadius = 0.5 / 2
     val maxParticleRadius = 0.58 / 2
     val mass = 75
