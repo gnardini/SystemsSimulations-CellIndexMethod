@@ -22,7 +22,7 @@ public class Simulation {
             } else {
                 Pair<Vector, Double> forces =
                         getForces(parameters, state.getBoard().getHorizontalWalls(), particle, parameters.getKn(), parameters.getKt(), state.getStaticParticles());
-                Vector force = forces.fst.scale(3);
+                Vector force = forces.fst.scale(1);
                 Vector newPosition = particle.getPosition().scale(2.0)
                         .sub(particle.getOldPosition())
                         .sum(force.scale(deltaTime * deltaTime / particle.getMass()));
