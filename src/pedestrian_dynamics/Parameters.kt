@@ -1,6 +1,7 @@
 package pedestrian_dynamics
 
 class Parameters(
+        val id: Int,
         val particleCount: Int,
         val targetSpeed: Double,
         val deltaTime: Double,

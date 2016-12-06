@@ -88,11 +88,12 @@ public class Stats {
         }
 
         StringBuilder idBuilder = new StringBuilder();
+        idBuilder.append("run_" + parameters.getId() + "_");
         for (int delay : parameters.getDelayPerControl()) {
             idBuilder.append(delay + "_");
         }
-        idBuilder.append(System.currentTimeMillis() + "_");
-        idBuilder.append(parameters.getMaxPeoplePerSection()[0] + "_");
+//        idBuilder.append(System.currentTimeMillis() + "_");
+//        idBuilder.append(parameters.getMaxPeoplePerSection()[0] + "_");
         String id = idBuilder.toString();
 
         writeTo(OUTPUT_PATH + id + "particle_escape_per_section.txt", Arrays.asList(output.toString().split("\n")));

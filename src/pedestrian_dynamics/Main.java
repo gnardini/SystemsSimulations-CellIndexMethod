@@ -42,7 +42,7 @@ public class Main {
 //                for (int i = 1; i <= 5; i++)
 //                    runAll(0.8, 6.1, 0.2, i);
             } else {
-                Parameters parameters = new Parameters(PARTICLE_COUNT, DESIRED_SPEED, DELTA_TIME, CONTROLS,
+                Parameters parameters = new Parameters(0, PARTICLE_COUNT, DESIRED_SPEED, DELTA_TIME, CONTROLS,
                         CONTROLS_MAX_DELAY, MAX_PEOPLE_PER_SECTION);
                 List<Particle> particles = ParticleGenerator.generateParticles(parameters);
                 List<Particle> staticParticles = ParticleGenerator.generateStaticParticles(parameters);
@@ -114,7 +114,7 @@ public class Main {
     }
 
     private static void makeMultipleRuns() throws InterruptedException {
-        int runs = 3;
+        int runs = 5;
         ExecutorService executors = Executors.newFixedThreadPool(runs);
         IntStream.rangeClosed(1, runs).forEach(runCase -> executors.submit(() -> run(runCase)));
         executors.shutdown();
@@ -126,22 +126,24 @@ public class Main {
         Printer printer = new ParticlesLeftPrinter();
         Parameters parameters;
         int peopleInSection = 200;
-        switch (runCase) {
-            case 1:
-                parameters = new Parameters(PARTICLE_COUNT, DESIRED_SPEED, DELTA_TIME, new int[] {3, 2, 3, 4},
-                        new int[] {1, 1, 1, 4}, new int[] {peopleInSection, peopleInSection, peopleInSection, peopleInSection});
-                break;
-            case 2:
-                parameters = new Parameters(PARTICLE_COUNT, DESIRED_SPEED, DELTA_TIME, new int[] {3, 2, 3, 4},
-                        new int[] {1, 2, 3, 4}, new int[] {peopleInSection, peopleInSection, peopleInSection, peopleInSection});
-                break;
-            case 3:
-                parameters = new Parameters(PARTICLE_COUNT, DESIRED_SPEED, DELTA_TIME, new int[] {3, 2, 3, 4},
-                        new int[] {4, 3, 2, 1}, new int[] {peopleInSection, peopleInSection, peopleInSection, peopleInSection});
-                break;
-            default:
-                throw new IllegalStateException();
-        }
+//        switch (runCase) {
+//            case 1:
+//                parameters = new Parameters(runCase, PARTICLE_COUNT, DESIRED_SPEED, DELTA_TIME, new int[] {2, 3, 4},
+//                        new int[] {1, 1, 4}, new int[] {peopleInSection, peopleInSection, peopleInSection});
+//                break;
+//            case 2:
+//                parameters = new Parameters(runCase, PARTICLE_COUNT, DESIRED_SPEED, DELTA_TIME, new int[] {3, 4},
+//                        new int[] {1, 4}, new int[] {peopleInSection, peopleInSection});
+//                break;
+//            case 3:
+//                parameters = new Parameters(runCase, PARTICLE_COUNT, DESIRED_SPEED, DELTA_TIME, new int[] {4},
+//                        new int[] {4}, new int[] {peopleInSection});
+//                break;
+//            default:
+//                throw new IllegalStateException();
+//        }
+        parameters = new Parameters(runCase, PARTICLE_COUNT, DESIRED_SPEED, DELTA_TIME, new int[] {3, 2, 3, 4},
+                new int[] {1, 1, 1, 4}, new int[] {peopleInSection, peopleInSection, peopleInSection, peopleInSection});
         List<Particle> particles = ParticleGenerator.generateParticles(parameters);
         List<Particle> staticParticles = ParticleGenerator.generateStaticParticles(parameters);
         State initialState = new State(
@@ -155,7 +157,7 @@ public class Main {
         System.out.println(String.format("---------- Calculating for desired speed: %s ----------", speed));
         ExecutorService executors = Executors.newFixedThreadPool(times);
         Printer printer = new NullPrinter();
-        Parameters parameters = new Parameters(PARTICLE_COUNT, speed, DELTA_TIME, CONTROLS,
+        Parameters parameters = new Parameters(0, PARTICLE_COUNT, speed, DELTA_TIME, CONTROLS,
                 CONTROLS_MAX_DELAY, MAX_PEOPLE_PER_SECTION);
 
         IntStream.rangeClosed(1, times).forEach(t -> {
@@ -183,7 +185,7 @@ public class Main {
         ExecutorService executors = Executors.newFixedThreadPool(threads);
         while (currentVelocity < speedEnd) {
             Printer printer = new NullPrinter();
-            Parameters parameters = new Parameters(PARTICLE_COUNT, currentVelocity, DELTA_TIME, CONTROLS,
+            Parameters parameters = new Parameters(0, PARTICLE_COUNT, currentVelocity, DELTA_TIME, CONTROLS,
                     CONTROLS_MAX_DELAY, MAX_PEOPLE_PER_SECTION);
 
             final double cur = currentVelocity;
