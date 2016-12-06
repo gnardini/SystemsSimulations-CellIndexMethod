@@ -16,6 +16,6 @@ class Parameters(
     val a = 2000.0
     val b = 0.08
     val kn = 1.2e5
-    val kt = 2.4e5
+    val kt = 2 * 2.4e5
     val tao = -.5
 }

@@ -30,9 +30,9 @@ public class Simulation {
                 newParticle = particle.withNewData(newPosition, newSpeed).withForce(forces.snd);
             }
             if (newParticle.checkPoliceControls()) {
-                newParticle = newParticle.beingStatic(true);
+                newParticle = newParticle.beingStatic(true).withNewData(newParticle.getPosition(), Vector.ZERO);
             } else if (newParticle.checkPoliceControlFinished(state.getParticlesPerSection())) {
-                newParticle = newParticle.beingStatic(false);
+                newParticle = newParticle.beingStatic(false).calculatingOldPosition(parameters.getDeltaTime());
             }
             if (newParticle.getY() > -1) {
                 newParticles.add(newParticle);
